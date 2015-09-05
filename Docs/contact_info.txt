@@ -2,3 +2,7 @@ Name: Austin Hoppe
 Username: aah0173
 Email: AustinHoppe@my.unt.edu
 Phone: (214)-541-8830
+
+Name: Jacob Pebworth
+Username: JacobPeb
+Email: jacobpebworth@my.unt.edu
