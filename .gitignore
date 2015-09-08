@@ -1,6 +1,6 @@
 ## Don't commit your project files.
 ## We're probably not using the same editor as you
 
-# Sublime project info
-csce4444.sublime-project
-csce4444.sublime-workspace
+# QtCreator Project
+BitChatServer/BitChatServer.pro
+BitChatServer/BitChatServer.pro.user
