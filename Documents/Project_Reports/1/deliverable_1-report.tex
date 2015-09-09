@@ -1,0 +1,56 @@
+% 2015-09-09
+\documentclass[12pt]{report}
+%\usepackage{extsizes}
+%\usepackage[letterpaper, margin=2.44cm]{geometry}
+\usepackage[letterpaper, margin=2.54cm]{geometry}
+\usepackage{parskip}
+\usepackage[super]{nth}
+\usepackage{xspace}
+\setlength{\parskip}{0cm}
+%\setlength{\headheight}{0cm}
+\usepackage{setspace}
+%single-spaced?
+\linespread{1}
+%\double-spaced?
+%\linespread{1.9}
+\usepackage{times}
+\usepackage[none]{hyphenat}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{}
+\chead{}
+\rhead{\thepage}
+\lfoot{}
+\cfoot{}
+\rfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\newcommand*\elide{\textup{[\,\dots]}\xspace}
+% Additional distance from the top of the page. 12pt -> 4.23mm, so 12.7mm - 4.23mm = 8.47mm
+%\setlength\headsep{8.47mm}
+\setlength\headsep{4.23mm}
+\begin{document}
+\begin{flushleft}
+%``double_quote''
+%`single_quote'
+%\setlength{\parindent}{0cm}
+
+\begin{center}
+Project Title (tentative): Ventilate
+\end{center}
+
+\setlength{\parindent}{1.27cm}
+
+\indent \indent Our team of five is developing a chat room based program, borrowing some elements of the design of IRC clients, many examples of which can be commonly found. Our program is designed to be compatible with a variety of different platforms, but we will specifically be targeting the Mac OS X, Linux and Windows environments for compatibility when compiling binary executable files from our source code. Our primary development languages will be C and C++, especially in light of our group having chosen Qt for our preferred graphics toolset. This is a cross-platform and well-documented library designed for development with C++, which suits our needs appropriately.
+
+\indent Our focus regarding communication protocol is on peer-to-peer networking with connected clients. This presents a practical benefit in that very little interaction is required with a complex central server. The program will still require some measure of interaction with a basic server, mainly for Internet Protocol (IP) address translation and in order to authenticate clients, but this can be served by a simpler program running on a system with a known IP address. This is similar in practice to tracker servers from the BitTorrent protocol, and indeed serves the similar function of facilitating connections between active peers.
+
+\indent Users are authenticated with a password-based hash system. The client application first requests a password string from the user at login. Then, a hash key is generated from this string and sent to the server, along with another has value generated from the user's account name. The server will store a simple associative list of these two keys, and checks for a match. If a match is not found, the user may try a fixed number of times before the server enforces a penalty for wrong password tries (a delay). The possibility of hash collisions is remote but real; at account creation, the server will scan the internal list for the generated hash value, and request a new username if a match is found. This same process is repeated when the user chooses a password. Passwords remain fixed until a user requests a change, at which point they must first enter their current password before providing a new one, which is hashed appropriately on success.%forgotten passwords?
+
+\indent Whenever the program is started and a user is successfully authenticated, they are automatically entered into a central, "skeleton" chat room which displays connected users. Practically, this will involve querying the server for active users and their IP addresses, and then the client program establishing connections to each peer. Activity thereafter is restricted to peer-based communication, and this is notably the case both for establishing chat rooms and for maintaining records of chat activity. Chat rooms are established either when a user invites another user to join a chat room, or are broadcast publicly. Using the list from the skeleton room which they initially entered, users can invite others to join a private chat room, and this private "tag" establishes visibility and accessibility for other users. Public rooms are broadcast to all other users, and once opened can be entered without an invitation. These chat rooms persist even when the user which opened them leaves the room, but are closed when the last user present disconnects.
+
+\indent Chat history for public rooms is stored locally in a compressed plain-text format, on the systems of every client machine which has entered that room, but a copy is also mirrored to the server whenever a given chat room is closed. The server additionally holds an encrypted log of the names of all chat room which each user has visited, which allows for chat history to be updated even on machines where the user has never run the client application before. When a user logs in on any system, the program runs a check for  the names of chat room logs where they should be stored, and checks the names against those associated with the user's account. If any are missing then client will query the other users currently present, and if none of them have the logs available then the server will provide the client with a copy of the logs.
+
+\end{flushleft}
+\end{document}
+\}
