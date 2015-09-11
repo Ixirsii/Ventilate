@@ -3,12 +3,17 @@ Ventilate
   
 Group Name: 444-Chat_Group-5
 
+About
+-----
+Ventilate is a cross platfrom peer-to-peer distributed chat application built on the Qt5 platform. Ventilate version 1 is not privacy based due to time constraints of being a semester project, but the distributed nature of the program allows us to easily add chat encryption and other user privacy features easily when we have more time.
+
 Directory structure
 --------------------
 
 	CSE.4444-002-Grp-Project
 	GROUP-INFO    : Required file from previous assignment; lists members
-	README        : This file
+	README        : Plain text version of this file
+	README.md     : This file
 		Documents/        : Documentation base folder
 			contact_info.txt            : Internal use; lists contact info for different team members (email and phone)
 				Meeting_Minutes/        : For holding required meeting minutes
@@ -17,6 +22,7 @@ Directory structure
 					Deliverable I.pdf    Report 1
 					Trunk/               Contains resources from report development
 		Source    : Base folder for source files, will add folders for member / feature branches as necessary
+			Ventilate Server            : Source code for the server
 
 *Ignore all empty.txt files - these are solely to maintain the directory structure on GitHub with empty folders.*
 
