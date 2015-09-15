@@ -3,7 +3,15 @@ Networking Spec
 Note: parameters in angle brackets <> are required, parameters in square brackets [] are optional.
 
 
-CLIENT REQUESTS:
+GENERAL COMMANDS:
+-----------------
+Accept
+	"ACCEPT"
+Reject
+	"REJECT [reason]"
+
+
+CLIENT COMMANDS:
 ----------------
 Login request:
 	"LOGIN <username> <password hash>""
@@ -15,27 +23,25 @@ Password change request:
 	"PASSWORD CHANGE <username> <password hash>"
 Password reset request:
 	"PASSWORD RESET <username>"
+Add a user to a private chat room
+	"ROOM ADD <username of user adding> <password hash> <username of user being added>"
 Chat room creation request:
 	"ROOM CREATE <public|private> <name>"
 Chat room deletion request
 	"ROOM DELETE <name> <username> <password hash>"
-Chat room mode change
-	"ROOM MODE <public|private> <username>"
-Get room list
-	"ROOM LIST REQUEST"
 Get chat history for a room
 	"ROOM HISTORY REQUEST"
-
-CLIENT RESPONSES (for p2p transactions):
-----------------
 Send chat history for a room
 	"ROOM HISTORY <history>"
-
-SERVER RESPONSES:
------------------
-Accept (Used for account/room creation/deletion/mode switching)
-	"ACCEPT"
-Reject (Used for account/room creation/deletion/mode switching)
-	"REJECT [reason]"
+Join a chat room
+	"ROOM JOIN"
+Leave a chat room
+	"ROOM LEAVE <room> <username>"
+Get room list
+	"ROOM LIST REQUEST"
 Return room list
 	"ROOM LIST <comma separated list of public room names>"
+Send a message
+	"ROOM MESSAGE <room> <message hash> <username> <date time> <message>"
+Chat room mode change
+	"ROOM MODE <public|private> <username>"
