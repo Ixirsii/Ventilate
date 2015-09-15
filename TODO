@@ -1,0 +1,11 @@
+Things to do: (feel free to revise and enhance)
+    * Get server up and running
+    	-> Store list of connected peers
+    	-> Add peer to the list when it connects
+    	-> Remove peer from list when it disconnects
+    * Get client connected to server
+    	-> Generate RSA keys for each client
+    	-> Send public key to directly connected peers (Not every client needs every public key, peers only need public keys of clients they're directly connected to)
+    	-> Rebalance network when a peer disconnects
+    * Get GUI connected
+    * Test and smash bugs
