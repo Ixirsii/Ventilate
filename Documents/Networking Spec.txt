@@ -14,7 +14,7 @@ Reject
 CLIENT COMMANDS:
 ----------------
 Login request:
-	"LOGIN <username> <password hash>""
+	"LOGIN <username> <password hash>"
 Account creation request:
 	"ACCOUNT CREATE <username> <password hash>"
 Account deletion request:
