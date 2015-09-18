@@ -2,17 +2,18 @@ QT += core
 QT -= gui
 QT += network
 
-TARGET = BitChatServer
+TARGET = VentilateServer
 CONFIG += console
 CONFIG -= app_bundle
+CONFIG += c++11
 
 TEMPLATE = app
 
 SOURCES += main.cpp \
-    server.cpp \
-    connectionhandler.cpp
+    connectionhandler.cpp \
+    server.cpp
 
 HEADERS += \
-    server.h \
-    connectionhandler.h
+    connectionhandler.h \
+    server.h
 
