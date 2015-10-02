@@ -21,8 +21,10 @@ Account deletion request:
 	"ACCOUNT DELETE <username> <password hash>"
 Password change request:
 	"PASSWORD CHANGE <username> <password hash>"
-Password reset request:
+	
+Password reset request: //What does this do? What is a password reset??
 	"PASSWORD RESET <username>"
+	
 Add a user to a private chat room
 	"ROOM ADD <username of user adding> <password hash> <username of user being added>"
 Chat room creation request:
