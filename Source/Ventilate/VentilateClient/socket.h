@@ -10,6 +10,7 @@ class Socket : public QObject
 public:
     explicit Socket(QString host, qint16 port, QObject *parent = 0);
 
+    void send(QString data);
 
 public slots:
     void listen();

@@ -1,19 +1,17 @@
-QT += core
+QT += core network
 QT -= gui
-QT += network
 
 TARGET = VentilateServer
 CONFIG += console
 CONFIG -= app_bundle
-CONFIG += c++11
 
 TEMPLATE = app
 
 SOURCES += main.cpp \
-    connectionhandler.cpp \
-    server.cpp
+    server.cpp \
+    connectionhandler.cpp
 
 HEADERS += \
-    connectionhandler.h \
-    server.h
+    server.h \
+    connectionhandler.h
 
