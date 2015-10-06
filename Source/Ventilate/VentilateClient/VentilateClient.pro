@@ -15,9 +15,19 @@ CONFIG += c++11
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    socket.cpp
+    socket.cpp \
+    account.h \
+    chatroom.cpp \
+    message.cpp \
+    client.cpp \
+    chatroomlistener.cpp
 
 HEADERS  += mainwindow.h \
-    socket.h
+    socket.h \
+    account.h \
+    chatroom.h \
+    message.h \
+    client.h \
+    chatroomlistener.h
 
 FORMS    += mainwindow.ui

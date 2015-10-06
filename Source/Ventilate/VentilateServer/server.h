@@ -1,6 +1,7 @@
 #ifndef SERVER_H
 #define SERVER_H
 
+#include <QHash>
 #include <QTcpServer>
 
 class Server : public QTcpServer
@@ -14,6 +15,7 @@ public:
     void connectClient(qintptr socketDescriptor, QHostAddress clientAddress);
     void createAccount();
     void disconnectClient(qintptr socketDescriptor);
+    QMap<qintptr, QHostAddress> getPeerList();
     void login();
     void startServer();
 
@@ -25,7 +27,7 @@ private:
     const static std::string CREATE_ACCOUNT_REQUEST;
     const static std::string LOGIN_REQUEST;
 
-    QMap<qintptr, QHostAddress> connectedClients;
+    QHash<qintptr, QHostAddress> connectedClients;
 };
 
 #endif // SERVER_H
