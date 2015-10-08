@@ -1,0 +1,5 @@
+Friday, 02 October 2015
+
+Discussed GUI layout and design
+Discussed UML diagrams and project layout
+Discussed possibility of resetting user password via SMS
