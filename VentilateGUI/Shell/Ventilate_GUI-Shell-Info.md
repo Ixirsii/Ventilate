@@ -5,13 +5,13 @@ Functional code belongs in the [**Functional**](https://github.com/AuHoppe/CSE.4
 #Ventilate GUI
 ##Sequence Structure _Tenative_
 * MainWindow
- * Login
-  * New User
- * Change Password
- * Create Chatroom
- * Report Chatroom
- * Help
- * About
+  * Login
+    * New User
+  * Change Password
+  * Create Chatroom
+  * Report Chatroom
+  * Help
+  * About
 
 ## Files
 * Ventilate.pro
