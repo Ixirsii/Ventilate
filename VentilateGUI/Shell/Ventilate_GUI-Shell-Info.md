@@ -16,15 +16,20 @@ Functional code belongs in the [**Functional**](https://github.com/AuHoppe/CSE.4
 ## Files
 * Ventilate.pro
 * Headers
- * createchat.h
- * mainwindow.h
+  * createchat.h
+  * mainwindow.h
 * C++ Source Files
 * Forms
- * mainwindow.ui
- * ventilate
+  * mainwindow.ui
+  * ventilate_login.ui
+  * ventilate_newuser.ui
+  * ventilate_changepassword
+  * ventilate_
+  * ventilate_
+  * ventilate_
 * Resources
- * ventilate.qrc
+  * ventilate.qrc
  
 ## Classes _Tenative_
- * MainWindow
- *
+* MainWindow
+  *
