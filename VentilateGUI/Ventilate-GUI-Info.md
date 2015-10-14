@@ -9,7 +9,7 @@ Each Directory pertains to a specific stage of the development cycle.
 
 ## Tables of Contents on each subdirectory info file.
 
-### [Shell]()
+### [Shell](https://github.com/AuHoppe/CSE.4444-002-Grp-Project/blob/master/VentilateGUI/Shell/Ventilate_GUI-Shell-Info.md)
 * [Calling Structure](https://github.com/AuHoppe/CSE.4444-002-Grp-Project/blob/master/VentilateGUI/Shell/Ventilate_GUI-Shell-Info.md#calling-structure)
 * [Files](https://github.com/AuHoppe/CSE.4444-002-Grp-Project/blob/master/VentilateGUI/Shell/Ventilate_GUI-Shell-Info.md#files)
 	* [Headers](https://github.com/AuHoppe/CSE.4444-002-Grp-Project/blob/master/VentilateGUI/Shell/Ventilate_GUI-Shell-Info.md#headers)
