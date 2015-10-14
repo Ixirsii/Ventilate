@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>WelcometoVentilate.svg</file>
+        <file>Ventilate.svg</file>
+    </qresource>
+</RCC>
