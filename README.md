@@ -28,7 +28,7 @@ Directory structure
 
 License
 -------
-Copyright (c) 2015, Ryan Porterfield, Austin Hoppe, Jacob Pebworth, Christopher Hines
+Copyright (c) 2015, Ryan Porterfield, Austin Hoppe, Jacob Pebworth, Christopher Hines  
 All rights reserved.  
   
 Redistribution and use in source and binary forms, with or without  
