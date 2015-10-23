@@ -3,13 +3,14 @@
 
 #include <QObject>
 #include <QTcpSocket>
+#include "mainwindow.h"
 #include "message.h"
 
 class Socket : public QObject
 {
     Q_OBJECT
 public:
-    explicit Socket(QString host, qint16 port, QObject *parent = 0);
+    explicit Socket(QString host, qint16 port, MainWindow& mw, QObject *parent = 0);
     virtual ~Socket();
 
     void propogateMessage(QString data);
@@ -20,6 +21,7 @@ public slots:
     void listen();
 
 private:
+    QMainWindow& mw;
     QTcpSocket *socket;
 };
 

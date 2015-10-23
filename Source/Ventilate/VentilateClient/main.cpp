@@ -8,7 +8,8 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
 
-    Socket s("127.0.0.1", 37377);
+
+    Socket s("127.0.0.1", 37377, w);
     s.send("PEER LIST REQUEST");
 
     return a.exec();

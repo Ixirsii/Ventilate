@@ -23,7 +23,7 @@ public:
 
     void connectClient(qintptr socketDescriptor, QHostAddress clientAddress);
     void disconnectClient(qintptr socketDescriptor);
-    void onClientRequest(const ConnectionHandler& handler, QString request);
+    void onClientRequest(const ConnectionHandler& handler, QString& request);
     void startServer();
 
 protected:
@@ -35,7 +35,7 @@ private:
     void changePassword();
     void createAccount();
     void login();
-    void parsePeerCommand(const ConnectionHandler& handler, QString command);
+    void parsePeerCommand(const ConnectionHandler& handler, QString& command);
     void sendPeerList(const ConnectionHandler& handler);
     QString serializePeerList();
 };

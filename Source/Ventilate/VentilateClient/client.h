@@ -24,7 +24,7 @@ private:
     QList< ChatRoomListener > listeners;
     QList< Socket > peers;
     QSet< QUuid > recentMessages;
-    Socket server;
+    //Socket server;
     //Account userAccount;
 
     void cleanRecentMessages();

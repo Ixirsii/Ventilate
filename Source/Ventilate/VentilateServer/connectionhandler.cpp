@@ -74,6 +74,8 @@ void ConnectionHandler::readyRead()
     in >> data;
     blockSize = 0;
     qDebug() << data;
+    Server *server = static_cast<Server*>(parent());
+    server->onClientRequest(*this, data);
 }
 
 
@@ -84,5 +86,6 @@ void ConnectionHandler::readyRead()
  */
 void ConnectionHandler::sendToClient(QByteArray data) const
 {
+    qDebug() << "Sending data: " << data;
     socket->write(data);
 }

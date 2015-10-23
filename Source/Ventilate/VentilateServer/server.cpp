@@ -75,14 +75,14 @@ void Server::login()
 }
 
 
-void Server::onClientRequest(const ConnectionHandler& handler, QString request)
+void Server::onClientRequest(const ConnectionHandler& handler, QString& request)
 {
     if (request.startsWith(Server::PEER))
         parsePeerCommand(handler, request);
 }
 
 
-void Server::parsePeerCommand(const ConnectionHandler &handler, QString request)
+void Server::parsePeerCommand(const ConnectionHandler &handler, QString& request)
 {
     if (request.startsWith(Server::PEER_LIST_REQUEST))
         sendPeerList(handler);
@@ -96,12 +96,12 @@ void Server::sendPeerList(const ConnectionHandler& handler)
     QDataStream out(&block, QIODevice::WriteOnly);
     out.setVersion(QDataStream::Qt_5_0);
     // Reserve space for size of block
-    //out << (quint16) 0;
+    out << (quint16) 0;
     out << list;
     // Seek back to begining of block
-    //out.device()->seek(0);
+    out.device()->seek(0);
     // Insert size of block at beginning
-    //out << (quint16) (block.size() - sizeof(quint16));
+    out << (quint16) (block.size() - sizeof(quint16));
     handler.sendToClient(block);
 }
 

@@ -1,7 +1,10 @@
 #include "socket.h"
 #include <QByteArray>
 #include <QDataStream>
+#include <QPlainTextEdit>
+#include <QString>
 #include <QThread>
+#include "mainwindow.h"
 
 
 /*!
@@ -10,8 +13,8 @@
  * \param port
  * \param parent
  */
-Socket::Socket(QString host, qint16 port, QObject *parent)
-    : QObject(parent)
+Socket::Socket(QString host, qint16 port, MainWindow& mw, QObject *parent)
+    : mw(mw), QObject(parent)
 {
     socket = new QTcpSocket(this);
     socket->connectToHost(host, port);
@@ -32,8 +35,8 @@ Socket::~Socket()
  */
 void Socket::listen()
 {
+    static quint16 blockSize = 0;
     QDataStream in(socket);
-    quint16 blockSize = 0;
     in.setVersion(QDataStream::Qt_5_0);
     if (blockSize == 0) {
         if (socket->bytesAvailable() < (int) sizeof(quint16))
@@ -44,7 +47,9 @@ void Socket::listen()
         return;
     QString data;
     in >> data;
-    qDebug() << data;
+    blockSize = 0;
+    // Debugging!
+    mw.findChild<QPlainTextEdit*>("ptxtMessageBox")->appendPlainText(data);
 }
 
 /*!
