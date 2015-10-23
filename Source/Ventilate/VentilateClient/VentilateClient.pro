@@ -48,7 +48,7 @@ HEADERS  += mainwindow.h \
     ventilate_newuser.h \
     ventilate_reportchat.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
     ventilate_about.ui \
     ventilate_changepassword.ui \
     ventilate_createchat.ui \
@@ -58,3 +58,4 @@ FORMS    += mainwindow.ui
     ventilate_login.ui \
     ventilate_newuser.ui \
     ventilate_reportchat.ui
+
