@@ -1,6 +1,7 @@
 #include "message.h"
 
-Message::Message(QObject *parent) : QObject(parent)
+Message::Message(QDateTime timestamp, QString username, QString message,
+                 QObject *parent) : QObject(parent)
 {
 
 }

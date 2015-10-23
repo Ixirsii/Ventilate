@@ -1,6 +1,7 @@
 #ifndef CONNECTIONHANDLER_H
 #define CONNECTIONHANDLER_H
 
+#include <QByteArray>
 #include <QDebug>
 #include <QHash>
 #include <QTcpSocket>
@@ -14,7 +15,7 @@ public:
     virtual ~ConnectionHandler();
 
     void run();
-    void sendPeerList();
+    void sendToClient(QByteArray data) const;
 
 signals:
     void error(QTcpSocket::SocketError socketError);
@@ -26,8 +27,6 @@ public slots:
 private:
     QTcpSocket *socket;
     qintptr socketDescriptor;
-
-    QString serializePeerList(QHash<qintprt, QHostAddress> peerList);
 };
 
 #endif // CONNECTIONHANDLER_H

@@ -8,14 +8,15 @@
 #include "chatroomlistener.h"
 #include "socket.h"
 
-class Client
+class Client : public QObject
 {
+    Q_OBJECT
 public:
     explicit Client();
 
     void onMessageRecieved(Message& message, Socket& sender);
     void registerListener(ChatRoomListener& listener);
-    void unregisterListener(ChatRoomListner& listener);
+    void unregisterListener(ChatRoomListener& listener);
 
 private:
     QList<ChatRoom> chatRooms;
@@ -23,7 +24,7 @@ private:
     QList<Socket> peers;
     QSet<QUuid> recentMessages;
     Socket server;
-    Account userAccount;
+    //Account userAccount;
 
     void cleanRecentMessages();
     void processMessage(Message& message);

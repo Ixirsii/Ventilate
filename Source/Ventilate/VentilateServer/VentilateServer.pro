@@ -7,11 +7,7 @@ CONFIG -= app_bundle
 
 TEMPLATE = app
 
-SOURCES += main.cpp \
-    server.cpp \
-    connectionhandler.cpp
+HEADERS += connectionhandler.h server.h
 
-HEADERS += \
-    server.h \
-    connectionhandler.h
+SOURCES += main.cpp connectionhandler.cpp server.cpp
 

@@ -33,8 +33,8 @@ public:
     QString getEmailAddress();
     QString getUsername();
 
-    QDataStream& operator<<(QDataStream& out, const Account& account);
-    QDataStream& operator>>(QDataStream& in, Account& account);
+    QDataStream& operator<<(const Account& account);
+    QDataStream& operator>>(Account& account);
 
     // OPTIONAL
     QString getPhoneNumber();

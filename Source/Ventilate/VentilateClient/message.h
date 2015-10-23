@@ -4,6 +4,7 @@
 #include <QDateTime>
 #include <QObject>
 #include <QString>
+#include <QUuid>
 
 class Message : public QObject
 {
@@ -18,8 +19,8 @@ public:
     const QDateTime getTimeStamp() const;
     const QString getUsername() const;
 
-    QDataStream& operator<<(QDataStream& out, const Message& msg);
-    QDataStream& operator>>(QDataStream& in, Message& msg);
+    QDataStream& operator<<(const Message& msg);
+    QDataStream& operator>>(Message& msg);
 
 private:
     const QUuid messageID;

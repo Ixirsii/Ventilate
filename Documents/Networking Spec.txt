@@ -11,8 +11,17 @@ Reject
 	"REJECT [reason]"
 
 
+SERVER COMMANDS:
+----------------
+Send peer list:
+	"PEER LIST <whitespace separated list of IP addresses>"
+
+
 CLIENT COMMANDS:
 ----------------
+Request peer list:
+	"PEER LIST REQUEST"
+
 Login request:
 	"LOGIN <username> <password hash>"
 Account creation request:
@@ -22,7 +31,7 @@ Account deletion request:
 Password change request:
 	"PASSWORD CHANGE <username> <password hash>"
 	
-Password reset request: //What does this do? What is a password reset??
+Password reset request:
 	"PASSWORD RESET <username>"
 	
 Add a user to a private chat room

@@ -1,6 +1,6 @@
 #include "chatroom.h"
 
-ChatRoom::ChatRoom()
+ChatRoom::ChatRoom(QString name)
 {
 
 }

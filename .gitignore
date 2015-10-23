@@ -1,6 +1,5 @@
 ## Don't commit your project files.
 ## We're probably not using the same editor as you
 
-# QtCreator Project
-Source/Ventilate Server/BitChatServer.pro
-Source/Ventilate Server/BitChatServer.pro.user
+# Project builds
+Source/Ventilate/build-*

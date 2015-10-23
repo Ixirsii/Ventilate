@@ -1,4 +1,7 @@
 #include "connectionhandler.h"
+#include <QByteArray>
+#include <QDataStream>
+#include <QIODevice>
 #include "server.h"
 
 /*!
@@ -19,6 +22,20 @@ ConnectionHandler::ConnectionHandler(qintptr ID, QObject *parent)
 ConnectionHandler::~ConnectionHandler()
 {
 }
+
+
+/*!
+ * \brief Called when a client disconnects from the Server.
+ */
+void ConnectionHandler::disconnected()
+{
+    qDebug() << socketDescriptor << " Disconnected";
+    Server *server = static_cast<Server*>(this->parent());
+    server->disconnectClient(socketDescriptor);
+    socket->deleteLater();
+    exit(0);
+}
+
 
 /*!
  * \brief Connect to a client.
@@ -43,15 +60,20 @@ void ConnectionHandler::run()
 
 void ConnectionHandler::readyRead()
 {
-    QByteArray Data = socket->readAll();
-    qDebug() << socketDescriptor << " Data in: " << Data;
+    QDataStream in(socket);
+    in.setVersion(QDataStream::Qt_5_0);
+    QString data;
+    in >> data;
+    qDebug() << data;
 }
 
-void ConnectionHandler::disconnected()
+
+
+/**
+ * @brief Sends a message to the client.
+ * @param data A preformatted message ready to be written directly to the client.
+ */
+void ConnectionHandler::sendToClient(QByteArray data) const
 {
-    qDebug() << socketDescriptor << " Disconnected";
-    Server *server = static_cast<Server*>(this->parent());
-    server->disconnectClient(socketDescriptor);
-    socket->deleteLater();
-    exit(0);
+    socket->write(data);
 }
