@@ -7,11 +7,11 @@
 #include <QUuid>
 #include "message.h"
 
-class ChatRoom
+class ChatRoom : public QObject
 {
+    Q_OBJECT
 public:
-    explicit ChatRoom(QString name);
-    virtual ~ChatRoom();
+    explicit ChatRoom(QString name, QUuid ownerID);
 
     void addMessage(QDateTime timestamp, QString user, QString message);
     QString getMessages();
@@ -21,9 +21,9 @@ private:
     const QUuid uuid;
     const QString name;
     QUuid ownerID;
-    QList<QUuid> moderators;
-    QList<QUuid> users;
-    QList<Message> messages;
+    QList< QUuid > moderators;
+    QList< QUuid > users;
+    QList< Message > messages;
 
     QString serializeMessage(QDateTime timestamp, QString user, QString message);
 };

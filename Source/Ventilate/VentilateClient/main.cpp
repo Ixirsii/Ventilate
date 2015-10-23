@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     w.show();
 
     Socket s("127.0.0.1", 37377);
-    s.send("LOGIN ShadowHawk54 password");
+    s.send("PEER LIST REQUEST");
 
     return a.exec();
 }

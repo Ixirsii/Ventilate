@@ -60,10 +60,19 @@ void ConnectionHandler::run()
 
 void ConnectionHandler::readyRead()
 {
+    static qint16 blockSize = 0;
     QDataStream in(socket);
     in.setVersion(QDataStream::Qt_5_0);
+    if (blockSize == 0) {
+        if (socket->bytesAvailable() < (int) sizeof(quint16))
+            return;
+        in >> blockSize;
+    }
+    if (socket->bytesAvailable() < blockSize)
+        return;
     QString data;
     in >> data;
+    blockSize = 0;
     qDebug() << data;
 }
 

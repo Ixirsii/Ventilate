@@ -1,6 +1,7 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
+#include <memory>
 #include <QList>
 #include <QSet>
 #include "account.h"
@@ -19,10 +20,10 @@ public:
     void unregisterListener(ChatRoomListener& listener);
 
 private:
-    QList<ChatRoom> chatRooms;
-    QList<ChatRoomListener> listeners;
-    QList<Socket> peers;
-    QSet<QUuid> recentMessages;
+    QList< ChatRoom > chatRooms;
+    QList< ChatRoomListener > listeners;
+    QList< Socket > peers;
+    QSet< QUuid > recentMessages;
     Socket server;
     //Account userAccount;
 

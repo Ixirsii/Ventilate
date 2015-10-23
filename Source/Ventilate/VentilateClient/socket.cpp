@@ -3,6 +3,13 @@
 #include <QDataStream>
 #include <QThread>
 
+
+/*!
+ * \brief Socket::Socket
+ * \param host
+ * \param port
+ * \param parent
+ */
 Socket::Socket(QString host, qint16 port, QObject *parent)
     : QObject(parent)
 {
@@ -11,6 +18,18 @@ Socket::Socket(QString host, qint16 port, QObject *parent)
     connect(socket, &QTcpSocket::readyRead, this, &Socket::listen);
 }
 
+
+/*!
+ * \brief Socket::~Socket
+ */
+Socket::~Socket()
+{
+    socket->deleteLater();
+}
+
+/*!
+ * \brief Socket::listen
+ */
 void Socket::listen()
 {
     QDataStream in(socket);
@@ -21,13 +40,17 @@ void Socket::listen()
             return;
         in >> blockSize;
     }
-    while (socket->bytesAvailable() < blockSize)
-        QThread::sleep(1);
+    if (socket->bytesAvailable() < blockSize)
+        return;
     QString data;
     in >> data;
     qDebug() << data;
 }
 
+/*!
+ * \brief Socket::send
+ * \param data
+ */
 void Socket::send(QString data) {
     QByteArray block;
     QDataStream out(&block, QIODevice::WriteOnly);
@@ -37,5 +60,4 @@ void Socket::send(QString data) {
     out.device()->seek(0);
     out << (quint16) (block.size() - sizeof(quint16));
     socket->write(block);
-    socket->close();
 }

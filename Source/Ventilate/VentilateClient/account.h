@@ -25,7 +25,6 @@ public:
     explicit Account(QString accountName, QString password,
                      QString emailAddress, QString phoneNumber,
                      ServiceProvider serviceProvider, QObject *parent = 0);
-    virtual ~Account();
 
     bool authenticateUser(QString username, QByteArray passwordHash);
     QUuid getUUID();
