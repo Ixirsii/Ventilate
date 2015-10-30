@@ -29,7 +29,8 @@ SOURCES += main.cpp\
     ventilate_leavechat.cpp \
     ventilate_login.cpp \
     ventilate_newuser.cpp \
-    ventilate_reportchat.cpp
+    ventilate_reportchat.cpp \
+    connectionhandler.cpp
 
 HEADERS  += mainwindow.h \
     account.h \
@@ -46,7 +47,8 @@ HEADERS  += mainwindow.h \
     ventilate_leavechat.h \
     ventilate_login.h \
     ventilate_newuser.h \
-    ventilate_reportchat.h
+    ventilate_reportchat.h \
+    connectionhandler.h
 
 FORMS    += mainwindow.ui \
     ventilate_about.ui \
