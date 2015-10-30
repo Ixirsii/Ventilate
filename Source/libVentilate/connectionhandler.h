@@ -12,7 +12,7 @@ class ConnectionHandler : public QThread
 {
     Q_OBJECT
 public:
-    explicit ConnectionHandler(QObject *parent = 0);
+    explicit ConnectionHandler(qintptr ID, QObject *parent = 0);
 
     void run();
     void sendToClient(QByteArray data) const;

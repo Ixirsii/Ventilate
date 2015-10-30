@@ -1,5 +1,2 @@
-## Don't commit your project files.
-## We're probably not using the same editor as you
-
 # Project builds
-Source/Ventilate/build-*
+Source/build-*
