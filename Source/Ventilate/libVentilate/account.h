@@ -44,7 +44,7 @@
 #include <QUuid>
 #include "libventilate_global.h"
 
-enum LIBVENTILATESHARED_EXPORT ServiceProvider {
+enum ServiceProvider {
     ATT,
     METRO_PCS,
     SPRINT,

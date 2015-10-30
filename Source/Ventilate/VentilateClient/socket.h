@@ -57,8 +57,8 @@ public slots:
     void listen();
 
 private:
-    QMainWindow& mw;
     QTcpSocket *socket;
+    QMainWindow& mw;
 };
 
 #endif // SOCKET_H

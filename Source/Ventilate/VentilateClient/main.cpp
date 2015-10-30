@@ -36,6 +36,7 @@
 
 #include "mainwindow.h"
 #include <QApplication>
+#include <server.h>
 #include "socket.h"
 
 /*!

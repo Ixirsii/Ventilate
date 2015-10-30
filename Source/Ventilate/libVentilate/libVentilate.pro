@@ -13,14 +13,14 @@ TEMPLATE = lib
 
 DEFINES += LIBVENTILATE_LIBRARY
 
-SOURCES += libventilate.cpp \
+SOURCES += \
     server.cpp \
     connectionhandler.cpp \
     account.cpp \
     chatroom.cpp \
     message.cpp
 
-HEADERS += libventilate.h\
+HEADERS +=\
         libventilate_global.h \
     server.h \
     connectionhandler.h \
