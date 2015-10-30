@@ -15,13 +15,19 @@ DEFINES += LIBVENTILATE_LIBRARY
 
 SOURCES += libventilate.cpp \
     server.cpp \
-    connectionhandler.cpp
+    connectionhandler.cpp \
+    account.cpp \
+    chatroom.cpp \
+    message.cpp
 
 HEADERS += libventilate.h\
         libventilate_global.h \
     server.h \
     connectionhandler.h \
-    commands.h
+    commands.h \
+    account.h \
+    chatroom.h \
+    message.h
 
 unix {
     target.path = /usr/lib

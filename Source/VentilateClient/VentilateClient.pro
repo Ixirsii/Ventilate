@@ -15,13 +15,8 @@ CONFIG += c++11
 
 SOURCES += main.cpp\
     mainwindow.cpp \
-    account.h \
-    chatroom.cpp \
     chatroomlistener.cpp \
     client.cpp \
-    connectionhandler.cpp \
-    message.cpp \
-    server.cpp \
     socket.cpp \
     ventilate_about.cpp \
     ventilate_changepassword.cpp \
@@ -34,13 +29,8 @@ SOURCES += main.cpp\
     ventilate_reportchat.cpp
 
 HEADERS  += mainwindow.h \
-    account.h \
-    chatroom.h \
     chatroomlistener.h \
     client.h \
-    connectionhandler.h \
-    message.h \
-    server.h \
     socket.h \
     ventilate_about.h \
     ventilate_changepassword.h \
