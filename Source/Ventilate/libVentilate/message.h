@@ -41,8 +41,9 @@
 #include <QObject>
 #include <QString>
 #include <QUuid>
+#include "libventilate_global.h"
 
-class Message : public QObject
+class LIBVENTILATESHARED_EXPORT Message : public QObject
 {
     Q_OBJECT
 public:

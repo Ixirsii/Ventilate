@@ -5,9 +5,10 @@
 #include <QList>
 #include <QString>
 #include <QUuid>
+#include "libventilate_global.h"
 #include "message.h"
 
-class ChatRoom : public QObject
+class LIBVENTILATESHARED_EXPORT ChatRoom : public QObject
 {
     Q_OBJECT
 public:

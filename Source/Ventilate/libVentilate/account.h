@@ -42,8 +42,9 @@
 #include <QObject>
 #include <QString>
 #include <QUuid>
+#include "libventilate_global.h"
 
-enum ServiceProvider {
+enum LIBVENTILATESHARED_EXPORT ServiceProvider {
     ATT,
     METRO_PCS,
     SPRINT,
@@ -51,12 +52,12 @@ enum ServiceProvider {
     VERIZON,
 };
 
-class Account : public QObject
+class LIBVENTILATESHARED_EXPORT Account : public QObject
 {
     Q_OBJECT
 public:
     explicit Account(QUuid& uuid, QString& accountName, QDateTime& creationDate,
-                     QString& emailAddress, QObject *parent = 0);
+                     QObject *parent = 0);
 
     explicit Account(QString& accountName, QString& password,
                      QString& emailAddress, QObject *parent = 0);
@@ -92,3 +93,7 @@ private:
 };
 
 #endif // ACCOUNT_H
+
+/* ************************************************************************* *
+ *                                    EOF                                    *
+ * ************************************************************************* */

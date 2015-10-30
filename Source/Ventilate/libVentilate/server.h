@@ -41,8 +41,9 @@
 #include <QString>
 #include <QTcpServer>
 #include "connectionhandler.h"
+#include "libventilate_global.h"
 
-class Server : public QTcpServer
+class LIBVENTILATESHARED_EXPORT Server : public QTcpServer
 {
     Q_OBJECT
 public:

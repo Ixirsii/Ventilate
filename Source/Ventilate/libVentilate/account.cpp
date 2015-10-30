@@ -66,9 +66,10 @@
  * \param parent Parent QObject passed to this classes parent, QObject for Qt
  * internal functions.
  */
-Account::Account(QUuid uuid, QString& username, QDateTime& creationDate,
-                 QObject *parent = 0)
-    : uuid(uuid), creationDate(creationDate), username(username)
+Account::Account(QUuid& uuid, QString& username, QDateTime& creationDate,
+                 QObject *parent)
+    : QObject(parent), uuid(uuid), creationDate(creationDate),
+      username(username)
 {
 
 }
@@ -203,9 +204,9 @@ const QString& Account::getUsername() const
  */
 QDataStream& operator<<(QDataStream& out, const Account& account)
 {
-    out << uuid;
-    out << creationDate;
-    out << username;
+    out << account.uuid;
+    out << account.creationDate;
+    out << account.username;
     return out;
 }
 
@@ -238,7 +239,7 @@ const QString& Account::getPhoneNumber() const
  */
 const ServiceProvider Account::getServiceProvider() const
 {
-    return ServiceProvider;
+    return serviceProvider;
 }
 
 /* ************************************************************************* *

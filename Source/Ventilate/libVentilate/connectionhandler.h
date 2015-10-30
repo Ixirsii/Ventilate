@@ -7,8 +7,9 @@
 #include <QHash>
 #include <QTcpSocket>
 #include <QThread>
+#include "libventilate_global.h"
 
-class ConnectionHandler : public QThread
+class LIBVENTILATESHARED_EXPORT ConnectionHandler : public QThread
 {
     Q_OBJECT
 public:
