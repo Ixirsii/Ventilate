@@ -55,6 +55,9 @@ class Account : public QObject
 {
     Q_OBJECT
 public:
+    explicit Account(QUuid& uuid, QString& accountName, QDateTime& creationDate,
+                     QString& emailAddress, QObject *parent = 0);
+
     explicit Account(QString& accountName, QString& password,
                      QString& emailAddress, QObject *parent = 0);
     // OPTIONAL
@@ -62,18 +65,18 @@ public:
                      QString& emailAddress, QString& phoneNumber,
                      ServiceProvider serviceProvider, QObject *parent = 0);
 
-    bool authenticateUser(QString& username, QByteArray passwordHash);
-    QUuid getUUID();
-    QDateTime getCreationDate();
-    QString getEmailAddress();
-    QString getUsername();
+    static bool authenticateUser(QString& username, QByteArray passwordHash);
+    const QUuid& getUUID() const;
+    const QDateTime& getCreationDate() const;
+    const QString& getEmailAddress() const;
+    const QString& getUsername() const;
 
-    QDataStream& operator<<(const Account& account);
-    QDataStream& operator>>(Account& account);
+    friend QDataStream& operator<<(QDataStream& out, const Account& account);
+    friend QDataStream& operator>>(QDataStream& in, Account& account);
 
     // OPTIONAL
-    QString getPhoneNumber();
-    ServiceProvider getServiceProvider();
+    const QString& getPhoneNumber() const;
+    const ServiceProvider getServiceProvider() const;
 
 private:
     const QUuid uuid;
