@@ -14,13 +14,15 @@ TEMPLATE = app
 CONFIG += c++11
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
-    socket.cpp \
+    mainwindow.cpp \
     account.h \
     chatroom.cpp \
-    message.cpp \
-    client.cpp \
     chatroomlistener.cpp \
+    client.cpp \
+    connectionhandler.cpp \
+    message.cpp \
+    server.cpp \
+    socket.cpp \
     ventilate_about.cpp \
     ventilate_changepassword.cpp \
     ventilate_createchat.cpp \
@@ -29,15 +31,16 @@ SOURCES += main.cpp\
     ventilate_leavechat.cpp \
     ventilate_login.cpp \
     ventilate_newuser.cpp \
-    ventilate_reportchat.cpp \
-    connectionhandler.cpp
+    ventilate_reportchat.cpp
 
 HEADERS  += mainwindow.h \
     account.h \
     chatroom.h \
     chatroomlistener.h \
     client.h \
+    connectionhandler.h \
     message.h \
+    server.h \
     socket.h \
     ventilate_about.h \
     ventilate_changepassword.h \
@@ -47,8 +50,7 @@ HEADERS  += mainwindow.h \
     ventilate_leavechat.h \
     ventilate_login.h \
     ventilate_newuser.h \
-    ventilate_reportchat.h \
-    connectionhandler.h
+    ventilate_reportchat.h
 
 FORMS    += mainwindow.ui \
     ventilate_about.ui \
