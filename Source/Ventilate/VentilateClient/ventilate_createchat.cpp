@@ -1,4 +1,4 @@
-/* Copyright (C) 2015 Ryan Porterfield
+/* Copyright (C) 2015 Ryan Porterfield, Jacob Pebworth
  *
  * This file defines all networking commands.
  *
@@ -34,52 +34,42 @@
  * $QT_END_LICENSE$
  */
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#include "ventilate_createchat.h"
+#include "ui_ventilate_createchat.h"
 
-#include <QMainWindow>
-
-namespace Ui {
-class MainWindow;
+ventilate_createchat::ventilate_createchat(QWidget *parent) :
+    QDialog(parent),
+    ui(new Ui::ventilate_createchat)
+{
+    ui->setupUi(this);
 }
 
-class MainWindow : public QMainWindow
+ventilate_createchat::~ventilate_createchat()
 {
-    Q_OBJECT
+    delete ui;
+}
 
-public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+void ventilate_createchat::on_cboPBorPV_currentIndexChanged(int index)
+{
 
-private slots:
-    void on_actionLogin_triggered();
+}
 
-    void on_ptxtMessageBox_textChanged();
+void ventilate_createchat::on_rbtnPBUattnYes_clicked()
+{
 
-    void on_actionLogout_triggered();
+}
 
-    void on_actionChange_Password_triggered();
+void ventilate_createchat::on_rbtnPBUattnNo_clicked()
+{
 
-    void on_actionExit_triggered();
+}
 
-    void on_actionJoin_Chatroom_triggered();
+void ventilate_createchat::on_rbtnPBExitYes_clicked()
+{
 
-    void on_actionLeave_Chatroom_triggered();
+}
 
-    void on_actionCreate_Chatroom_triggered();
+void ventilate_createchat::on_rbtnPBExitNo_clicked()
+{
 
-    void on_actionReport_Chatroom_triggered();
-
-    void on_actionHelp_triggered();
-
-    void on_actionAbout_triggered();
-
-    void on_btnClear_clicked();
-
-    void on_btnEnter_clicked();
-
-private:
-    Ui::MainWindow *ui;
-};
-
-#endif // MAINWINDOW_H
+}

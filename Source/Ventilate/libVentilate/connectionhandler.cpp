@@ -34,44 +34,59 @@
  * $QT_END_LICENSE$
  */
 
-#include "socket.h"
+#include "connectionhandler.h"
 #include <QByteArray>
 #include <QDataStream>
-#include <QPlainTextEdit>
-#include <QString>
-#include <QThread>
-#include "mainwindow.h"
-
+#include <QIODevice>
+#include "server.h"
 
 /*!
- * \brief Socket::Socket
- * \param host
- * \param port
- * \param parent
+ * \brief Create a new ConnectionHandler.
+ * \param ID Identification number of the connecting socket.
+ * \param parent The calling TcpServer.
  */
-Socket::Socket(QString host, qint16 port, MainWindow& mw, QObject *parent)
-    : mw(mw), QObject(parent)
+ConnectionHandler::ConnectionHandler(qintptr ID, QObject *parent)
+    : QThread(parent), socketDescriptor(ID)
 {
-    socket = new QTcpSocket(this);
-    socket->connectToHost(host, port);
-    connect(socket, &QTcpSocket::readyRead, this, &Socket::listen);
 }
 
-
 /*!
- * \brief Socket::~Socket
+ * \brief Called when a client disconnects from the Server.
  */
-Socket::~Socket()
+void ConnectionHandler::disconnected()
 {
+    qDebug() << socketDescriptor << " Disconnected";
+    Server *server = static_cast<Server*>(this->parent());
+    server->disconnectClient(socketDescriptor);
     socket->deleteLater();
+    exit(0);
 }
 
+
 /*!
- * \brief Socket::listen
+ * \brief Connect to a client.
  */
-void Socket::listen()
+void ConnectionHandler::run()
 {
-    static quint16 blockSize = 0;
+    qDebug() << "Opened a new ConnectionHandler";
+    socket = new QTcpSocket();
+    if (!socket->setSocketDescriptor(socketDescriptor)) {
+        emit error(socket->error());
+        return;
+    }
+    Server *server = static_cast<Server*>(this->parent());
+    server->connectClient(socketDescriptor, socket->peerAddress());
+    qDebug() << "peer address: " << socket->peerAddress();
+    connect(socket, SIGNAL(readyRead()), this, SLOT(readyRead()), Qt::DirectConnection);
+    connect(socket, SIGNAL(disconnected()), this, SLOT(disconnected()));
+    qDebug() << "Connected to " << socketDescriptor;
+
+    exec();
+}
+
+void ConnectionHandler::readyRead()
+{
+    static qint16 blockSize = 0;
     QDataStream in(socket);
     in.setVersion(QDataStream::Qt_5_0);
     if (blockSize == 0) {
@@ -84,21 +99,19 @@ void Socket::listen()
     QString data;
     in >> data;
     blockSize = 0;
-    // Debugging!
-    mw.findChild<QPlainTextEdit*>("ptxtMessageBox")->appendPlainText(data);
+    qDebug() << data;
+    Server *server = static_cast<Server*>(parent());
+    server->onClientRequest(*this, data);
 }
 
-/*!
- * \brief Socket::send
- * \param data
+
+
+/**
+ * @brief Sends a message to the client.
+ * @param data A preformatted message ready to be written directly to the client.
  */
-void Socket::send(QString data) {
-    QByteArray block;
-    QDataStream out(&block, QIODevice::WriteOnly);
-    out.setVersion(QDataStream::Qt_5_0);
-    out << (quint16) 0;
-    out << data;
-    out.device()->seek(0);
-    out << (quint16) (block.size() - sizeof(quint16));
-    socket->write(block);
+void ConnectionHandler::sendToClient(QByteArray data) const
+{
+    qDebug() << "Sending data: " << data;
+    socket->write(data);
 }

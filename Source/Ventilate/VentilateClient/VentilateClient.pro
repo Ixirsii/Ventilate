@@ -14,20 +14,49 @@ TEMPLATE = app
 CONFIG += c++11
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
-    socket.cpp \
-    account.h \
-    chatroom.cpp \
-    message.cpp \
+    mainwindow.cpp \
+    chatroomlistener.cpp \
     client.cpp \
-    chatroomlistener.cpp
+    socket.cpp \
+    ventilate_about.cpp \
+    ventilate_changepassword.cpp \
+    ventilate_createchat.cpp \
+    ventilate_help.cpp \
+    ventilate_joinchat.cpp \
+    ventilate_leavechat.cpp \
+    ventilate_login.cpp \
+    ventilate_newuser.cpp \
+    ventilate_reportchat.cpp
 
 HEADERS  += mainwindow.h \
-    socket.h \
-    account.h \
-    chatroom.h \
-    message.h \
+    chatroomlistener.h \
     client.h \
-    chatroomlistener.h
+    socket.h \
+    ventilate_about.h \
+    ventilate_changepassword.h \
+    ventilate_createchat.h \
+    ventilate_help.h \
+    ventilate_joinchat.h \
+    ventilate_leavechat.h \
+    ventilate_login.h \
+    ventilate_newuser.h \
+    ventilate_reportchat.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    ventilate_about.ui \
+    ventilate_changepassword.ui \
+    ventilate_createchat.ui \
+    ventilate_help.ui \
+    ventilate_joinchat.ui \
+    ventilate_leavechat.ui \
+    ventilate_login.ui \
+    ventilate_newuser.ui \
+    ventilate_reportchat.ui
+
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../libVentilate/release/ -llibVentilate
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../libVentilate/debug/ -llibVentilate
+else:unix: LIBS += -L$$OUT_PWD/../libVentilate/ -llibVentilate
+
+INCLUDEPATH += $$PWD/../libVentilate
+DEPENDPATH += $$PWD/../libVentilate

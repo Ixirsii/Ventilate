@@ -34,16 +34,11 @@
  * $QT_END_LICENSE$
  */
 
-#include <QCoreApplication>
-#include <server.h>
+#include "message.h"
 
-int main(int argc, char *argv[])
+Message::Message(QDateTime timestamp, QString username, QString message,
+                 QObject *parent) : QObject(parent)
 {
-    QCoreApplication a(argc, argv);
 
-    Server server;
-    server.startServer();
-
-    return a.exec();
 }
 

@@ -34,16 +34,15 @@
  * $QT_END_LICENSE$
  */
 
-#include <QCoreApplication>
-#include <server.h>
+#ifndef LIBVENTILATE_GLOBAL_H
+#define LIBVENTILATE_GLOBAL_H
 
-int main(int argc, char *argv[])
-{
-    QCoreApplication a(argc, argv);
+#include <QtCore/qglobal.h>
 
-    Server server;
-    server.startServer();
+#if defined(LIBVENTILATE_LIBRARY)
+#  define LIBVENTILATESHARED_EXPORT Q_DECL_EXPORT
+#else
+#  define LIBVENTILATESHARED_EXPORT Q_DECL_IMPORT
+#endif
 
-    return a.exec();
-}
-
+#endif // LIBVENTILATE_GLOBAL_H

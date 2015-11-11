@@ -1,4 +1,4 @@
-/* Copyright (C) 2015 Ryan Porterfield
+/* Copyright (C) 2015 Ryan Porterfield, Jacob Pebworth
  *
  * This file defines all networking commands.
  *
@@ -34,52 +34,25 @@
  * $QT_END_LICENSE$
  */
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef VENTILATE_REPORTCHAT_H
+#define VENTILATE_REPORTCHAT_H
 
-#include <QMainWindow>
+#include <QDialog>
 
 namespace Ui {
-class MainWindow;
+class ventilate_reportchat;
 }
 
-class MainWindow : public QMainWindow
+class ventilate_reportchat : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
-
-private slots:
-    void on_actionLogin_triggered();
-
-    void on_ptxtMessageBox_textChanged();
-
-    void on_actionLogout_triggered();
-
-    void on_actionChange_Password_triggered();
-
-    void on_actionExit_triggered();
-
-    void on_actionJoin_Chatroom_triggered();
-
-    void on_actionLeave_Chatroom_triggered();
-
-    void on_actionCreate_Chatroom_triggered();
-
-    void on_actionReport_Chatroom_triggered();
-
-    void on_actionHelp_triggered();
-
-    void on_actionAbout_triggered();
-
-    void on_btnClear_clicked();
-
-    void on_btnEnter_clicked();
+    explicit ventilate_reportchat(QWidget *parent = 0);
+    ~ventilate_reportchat();
 
 private:
-    Ui::MainWindow *ui;
+    Ui::ventilate_reportchat *ui;
 };
 
-#endif // MAINWINDOW_H
+#endif // VENTILATE_REPORTCHAT_H

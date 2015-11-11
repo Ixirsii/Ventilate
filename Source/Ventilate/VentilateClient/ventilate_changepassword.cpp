@@ -1,4 +1,4 @@
-/* Copyright (C) 2015 Ryan Porterfield
+/* Copyright (C) 2015 Ryan Porterfield, Jacob Pebworth
  *
  * This file defines all networking commands.
  *
@@ -34,52 +34,17 @@
  * $QT_END_LICENSE$
  */
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#include "ventilate_changepassword.h"
+#include "ui_ventilate_changepassword.h"
 
-#include <QMainWindow>
-
-namespace Ui {
-class MainWindow;
+ventilate_changepassword::ventilate_changepassword(QWidget *parent) :
+    QDialog(parent),
+    ui(new Ui::ventilate_changepassword)
+{
+    ui->setupUi(this);
 }
 
-class MainWindow : public QMainWindow
+ventilate_changepassword::~ventilate_changepassword()
 {
-    Q_OBJECT
-
-public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
-
-private slots:
-    void on_actionLogin_triggered();
-
-    void on_ptxtMessageBox_textChanged();
-
-    void on_actionLogout_triggered();
-
-    void on_actionChange_Password_triggered();
-
-    void on_actionExit_triggered();
-
-    void on_actionJoin_Chatroom_triggered();
-
-    void on_actionLeave_Chatroom_triggered();
-
-    void on_actionCreate_Chatroom_triggered();
-
-    void on_actionReport_Chatroom_triggered();
-
-    void on_actionHelp_triggered();
-
-    void on_actionAbout_triggered();
-
-    void on_btnClear_clicked();
-
-    void on_btnEnter_clicked();
-
-private:
-    Ui::MainWindow *ui;
-};
-
-#endif // MAINWINDOW_H
+    delete ui;
+}

@@ -34,31 +34,66 @@
  * $QT_END_LICENSE$
  */
 
-#ifndef SOCKET_H
-#define SOCKET_H
+#ifndef ACCOUNT_H
+#define ACCOUNT_H
 
+#include <QByteArray>
+#include <QDateTime>
 #include <QObject>
-#include <QTcpSocket>
-#include "mainwindow.h"
-#include "message.h"
+#include <QString>
+#include <QUuid>
+#include "libventilate_global.h"
 
-class Socket : public QObject
+enum ServiceProvider {
+    ATT,
+    METRO_PCS,
+    SPRINT,
+    TMOBILE,
+    VERIZON,
+};
+
+class LIBVENTILATESHARED_EXPORT Account : public QObject
 {
     Q_OBJECT
 public:
-    explicit Socket(QString host, qint16 port, MainWindow& mw, QObject *parent = 0);
-    virtual ~Socket();
+    explicit Account(QUuid& uuid, QString& accountName, QDateTime& creationDate,
+                     QObject *parent = 0);
 
-    void propogateMessage(QString data);
-    // Temporary function for testing
-    void send(QString data);
+    explicit Account(QString& accountName, QString& password,
+                     QString& emailAddress, QObject *parent = 0);
+    // OPTIONAL
+    explicit Account(QString& accountName, QString& password,
+                     QString& emailAddress, QString& phoneNumber,
+                     ServiceProvider serviceProvider, QObject *parent = 0);
 
-public slots:
-    void listen();
+    static bool authenticateUser(QString& username, QByteArray passwordHash);
+    const QUuid& getUUID() const;
+    const QDateTime& getCreationDate() const;
+    const QString& getEmailAddress() const;
+    const QString& getUsername() const;
+
+    friend QDataStream& operator<<(QDataStream& out, const Account& account);
+    friend QDataStream& operator>>(QDataStream& in, Account& account);
+
+    // OPTIONAL
+    const QString& getPhoneNumber() const;
+    const ServiceProvider getServiceProvider() const;
 
 private:
-    QTcpSocket *socket;
-    QMainWindow& mw;
+    const QUuid uuid;
+    const QDateTime creationDate;
+    QString emailAddress;
+    QByteArray passwordHash;
+    QString username;
+    // OPTIONAL
+    QString phoneNumber;
+    ServiceProvider serviceProvider;
+
+    QByteArray hashPassword(QString& password) const;
 };
 
-#endif // SOCKET_H
+#endif // ACCOUNT_H
+
+/* ************************************************************************* *
+ *                                    EOF                                    *
+ * ************************************************************************* */

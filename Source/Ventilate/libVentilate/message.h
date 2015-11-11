@@ -34,16 +34,36 @@
  * $QT_END_LICENSE$
  */
 
-#include <QCoreApplication>
-#include <server.h>
+#ifndef MESSAGE_H
+#define MESSAGE_H
 
-int main(int argc, char *argv[])
+#include <QDateTime>
+#include <QObject>
+#include <QString>
+#include <QUuid>
+#include "libventilate_global.h"
+
+class LIBVENTILATESHARED_EXPORT Message : public QObject
 {
-    QCoreApplication a(argc, argv);
+    Q_OBJECT
+public:
+    explicit Message(QDateTime timestamp, QString username, QString message,
+                     QObject *parent = 0);
+    explicit Message(QUuid messageID, QDateTime timestamp, QString username,
+                     QString message, QObject *parent = 0);
 
-    Server server;
-    server.startServer();
+    const QString getMessage() const;
+    const QDateTime getTimeStamp() const;
+    const QString getUsername() const;
 
-    return a.exec();
-}
+    QDataStream& operator<<(const Message& msg);
+    QDataStream& operator>>(Message& msg);
 
+private:
+    const QUuid messageID;
+    const QDateTime timestamp;
+    const QString username;
+    const QString message;
+};
+
+#endif // MESSAGE_H

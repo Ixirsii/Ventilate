@@ -34,16 +34,39 @@
  * $QT_END_LICENSE$
  */
 
-#include <QCoreApplication>
-#include <server.h>
+#ifndef SERVER_H
+#define SERVER_H
 
-int main(int argc, char *argv[])
+#include <QHash>
+#include <QString>
+#include <QTcpServer>
+#include "connectionhandler.h"
+#include "libventilate_global.h"
+
+class LIBVENTILATESHARED_EXPORT Server : public QTcpServer
 {
-    QCoreApplication a(argc, argv);
+    Q_OBJECT
+public:
+    explicit Server(QObject *parent = 0);
+    virtual ~Server();
 
-    Server server;
-    server.startServer();
+    void connectClient(qintptr socketDescriptor, QHostAddress clientAddress);
+    void disconnectClient(qintptr socketDescriptor);
+    void onClientRequest(const ConnectionHandler& handler, QString& request);
+    void startServer();
 
-    return a.exec();
-}
+protected:
+    void incomingConnection(qintptr socketDescriptor);
 
+private:
+    QHash<qintptr, QHostAddress> connectedClients;
+
+    void changePassword();
+    void createAccount();
+    void login();
+    void parsePeerCommand(const ConnectionHandler& handler, QString& command);
+    void sendPeerList(const ConnectionHandler& handler);
+    QString serializePeerList();
+};
+
+#endif // SERVER_H

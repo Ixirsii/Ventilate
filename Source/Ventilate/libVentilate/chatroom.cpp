@@ -34,16 +34,12 @@
  * $QT_END_LICENSE$
  */
 
-#include <QCoreApplication>
-#include <server.h>
+#include "chatroom.h"
+#include <QUuid>
 
-int main(int argc, char *argv[])
+ChatRoom::ChatRoom(QString name, QUuid ownerID)
+    : uuid(QUuid::createUuid()), name(name), ownerID(ownerID)
 {
-    QCoreApplication a(argc, argv);
 
-    Server server;
-    server.startServer();
-
-    return a.exec();
 }
 
