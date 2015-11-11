@@ -8,6 +8,7 @@ QT       += network sql
 
 QT       -= gui
 
+CONFIG += c++11
 TARGET = libVentilate
 TEMPLATE = lib
 
@@ -18,7 +19,8 @@ SOURCES += \
     connectionhandler.cpp \
     account.cpp \
     chatroom.cpp \
-    message.cpp
+    message.cpp \
+    accountdatabase.cpp
 
 HEADERS +=\
         libventilate_global.h \
@@ -27,7 +29,9 @@ HEADERS +=\
     commands.h \
     account.h \
     chatroom.h \
-    message.h
+    message.h \
+    databaseinterface.h \
+    accountdatabase.h
 
 unix {
     target.path = /usr/lib

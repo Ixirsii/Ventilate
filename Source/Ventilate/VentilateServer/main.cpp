@@ -35,6 +35,8 @@
  */
 
 #include <QCoreApplication>
+#include <account.h>
+#include <accountdatabase.h>
 #include <server.h>
 
 int main(int argc, char *argv[])
@@ -43,6 +45,14 @@ int main(int argc, char *argv[])
 
     Server server;
     server.startServer();
+    AccountDatabase accDat;
+    QString username("ROOT");
+    QString password("password");
+    QString email("webmaster@ryanporterfield.com");
+    Account testAccount(username, password, email);
+    accDat.add(testAccount);
+    Account find = accDat.find(username);
+    accDat.remove(find);
 
     return a.exec();
 }

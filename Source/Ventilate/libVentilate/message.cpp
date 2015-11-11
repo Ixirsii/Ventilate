@@ -36,8 +36,20 @@
 
 #include "message.h"
 
+Message::Message(Message&& v)
+    : message(std::move(v.message)), messageID(std::move(v.messageID)),
+      timestamp(std::move(v.timestamp)), username(std::move(v.username))
+{
+}
+
 Message::Message(QDateTime timestamp, QString username, QString message,
-                 QObject *parent) : QObject(parent)
+                 QObject* parent) : QObject(parent)
+{
+
+}
+
+Message::Message(QUuid messageID, QDateTime timestamp, QString username,
+                 QString message, QObject* parent)
 {
 
 }

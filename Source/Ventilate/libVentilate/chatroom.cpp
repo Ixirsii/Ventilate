@@ -35,11 +35,16 @@
  */
 
 #include "chatroom.h"
+#include <memory>
 #include <QUuid>
 
 ChatRoom::ChatRoom(QString name, QUuid ownerID)
     : uuid(QUuid::createUuid()), name(name), ownerID(ownerID)
 {
 
+}
+
+void ChatRoom::addMessage(Message message)
+{
 }
 

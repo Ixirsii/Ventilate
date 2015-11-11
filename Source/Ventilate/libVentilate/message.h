@@ -47,6 +47,7 @@ class LIBVENTILATESHARED_EXPORT Message : public QObject
 {
     Q_OBJECT
 public:
+    Message(Message&& move_value);
     explicit Message(QDateTime timestamp, QString username, QString message,
                      QObject *parent = 0);
     explicit Message(QUuid messageID, QDateTime timestamp, QString username,
@@ -60,10 +61,10 @@ public:
     QDataStream& operator>>(Message& msg);
 
 private:
-    const QUuid messageID;
-    const QDateTime timestamp;
-    const QString username;
-    const QString message;
+    QUuid messageID;
+    QDateTime timestamp;
+    QString username;
+    QString message;
 };
 
 #endif // MESSAGE_H

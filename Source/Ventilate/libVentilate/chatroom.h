@@ -14,9 +14,9 @@ class LIBVENTILATESHARED_EXPORT ChatRoom : public QObject
 public:
     explicit ChatRoom(QString name, QUuid ownerID);
 
-    void addMessage(QDateTime timestamp, QString user, QString message);
+    void addMessage(Message message);
     QString getMessages();
-    QList<QString> getUsers();
+    QList<QString>& getUsers();
 
 private:
     const QUuid uuid;
@@ -26,7 +26,7 @@ private:
     QList< QUuid > users;
     QList< Message > messages;
 
-    QString serializeMessage(QDateTime timestamp, QString user, QString message);
+    QString serializeMessage(const Message& message);
 };
 
 #endif // CHATROOM_H
