@@ -22,8 +22,8 @@ private:
     const QUuid uuid;
     const QString name;
     QUuid ownerID;
-    QList< QUuid > moderators;
-    QList< QUuid > users;
+    QList< QString > moderators;
+    QList< QString > users;
     QList< Message > messages;
 
     QString serializeMessage(const Message& message);
