@@ -24,6 +24,7 @@ public:
     void connectClient(qintptr socketDescriptor, QHostAddress clientAddress);
     void disconnectClient(qintptr socketDescriptor);
     void onClientRequest(const ConnectionHandler& handler, QString& request);
+    QString serializePeerList();
     void startServer();
 
 protected:
@@ -31,16 +32,6 @@ protected:
 
 private:
     QHash<qintptr, QHostAddress> connectedClients;
-
-    void changePassword(const ConnectionHandler& handler, QString& command);
-    void createAccount(const ConnectionHandler& handler, QString& command);
-    void createRoom(const ConnectionHandler& handler, QString& command);
-    void login(const ConnectionHandler& handler, QString& command);
-    void parseAccountCommand(const ConnectionHandler& handler, QString& command);
-    void parseRoomCommand(const ConnectionHandler& handler, QString& command);
-    void parsePeerCommand(const ConnectionHandler& handler, QString& command);
-    void sendPeerList(const ConnectionHandler& handler);
-    QString serializePeerList();
 };
 
 #endif // SERVER_H

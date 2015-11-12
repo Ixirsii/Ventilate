@@ -9,14 +9,10 @@
 #include <QDataStream>
 #include <QIODevice>
 #include <QString>
-#include "account.h"
-#include "accountdatabase.h"
-#include "chatroom.h"
-#include "chatroomdatabase.h"
-#include "commands.h"
-#include "connectionhandler.h"
-#include "message.h"
-#include "messagedatabase.h"
+#include "accountparser.h"
+#include "passwordparser.h"
+#include "peerparser.h"
+#include "roomparser.h"
 
 /* ************************************************************************* *
  *                            Command Definitions                            *
@@ -128,39 +124,11 @@ void Server::login()
 void Server::onClientRequest(const ConnectionHandler& handler, QString& request)
 {
     if (request.startsWith(ROOM))
-        parseRoomCommand(handler, request);
+        RoomParser(*this).parse(handler, request);
     else if (request.startsWith(ACCOUNT))
         parseAccountCommand(handler, request);
     else if (request.startsWith(PEER))
         parsePeerCommand(handler, request);
-}
-
-
-void Server::parseAccountCommand(const ConnectionHandler& handler, QString& command)
-{
-
-}
-
-
-void Server::parsePeerCommand(const ConnectionHandler &handler, QString& request)
-{
-    if (request.startsWith(PEER_LIST_REQUEST))
-        sendPeerList(handler);
-}
-
-
-void Server::parseRoomCommand(const ConnectionHandler& handler, QString& command)
-{
-    if (request.startsWith(ROOM_CREATE))
-        createChatRoom(handler, command);
-
-}
-
-
-void Server::sendPeerList(const ConnectionHandler& handler)
-{
-    QString list = serializePeerList();
-    handler.write(list);
 }
 
 
