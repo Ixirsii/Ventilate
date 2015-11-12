@@ -108,9 +108,13 @@ void ChatRoom::addUsers(const QList<QString>& users)
         addUser(user);
 }
 
-const QString& ChatRoom::getOwner() const
+void ChatRoom::getHistory()
 {
-    return owner;
+    MessageDatabase db;
+    QList<QString> history = db.getMessages(uuid, messages.size());
+    QList<QString>::iterator iter = history.end() - 1;
+    for (; iter != history.begin(); --iter)
+        messages.prepend(*iter);
 }
 
 QString ChatRoom::getMessages()
@@ -133,6 +137,11 @@ const QString& ChatRoom::getName() const
     return name;
 }
 
+const QString& ChatRoom::getOwner() const
+{
+    return owner;
+}
+
 const QUuid& ChatRoom::getUUID() const
 {
     return uuid;
@@ -141,6 +150,20 @@ const QUuid& ChatRoom::getUUID() const
 const QList<QString>& ChatRoom::getUsers() const
 {
     return users;
+}
+
+void ChatRoom::removeModerator(const QString& mod)
+{
+    ModDatabase db;
+    moderators.removeOne(mod);
+    db.remove(mod, uuid);
+}
+
+void ChatRoom::removeUser(const QString& user)
+{
+    UserDatabase db;
+    users.removeOne(user);
+    db.remove(user, uuid);
 }
 
 QString ChatRoom::serializeMessage(const Message& message)

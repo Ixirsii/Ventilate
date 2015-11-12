@@ -24,12 +24,15 @@ public:
     void addModerators(const QList<QString>& mods);
     void addUser(const QString& user);
     void addUsers(const QList<QString>& users);
+    void getHistory();
     QString getMessages();
     const QString& getName() const;
     const QString& getOwner() const;
     const QList<QString>& getModerators() const;
     const QUuid& getUUID() const;
     const QList<QString>& getUsers() const;
+    void removeModerator(const QString& mod);
+    void removeUser(const QString& user);
 
     ChatRoom& operator=(const ChatRoom& copy);
     ChatRoom& operator=(ChatRoom&& move);
