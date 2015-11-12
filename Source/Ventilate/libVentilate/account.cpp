@@ -13,6 +13,19 @@
 #include <QIODevice>
 #include <QObject>
 #include <QString>
+#include <accountdatabase.h>
+
+
+/*!
+ * \brief Copy constructor
+ * \param copy Account being copied.
+ */
+Account::Account(const Account& copy)
+    : QObject(copy.parent()), uuid(copy.uuid), creationDate(copy.creationDate),
+      emailAddress(copy.emailAddress), passwordHash(copy.passwordHash),
+      username(copy.username)
+{
+}
 
 
 /*!
@@ -103,29 +116,6 @@ Account::Account(QUuid &uuid, QString &username, QDateTime &creationDate,
 
 
 /*!
- * \brief Salt and hash a password so we can store it.
- *
- * Storing plain text or passwords encrypted with a common encryption key is
- * a poor security practice. Anyone who recovers a plain text password file has
- * access to all user passwords, and if someone recovers both the encrypted
- * table and the encryption key they also have access to all user passwords.
- * By storing salted hashes even if an attacker gets the table of passwords
- * there's no way to find out any individual user's password.
- *
- * \param password String password that is being salted and hashed.
- * \return A cryptographic hash of the user's password.
- */
-QByteArray hashPassword(QString& password, QString& username)
-{
-    QByteArray saltedArray;
-    QDataStream out(&saltedArray, QIODevice::WriteOnly);
-    out << username;
-    out << password;
-    return QCryptographicHash::hash(saltedArray, QCryptographicHash::Sha3_512);
-}
-
-
-/*!
  * \brief Check that a user's username and password are valid.
  * \param username A user's account username.
  * \param passwordHash The cryptographic salted hash of the user's password.
@@ -134,7 +124,9 @@ QByteArray hashPassword(QString& password, QString& username)
  */
 bool Account::authenticateUser(QString& username, QByteArray passwordHash)
 {
-    return false;
+    AccountDatabase db;
+    Account acc = db.find(username);
+    return passwordHash == acc.passwordHash;
 }
 
 
@@ -184,6 +176,61 @@ const QString& Account::getUsername() const
 
 
 /*!
+ * \brief Salt and hash a password so we can store it.
+ *
+ * Storing plain text or passwords encrypted with a common encryption key is
+ * a poor security practice. Anyone who recovers a plain text password file has
+ * access to all user passwords, and if someone recovers both the encrypted
+ * table and the encryption key they also have access to all user passwords.
+ * By storing salted hashes even if an attacker gets the table of passwords
+ * there's no way to find out any individual user's password.
+ *
+ * \param password String password that is being salted and hashed.
+ * \return A cryptographic hash of the user's password.
+ */
+QByteArray hashPassword(QString& password, QString& username)
+{
+    QByteArray saltedArray;
+    QDataStream out(&saltedArray, QIODevice::WriteOnly);
+    out << username;
+    out << password;
+    return QCryptographicHash::hash(saltedArray, QCryptographicHash::Sha3_512);
+}
+
+
+/*!
+ * \brief Copy operator.
+ * \param copy
+ * \return this.
+ */
+Account& Account::operator=(const Account& copy)
+{
+    uuid = copy.uuid;
+    creationDate = copy.creationDate;
+    emailAddress = copy.emailAddress;
+    passwordHash = copy.passwordHash;
+    username = copy.username;
+    return *this;
+}
+
+
+/*!
+ * \brief Move operator.
+ * \param move
+ * \return this.
+ */
+Account& Account::operator=(Account&& move)
+{
+    uuid = std::move(move.uuid);
+    creationDate = std::move(move.creationDate);
+    emailAddress = std::move(move.emailAddress);
+    passwordHash = std::move(move.passwordHash);
+    username = std::move(move.username);
+    return *this;
+}
+
+
+/*!
  * \brief Serialize the Account to a QDataStream.
  * \param out QDataStream the Account is being serialized to.
  * \param account the Account being serialized.
@@ -206,6 +253,9 @@ QDataStream& operator<<(QDataStream& out, const Account& account)
  */
 QDataStream& operator>>(QDataStream& in, Account& account)
 {
+    in >> account.uuid;
+    in >> account.creationDate;
+    in >> account.username;
     return in;
 }
 

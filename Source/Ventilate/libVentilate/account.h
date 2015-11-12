@@ -23,6 +23,7 @@ class LIBVENTILATESHARED_EXPORT Account : public QObject
 {
     Q_OBJECT
 public:
+    Account(const Account& copy);
     Account(Account&& move);
 
     explicit Account(QUuid& uuid, QString& username, QDateTime& creationDate,
@@ -42,12 +43,14 @@ public:
     const QByteArray& getPasswordHash() const;
     const QString& getUsername() const;
 
+    Account& operator=(const Account& copy);
+    Account& operator=(Account&& move);
     friend QDataStream& operator<<(QDataStream& out, const Account& account);
     friend QDataStream& operator>>(QDataStream& in, Account& account);
 
 private:
-    const QUuid uuid;
-    const QDateTime creationDate;
+    QUuid uuid;
+    QDateTime creationDate;
     QString emailAddress;
     QByteArray passwordHash;
     QString username;

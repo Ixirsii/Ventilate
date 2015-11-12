@@ -47,21 +47,27 @@ class LIBVENTILATESHARED_EXPORT Message : public QObject
 {
     Q_OBJECT
 public:
-    Message(Message&& move_value);
-    explicit Message(QDateTime timestamp, QString username, QString message,
+    Message(const Message& copy);
+    Message(Message&& move);
+    explicit Message(QUuid& roomID, QString& username, QString& message,
                      QObject *parent = 0);
-    explicit Message(QUuid messageID, QDateTime timestamp, QString username,
-                     QString message, QObject *parent = 0);
+    explicit Message(QUuid& uuid, QUuid& roomID, QDateTime& timestamp,
+                     QString& username, QString& message, QObject *parent = 0);
 
-    const QString getMessage() const;
-    const QDateTime getTimeStamp() const;
-    const QString getUsername() const;
+    const QString& getMessage() const;
+    const QUuid& getRoomID() const;
+    const QDateTime& getTimeStamp() const;
+    const QString& getUsername() const;
+    const QUuid& getUUID() const;
 
+    Message& operator=(const Message& msg);
+    Message& operator=(Message&& msg);
     QDataStream& operator<<(const Message& msg);
     QDataStream& operator>>(Message& msg);
 
 private:
-    QUuid messageID;
+    QUuid uuid;
+    QUuid roomID;
     QDateTime timestamp;
     QString username;
     QString message;

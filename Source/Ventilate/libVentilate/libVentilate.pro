@@ -20,7 +20,9 @@ SOURCES += \
     account.cpp \
     chatroom.cpp \
     message.cpp \
-    accountdatabase.cpp
+    accountdatabase.cpp \
+    messagedatabase.cpp \
+    chatroomdatabase.cpp
 
 HEADERS +=\
         libventilate_global.h \
@@ -31,7 +33,9 @@ HEADERS +=\
     chatroom.h \
     message.h \
     databaseinterface.h \
-    accountdatabase.h
+    accountdatabase.h \
+    messagedatabase.h \
+    chatroomdatabase.h
 
 unix {
     target.path = /usr/lib
