@@ -9,45 +9,12 @@
 #include <QDataStream>
 #include <QIODevice>
 #include <QString>
+#include <QStringList>
 #include "accountparser.h"
+#include "commandparser.h"
 #include "passwordparser.h"
 #include "peerparser.h"
 #include "roomparser.h"
-
-/* ************************************************************************* *
- *                            Command Definitions                            *
- * ************************************************************************* */
-const QString ACCEPT = "ACCEPT";
-const QString ACCOUNT = "ACCOUNT";
-const QString CREATE = "CREATE";
-const QString DELETE = "DELETE";
-const QString HISTORY = "HISTORY";
-const QString LIST = "LIST";
-const QString LOGIN = "LOGIN";
-const QString PASSWORD = "PASSWORD";
-const QString PEER = "PEER";
-const QString REJECT = "REJECT";
-const QString REQUEST = "REQUEST";
-const QString ROOM = "ROOM";
-
-const QString ACCOUNT_CREATE = ACCOUNT + " " + CREATE;
-const QString ACCOUNT_DELETE = ACCOUNT + " " + DELETE;
-const QString PASSWORD_CHANGE = PASSWORD + " CHANGE";
-const QString PASSWORD_RESET = PASSWORD + " RESET";
-const QString PEER_LIST = PEER + " " + LIST;
-const QString PEER_LIST_REQUEST = PEER_LIST + " " + REQUEST;
-const QString ROOM_ADD = ROOM + " ADD";
-const QString ROOM_CREATE = ROOM + " " + CREATE;
-const QString ROOM_DELETE = ROOM + " " + DELETE;
-const QString ROOM_HISTORY = ROOM + " " + HISTORY;
-const QString ROOM_HISTORY_REQUEST = ROOM_HISTORY + " " + REQUEST;
-const QString ROOM_JOIN = ROOM + " JOIN";
-const QString ROOM_LEAVE = ROOM + " LEAVE";
-const QString ROOM_LIST = ROOM + " " + LIST;
-const QString ROOM_LIST_REQUEST = ROOM_LIST + " " + REQUEST;
-const QString ROOM_MESSAGE = ROOM + " MESSAGE";
-const QString ROOM_MODE = ROOM + " MODE";
-
 
 /*!
  * \brief Create a new Server.
@@ -65,11 +32,6 @@ Server::~Server()
 {
 }
 
-void Server::changePassword(const ConnectionHandler& handler, QString& command)
-{
-
-}
-
 
 /*!
  * \brief Add a client to the list of connected clients.
@@ -82,29 +44,20 @@ void Server::connectClient(qintptr socketDescriptor, QHostAddress clientAddress)
 }
 
 
-void Server::createAccount(const ConnectionHandler& handler, QString& command)
-{
-
-}
-
-void Server::createRoom(const ConnectionHandler& handler, QString& command)
-{
-    QStringList tokens = command.split(" ");
-    QString roomName = tokens.at(2);
-    QString owner = tokens.at(3);
-    ChatRoom room(owner, roomName);
-    ChatRoomDatabase db;
-    if (db.add(room))
-        handler.write(ACCEPT);
-    else
-        handler.write(REJECT);
-}
-
+/*!
+ * \brief Server::disconnectClient
+ * \param socketDescriptor
+ */
 void Server::disconnectClient(qintptr socketDescriptor)
 {
     qDebug() << connectedClients.remove(socketDescriptor);
 }
 
+
+/*!
+ * \brief Server::incomingConnection
+ * \param socketDescriptor
+ */
 void Server::incomingConnection(qintptr socketDescriptor) {
     qDebug() << "Connecting to " << socketDescriptor;
     ConnectionHandler *handler = new ConnectionHandler(socketDescriptor, this);
@@ -121,17 +74,31 @@ void Server::login()
 }
 
 
+/*!
+ * \brief Server::onClientRequest
+ * \param handler
+ * \param request
+ */
 void Server::onClientRequest(const ConnectionHandler& handler, QString& request)
 {
-    if (request.startsWith(ROOM))
-        RoomParser(*this).parse(handler, request);
-    else if (request.startsWith(ACCOUNT))
-        parseAccountCommand(handler, request);
-    else if (request.startsWith(PEER))
-        parsePeerCommand(handler, request);
+    QStringList tokens = request.split(" ");
+    QString cmd = tokens.at(0);
+    if (cmd == CommandParser::ROOM)
+        RoomParser(*this).parse(handler, tokens);
+    else if (cmd == CommandParser::ACCOUNT || cmd == CommandParser::LOGIN)
+        AccountParser(*this).parse(handler, tokens);
+    else if (cmd == CommandParser::PEER)
+        PeerParser(*this).parse(handler, tokens);
+    else if (cmd == CommandParser::PASSWORD)
+        PasswordParser(*this).parse(handler, tokens);
+    // Drop incorrectly formatted requests
 }
 
 
+/*!
+ * \brief Server::serializePeerList
+ * \return
+ */
 QString Server::serializePeerList()
 {
     QString list = PEER_LIST;
@@ -144,6 +111,9 @@ QString Server::serializePeerList()
 }
 
 
+/*!
+ * \brief Server::startServer
+ */
 void Server::startServer() {
     int port = 37377;
 

@@ -29,6 +29,9 @@ public:
     explicit Account(QUuid& uuid, QString& username, QDateTime& creationDate,
                      QObject *parent = 0);
 
+    explicit Account(QString& username, QByteArray& passwordHash,
+                     QString& emailAddress, QObject *parent = 0);
+
     explicit Account(QString& username, QString& password,
                      QString& emailAddress, QObject *parent = 0);
 

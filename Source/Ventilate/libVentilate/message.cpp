@@ -9,7 +9,6 @@
 #include <memory>
 #include <QDateTime>
 #include <QUuid>
-#include "messagedatabase.h"
 
 Message::Message(const Message &copy)
     : QObject(copy.parent()), uuid(copy.message), roomID(copy.roomID),
@@ -31,8 +30,6 @@ Message::Message(const QUuid& roomID, const QString& username,
       timestamp(QDateTime::currentDateTime()), username(username),
       message(message)
 {
-    MessageDatabase db;
-    db.add(*this);
 }
 
 Message::Message(const QUuid& uuid, const QUuid& roomID,

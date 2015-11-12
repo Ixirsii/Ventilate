@@ -9,6 +9,7 @@
 #define PEERPARSER_H
 
 #include <QString>
+#include <QStringList>
 #include "commandparser.h"
 #include "../connectionhandler.h"
 #include "server.h"
@@ -18,10 +19,10 @@ class PeerParser : public CommandParser
 public:
     explicit PeerParser(Server& server);
 
-    virtual void parse(const ConnectionHandler& handler, QString& command);
+    virtual void parse(const ConnectionHandler& handler, QStringList& command);
 
 private:
-    void sendList(const ConnectionHandler& handler, QString& command);
+    void sendList(const ConnectionHandler& handler);
 };
 
 #endif // PEERPARSER_H

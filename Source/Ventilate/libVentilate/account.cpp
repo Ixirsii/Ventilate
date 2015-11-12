@@ -13,7 +13,6 @@
 #include <QIODevice>
 #include <QObject>
 #include <QString>
-#include "accountdatabase.h"
 
 
 /*!
@@ -68,6 +67,29 @@ Account::Account(QUuid& uuid, QString& username, QDateTime& creationDate,
  * \brief Create a new user account.
  *
  * This constructor is useful for creating a brand new Account object
+ * associated with a brand new user account. The creation date is calculated at
+ * the time this constructor is called.
+ *
+ * \param username The account username. This needs to be unique.
+ * \param passwordHash The salted and hashed account password.
+ * \param emailAddress User's email address, used for account verification and
+ * password resets.
+ * \param parent Parent QObject passed to this classes parent, QObject for Qt
+ * internal functions.
+ */
+Account::Account(QString& username, QByteArray& passwordHash,
+                 QString& emailAddress, QObject *parent)
+    : QObject(parent), uuid(QUuid::createUuid()),
+      creationDate(QDateTime::currentDateTime()), passwordHash(passwordHash),
+      emailAddress(emailAddress), username(username)
+{
+}
+
+
+/*!
+ * \brief Create a new user account.
+ *
+ * This constructor is useful for creating a brand new Account object
  * associated with a brand new user account. The password is hashed from its
  * QString form, and the creation date is calculated at the time this
  * constructor is called.
@@ -87,8 +109,6 @@ Account::Account(QString& username, QString& password, QString& emailAddress,
       emailAddress(emailAddress), username(username)
 {
     passwordHash = hashPassword(password, username);
-    AccountDatabase db;
-    db.add(*this);
 }
 
 /*!
@@ -241,8 +261,10 @@ Account& Account::operator=(Account&& move)
 QDataStream& operator<<(QDataStream& out, const Account& account)
 {
     out << account.uuid;
-    out << account.creationDate;
     out << account.username;
+    out << account.creationDate;
+    out << account.passwordHash;
+    out << account.emailAddress;
     return out;
 }
 
@@ -256,8 +278,10 @@ QDataStream& operator<<(QDataStream& out, const Account& account)
 QDataStream& operator>>(QDataStream& in, Account& account)
 {
     in >> account.uuid;
-    in >> account.creationDate;
     in >> account.username;
+    in >> account.creationDate;
+    in >> account.passwordHash;
+    in >> account.emailAddress;
     return in;
 }
 

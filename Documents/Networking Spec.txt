@@ -23,9 +23,9 @@ Request peer list:
 	"PEER LIST REQUEST"
 
 Login request:
-	"LOGIN <username> <password hash>"
+        "ACCOUNT LOGIN <username> <password hash>"
 Account creation request:
-	"ACCOUNT CREATE <username> <password hash>"
+        "ACCOUNT CREATE <uuid> <username> <creation date> <password hash> <email address>"
 Account deletion request:
 	"ACCOUNT DELETE <username> <password hash>"
 Password change request:
@@ -34,24 +34,24 @@ Password reset request:
 	"PASSWORD RESET <username>"
 	
 Add a user to a private chat room
-        "ROOM ADD <username> <chat room UUID>"
+        "ROOM ADD <username> <room ID>"
 Chat room creation request:
         "ROOM CREATE <public|private> <name> <owner>"
 Chat room deletion request
-        "ROOM DELETE <name>"
+        "ROOM DELETE <name> <username> <password hash>"
 Get chat history for a room
-	"ROOM HISTORY REQUEST"
+        "ROOM HISTORY REQUEST <room ID> <offset>"
 Send chat history for a room
-	"ROOM HISTORY <history>"
+        "ROOM HISTORY <room ID> <offset> <history>"
 Join a chat room
-        "ROOM JOIN <room UUID> <username>"
+        "ROOM JOIN <room ID> <username>"
 Leave a chat room
-        "ROOM LEAVE <room UUID> <username>"
+        "ROOM LEAVE <room ID> <username>"
 Get room list
 	"ROOM LIST REQUEST"
 Return room list
 	"ROOM LIST <comma separated list of public room names>"
 Send a message
-        "ROOM MESSAGE <room UUID> <date time> <sender> <message>"
+        "ROOM MESSAGE <room ID> <date time> <sender> <message>"
 Chat room mode change
 	"ROOM MODE <public|private> <username>"

@@ -9,6 +9,7 @@
 #define PASSWORDPARSER_H
 
 #include <QString>
+#include <QStringList>
 #include "commandparser.h"
 #include "../connectionhandler.h"
 #include "server.h"
@@ -18,7 +19,7 @@ class PasswordParser : public CommandParser
 public:
     explicit PasswordParser(Server& server);
 
-    virtual void parse(const ConnectionHandler& handler, QString& command);
+    virtual void parse(const ConnectionHandler& handler, QStringList& command);
 
 private:
     void change(const ConnectionHandler& handler, QString& command);
