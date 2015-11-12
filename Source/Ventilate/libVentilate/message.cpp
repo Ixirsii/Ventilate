@@ -38,35 +38,38 @@
 #include <memory>
 #include <QDateTime>
 #include <QUuid>
+#include "messagedatabase.h"
 
 Message::Message(const Message &copy)
-    : QObject(copy.parent()), message(copy.message), uuid(copy.message),
-      timestamp(copy.timestamp), username(copy.username)
+    : QObject(copy.parent()), uuid(copy.message), roomID(copy.roomID),
+      timestamp(copy.timestamp), username(copy.username), message(copy.message)
 {
 }
 
 Message::Message(Message&& v)
-    : QObject(v.parent()), message(std::move(v.message)),
-      uuid(std::move(v.uuid)), timestamp(std::move(v.timestamp)),
-      username(std::move(v.username))
+    : QObject(v.parent()), uuid(std::move(v.uuid)), roomID(std::move(v.roomID)),
+      timestamp(std::move(v.timestamp)), username(std::move(v.username)),
+      message(std::move(v.message))
 {
-    v.parent() = nullptr;
+    v.setParent(nullptr);
 }
 
-Message::Message(QUuid& roomID, QString& username, QString& message, QObject* parent)
+Message::Message(const QUuid& roomID, const QString& username,
+                 const QString& message, QObject* parent)
     : QObject(parent), uuid(QUuid::createUuid()), roomID(roomID),
       timestamp(QDateTime::currentDateTime()), username(username),
       message(message)
 {
-
+    MessageDatabase db;
+    db.add(*this);
 }
 
-Message::Message(QUuid& uuid, QUuid& roomID, QDateTime& timestamp, QString& username,
-                 QString& message, QObject* parent)
+Message::Message(const QUuid& uuid, const QUuid& roomID,
+                 const QDateTime& timestamp, const QString& username,
+                 const QString& message, QObject* parent)
     : QObject(parent), uuid(uuid), roomID(roomID), timestamp(timestamp),
       username(username), message(message)
 {
-
 }
 
 const QString& Message::getMessage() const

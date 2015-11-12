@@ -22,7 +22,11 @@ SOURCES += \
     message.cpp \
     accountdatabase.cpp \
     messagedatabase.cpp \
-    chatroomdatabase.cpp
+    chatroomdatabase.cpp \
+    database.cpp \
+    userdatabase.cpp \
+    minidbinterface.cpp \
+    moddatabase.cpp
 
 HEADERS +=\
         libventilate_global.h \
@@ -35,7 +39,11 @@ HEADERS +=\
     databaseinterface.h \
     accountdatabase.h \
     messagedatabase.h \
-    chatroomdatabase.h
+    chatroomdatabase.h \
+    database.h \
+    userdatabase.h \
+    minidbinterface.h \
+    moddatabase.h
 
 unix {
     target.path = /usr/lib

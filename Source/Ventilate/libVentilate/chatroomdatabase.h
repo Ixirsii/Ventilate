@@ -8,9 +8,10 @@
 #ifndef CHATROOMDATABASE_H
 #define CHATROOMDATABASE_H
 
-#include <chatroom.h>
-#include <databaseinterface.h>
-#include <libventilate_global.h>
+#include <QList>
+#include "chatroom.h"
+#include "databaseinterface.h"
+#include "libventilate_global.h"
 
 class LIBVENTILATESHARED_EXPORT ChatRoomDatabase
         : public DatabaseInterface<ChatRoom>
@@ -19,12 +20,14 @@ public:
     explicit ChatRoomDatabase();
 
     virtual bool add(const ChatRoom& elem);
-    virtual ChatRoom find(const QUuid& id) const;
-    virtual QList<ChatRoom> getAll() const;
+    virtual ChatRoom find(const QUuid& id);
+    virtual QList<ChatRoom> getAll();
     virtual bool remove(const ChatRoom& elem);
 
 protected:
     virtual ChatRoom buildFromQuery(const QSqlQuery& query) const;
+
+private:
 };
 
 #endif // CHATROOMDATABASE_H

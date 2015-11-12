@@ -49,10 +49,11 @@ class LIBVENTILATESHARED_EXPORT Message : public QObject
 public:
     Message(const Message& copy);
     Message(Message&& move);
-    explicit Message(QUuid& roomID, QString& username, QString& message,
-                     QObject *parent = 0);
-    explicit Message(QUuid& uuid, QUuid& roomID, QDateTime& timestamp,
-                     QString& username, QString& message, QObject *parent = 0);
+    explicit Message(const QUuid& roomID, const QString& username,
+                     const QString& message, QObject *parent = 0);
+    explicit Message(const QUuid& uuid, const QUuid& roomID,
+                     const QDateTime& timestamp, const QString& username,
+                     const QString& message, QObject *parent = 0);
 
     const QString& getMessage() const;
     const QUuid& getRoomID() const;

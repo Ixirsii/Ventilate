@@ -35,18 +35,71 @@
  */
 
 #include <QCoreApplication>
+#include <QDebug>
 #include <QList>
-#include <account.h>
-#include <accountdatabase.h>
-#include <server.h>
+#include "account.h"
+#include "accountdatabase.h"
+#include "chatroom.h"
+#include "chatroomdatabase.h"
+#include "database.h"
+#include "message.h"
+#include "messagedatabase.h"
+#include "server.h"
+
+Account testAccountDB();
+void testMessageDB(Account &acc, ChatRoom &room);
+void testRoomDB(ChatRoom &room);
 
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
+    Database::init();
     Server server;
     server.startServer();
+
+    QString email = "RedRaider92@gmail.com";
+    QString name = "ShadowHawk54";
+    QString password = "password";
+    Account acc(name, password, email);
+    name = "THANK BIRB";
+    ChatRoom room(acc.getUsername(), name);
+    room.addModerator(acc.getUsername());
+    room.addUser(acc.getUsername());
+
+    acc = testAccountDB();
+    testMessageDB(acc, room);
+    testRoomDB(room);
 
     return a.exec();
 }
 
+Account testAccountDB()
+{
+    qDebug() << "Testing account database";
+    AccountDatabase db;
+    Account tmp = db.find(QString("ShadowHawk54"));
+    qDebug() << tmp.getUsername();
+    return std::move(tmp);
+}
+
+void testMessageDB(Account& acc, ChatRoom& room)
+{
+    qDebug() << "Testing message database";
+    QString msg_str = "Hello World!";
+    Message msg(room.getUUID(), acc.getUsername(), msg_str);
+    MessageDatabase db;
+    Message tmp = db.find(msg.getUUID());
+    qDebug() << tmp.getMessage();
+}
+
+void testRoomDB(ChatRoom& room)
+{
+    qDebug() << "Testing room database";
+    ChatRoomDatabase db;
+    ChatRoom tmp = db.find(room.getUUID());
+    qDebug() << tmp.getName();
+    qDebug() << tmp.getModerators();
+    qDebug() << tmp.getUsers();
+    qDebug() << tmp.getMessages();
+}

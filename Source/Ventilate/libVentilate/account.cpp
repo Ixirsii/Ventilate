@@ -13,7 +13,7 @@
 #include <QIODevice>
 #include <QObject>
 #include <QString>
-#include <accountdatabase.h>
+#include "accountdatabase.h"
 
 
 /*!
@@ -87,6 +87,8 @@ Account::Account(QString& username, QString& password, QString& emailAddress,
       emailAddress(emailAddress), username(username)
 {
     passwordHash = hashPassword(password, username);
+    AccountDatabase db;
+    db.add(*this);
 }
 
 /*!

@@ -20,9 +20,9 @@ public:
     virtual ~AccountDatabase();
 
     virtual bool add(const Account& elem);
-    virtual Account find(const QUuid& id) const;
-    virtual Account find(const QString& username) const;
-    virtual QList<Account> getAll() const;
+    virtual Account find(const QUuid& id);
+    virtual Account find(const QString& username);
+    virtual QList<Account> getAll();
     virtual bool remove(const Account& elem);
 
 protected:

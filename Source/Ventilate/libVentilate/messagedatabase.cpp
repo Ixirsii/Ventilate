@@ -11,21 +11,7 @@
 #include <message.h>
 
 MessageDatabase::MessageDatabase()
-    : id_key("id"), date_key("date"), message_key("message"),
-      room_key("room"), username_key("username")
 {
-    QSqlQuery query;
-    query.prepare("CREATE TABLE IF NOT EXISTS " + message_table + "("
-                  + id_key + " BLOB NOT NULL UNIQUE PRIMARY KEY, "
-                  + room_key + "BLOB NOT NULL"
-                  + date_key + " DATETIME NOT NULL, "
-                  + message_key + " TEXT NOT NULL, "
-                  + username_key + " TEXT NOT NULL, "
-                  + "FOREIGN KEY(" + room_key + ") REFERENCES "
-                  + room_table + "(" + id_key + "), "
-                  + "FOREIGN KEY(" + username_key + ") REFERENCES "
-                  + account_table + "(" + username_key + "));");
-    runQuery(query);
 }
 
 MessageDatabase::~MessageDatabase()
@@ -34,45 +20,62 @@ MessageDatabase::~MessageDatabase()
 
 bool MessageDatabase::add(const Message& elem)
 {
-    qDebug() << "Adding row to table" << elem.getUUID();
+    qDebug() << "Adding row to table" << elem.getMessage();
     db.transaction();
     QSqlQuery query(db);
-    query.prepare("INSERT INTO " + message_table +
-                  "(" + id_key + ", " + room_key + ", " + date_key  + ", "
-                  + message_key + ", "  + username_key + ")"
+    query.prepare("INSERT INTO " + MESSAGE_TABLE +
+                  "(" + ID_KEY + ", " + ROOM_KEY + ", " + DATE_KEY  + ", "
+                  + MESSAGE_KEY + ", "  + NAME_KEY + ")"
                   + " VALUES(?, ?, ?, ?, ?);");
     query.addBindValue(elem.getUUID());
     query.addBindValue(elem.getRoomID());
     query.addBindValue(elem.getTimeStamp());
     query.addBindValue(elem.getMessage());
     query.addBindValue(elem.getUsername());
-    flag = runQuery(query);
+    bool flag = runQuery(query);
     db.commit();
     return flag;
 }
 
 Message MessageDatabase::buildFromQuery(const QSqlQuery &query) const
 {
-    QUuid id = query.value(id_key).toByteArray();
-    QUuid room = query.value(room_id).toByteArray();
-    QDateTime date = query.value(date_key).toDateTime();
-    QString message = query.value(message_key).toString();
-    QString username = query.value(username_key).toString();
+    QUuid id = query.value(ID_KEY).toByteArray();
+    QUuid room = query.value(ROOM_KEY).toByteArray();
+    QDateTime date = query.value(DATE_KEY).toDateTime();
+    QString message = query.value(MESSAGE_KEY).toString();
+    QString username = query.value(NAME_KEY).toString();
     return std::move(Message(id, room, date, username, message));
 }
 
-Message MessageDatabase::find(const QUuid& id) const
+Message MessageDatabase::find(const QUuid& id)
 {
-    return std::move(find(id, message_table));
+    return std::move(DatabaseInterface::find(id, MESSAGE_TABLE));
 }
 
-QList<Message> MessageDatabase::getAll() const
+QList<Message> MessageDatabase::getAll()
 {
-    return std::move(getAll(message_table));
+    return std::move(DatabaseInterface::getAll(MESSAGE_TABLE));
+}
+
+QList<Message> MessageDatabase::getMessages(const QUuid& roomID, quint32 start)
+{
+    qDebug() << "Getting Messages from database";
+    db.transaction();
+    QSqlQuery query(db);
+    query.prepare("SELECT * FROM " + MESSAGE_TABLE + " WHERE " + ROOM_KEY
+                  + " = ? ORDER BY " + DATE_KEY + " DESC LIMIT " + RETURN_RANGE + " OFFSET "
+                  + QString::number(start) + ";");
+    query.addBindValue(roomID);
+    runQuery(query);
+    db.commit();
+    QList<Message> list;
+    while (query.next())
+        list.append(buildFromQuery(query));
+    return std::move(list);
 }
 
 bool MessageDatabase::remove(const Message& elem)
 {
-    return remove(elem.getUUID(), message_table);
+    return DatabaseInterface::remove(elem.getUUID(), MESSAGE_TABLE);
 }
 
