@@ -5,6 +5,7 @@
 #include <QByteArray>
 #include <QDebug>
 #include <QHash>
+#include <QString>
 #include <QTcpSocket>
 #include <QThread>
 #include "libventilate_global.h"
@@ -16,7 +17,7 @@ public:
     explicit ConnectionHandler(qintptr ID, QObject *parent = 0);
 
     void run();
-    void sendToClient(QByteArray data) const;
+    void write(QString data);
 signals:
     void error(QTcpSocket::SocketError socketError);
 
@@ -27,6 +28,8 @@ public slots:
 private:
     QTcpSocket *socket;
     qintptr socketDescriptor;
+
+    void sendToClient(QByteArray data) const;
 };
 
 #endif // CONNECTIONHANDLER_H

@@ -115,3 +115,18 @@ void ConnectionHandler::sendToClient(QByteArray data) const
     qDebug() << "Sending data: " << data;
     socket->write(data);
 }
+
+void ConnectionHandler::write(QString data)
+{
+    QByteArray block;
+    QDataStream out(&block, QIODevice::WriteOnly);
+    out.setVersion(QDataStream::Qt_5_0);
+    // Reserve space for size of block
+    out << (quint16) 0;
+    out << data;
+    // Seek back to begining of block
+    out.device()->seek(0);
+    // Insert size of block at beginning
+    out << (quint16) (block.size() - sizeof(quint16));
+    sendToClient(block);
+}

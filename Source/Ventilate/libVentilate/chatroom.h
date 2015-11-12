@@ -1,3 +1,10 @@
+/*! \file
+ * \brief Provides data types for modeling user classes.
+ * \author Ryan Porterfield
+ * \since 2015-10-30
+ * \copyright 2015-11-10
+ */
+
 #ifndef CHATROOM_H
 #define CHATROOM_H
 

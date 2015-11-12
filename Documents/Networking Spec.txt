@@ -36,7 +36,7 @@ Password reset request:
 Add a user to a private chat room
         "ROOM ADD <username> <chat room UUID>"
 Chat room creation request:
-	"ROOM CREATE <public|private> <name>"
+        "ROOM CREATE <public|private> <name> <owner>"
 Chat room deletion request
         "ROOM DELETE <name>"
 Get chat history for a room
