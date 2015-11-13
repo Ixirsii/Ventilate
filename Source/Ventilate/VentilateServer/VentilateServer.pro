@@ -1,8 +1,8 @@
-QT += core network
+QT += core network sql
 QT -= gui
 
 TARGET = VentilateServer
-CONFIG += console
+CONFIG += c++11 console
 CONFIG -= app_bundle
 
 TEMPLATE = app

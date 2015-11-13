@@ -50,7 +50,7 @@
  * \param parent
  */
 Socket::Socket(QString host, qint16 port, MainWindow& mw, QObject *parent)
-    : mw(mw), QObject(parent)
+    : QObject(parent), mw(mw)
 {
     socket = new QTcpSocket(this);
     socket->connectToHost(host, port);
