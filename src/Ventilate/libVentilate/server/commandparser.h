@@ -40,6 +40,16 @@ public:
     explicit CommandParser();
     virtual ~CommandParser();
 
+    /*!
+     * \brief Parse an incoming command from a client.
+     *
+     * This pure virtual function must be implemented by all concrete
+     * sub-classes. This function handles extended parsing of sub-commands.
+     *
+     * \param handler Reference to the ConnectionHandler that recieved the
+     * request.
+     * \param request QDataStream that the handler read in from the network.
+     */
     virtual void parse(const ConnectionHandler& handler, QDataStream& stream) = 0;
 
 protected:

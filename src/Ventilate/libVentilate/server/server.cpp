@@ -60,9 +60,15 @@ const QList<ConnectionHandler*>& Server::getClientList() const
 
 
 /*!
- * \brief Server::onClientRequest
- * \param handler
- * \param request
+ * \brief Handle requests from the clients.
+ *
+ * This function gets called any time a ConnectionHandler recieves a request
+ * from a client over the network. Some preliminary command parsing is done,
+ * then the handler and command stream are passed off to an appropriate
+ * CommandParser sub-class to handle the command.
+ *
+ * \param handler Reference to the ConnectionHandler that recieved the request.
+ * \param request QDataStream that the handler read in from the network.
  */
 void Server::onClientRequest(const ConnectionHandler& handler, QDataStream& stream)
 {

@@ -5,6 +5,7 @@
 #include <QMessageBox>
 #include <QAbstractButton>
 #include "chatroom.h"
+
 namespace Ui {
 class ventilate_createchat;
 }
@@ -16,7 +17,7 @@ class ventilate_createchat : public QDialog
 public:
     explicit ventilate_createchat(QWidget *parent = 0);
     ~ventilate_createchat();
-    chatroom getinfo(QUuid ownerID);
+    //ChatRoom getinfo(QUuid ownerID);
 private slots:
 
     void reset();

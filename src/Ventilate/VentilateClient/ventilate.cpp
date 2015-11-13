@@ -30,7 +30,7 @@ void Ventilate::on_actionCreate_Chat_room_triggered()
     ventilate_createchat createchat;
     createchat.setModal(true);
     if(createchat.exec() == QDialog::Accepted){
-        chatroom cr = createchat.getinfo(UserID);
+        //chatroom cr = createchat.getinfo(UserID);
         int i = 1;
         while(i < 6) if(ui->tbwChatrooms->tabText(i) == "") break;
         switch (i) {

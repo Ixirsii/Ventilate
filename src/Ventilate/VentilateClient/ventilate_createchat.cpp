@@ -42,33 +42,6 @@ void ventilate_createchat::reset()
     if(ui->cboPb_Pv->currentIndex()) ui->lnedChatName_Pv->setFocus();
 }
 
-chatroom ventilate_createchat::getinfo(QUuid ownerID){
-    if(!ui->cboPb_Pv->currentIndex()){
-        QList<QString> ql;
-        for(int i = 0; i < ui->lstModerators_Pb->count(); i++){
-            ql.push_back(ui->lstModerators_Pb->item(i)->text());
-        }
-        chatroom cr = chatroom(ui->lnedChatName_Pb->text(), QUuid::createUuid());
-        cr.setOwnerID(ownerID);
-        cr.setMods(ql);
-        ql.clear();
-        cr.setUsers(ql);
-        return cr;
-    }else{
-        QList<QString> qlm, qlu;
-        for(int i = 0; i < ui->lstModerators_Pv->count(); i++){
-            qlm.push_back(ui->lstModerators_Pv->item(i)->text());
-        }
-        for(int i = 0; i < ui->lstUsers_Pv->count(); i++){
-            qlu.push_back(ui->lstUsers_Pv->item(i)->text());
-        }
-        chatroom cr = chatroom(ui->lnedChatName_Pv->text(), QUuid::createUuid());
-        cr.setMods(qlm);
-        cr.setUsers(qlu);
-        return cr;
-    }
-}
-
 void ventilate_createchat::on_cboPb_Pv_currentIndexChanged(int index)
 {
     ui->stackedWidget->setCurrentIndex(index);

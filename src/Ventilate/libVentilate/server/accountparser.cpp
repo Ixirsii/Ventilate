@@ -35,7 +35,6 @@ void AccountParser::create(const ConnectionHandler& handler, QDataStream& stream
     QDateTime time;
     QByteArray phash;
     stream >> uuid >> username >> time >> phash >> email;
-
     Account acc(uuid, username, time, phash, email);
     AccountDatabase db;
     if (db.add(acc))
@@ -65,7 +64,6 @@ void AccountParser::parse(const ConnectionHandler& handler, QDataStream& stream)
         create(handler, stream);
     else if (cmd == DELETE)
         remove(handler, stream);
-
 }
 
 void AccountParser::remove(const ConnectionHandler& handler, QDataStream& stream)

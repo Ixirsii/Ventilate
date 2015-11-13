@@ -36,6 +36,16 @@ public:
     virtual bool remove(const T& elem) = 0;
 
 protected:
+    /*!
+     * \brief Build an object from a database query.
+     *
+     * This templated pure virtual function requires concrete sub-classes to
+     * build an object, most likely an Account, ChatRoom, or Message that was
+     * stored in the database.
+     *
+     * \param query Results of the SQL query.
+     * \return An object from the database.
+     */
     virtual T buildFromQuery(const QSqlQuery& query) const = 0;
 
     virtual T find(const QUuid &id, const QString& table)

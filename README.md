@@ -11,24 +11,19 @@ Directory structure
 --------------------
 
 	CSE.4444-002-Grp-Project
-	GROUP-INFO    : Required file from previous assignment; lists members
-	README        : Plain text version of this file
-	README.md     : This file
-		Documents/        : Documentation base folder
-			contact_info.txt            : Internal use; lists contact info for different team members (email and phone)
-				Meeting_Minutes/        : For holding required meeting minutes
-				Planning_Documents/     : For holding required planning documents
-				Project_Reports/        : Location of project reports for grading
-					Deliverable I.pdf    Report 1
-					Trunk/               Contains resources from report development
-		Source    : Base folder for source files, will add folders for member / feature branches as necessary
-			Ventilate Server            : Source code for the server
-
-*Ignore all empty.txt files - these are solely to maintain the directory structure on GitHub with empty folders.*
+	GROUP-INFO     : Required file from previous assignment; lists members
+	README         : Plain text version of this file
+	README.md      : This file
+	Documents/     : Documentation base folder
+		contact_info.txt      : Internal use; lists contact info for different team members (email and phone)
+		Meeting_Minutes/      : For holding required meeting minutes
+		Deliverable I.pdf     : Report 1
+	src            : Base folder for source files, will add folders for member / feature branches as necessary
+		Ventilate             : Source code for the server
 
 License
 -------
-Copyright (c) 2015, Ryan Porterfield, Austin Hoppe, Jacob Pebworth, Christopher Hines  
+Copyright (c) 2015 Ryan Porterfield, Austin Hoppe, Jacob Pebworth, Christopher Hines  
 All rights reserved.  
   
 Redistribution and use in source and binary forms, with or without  

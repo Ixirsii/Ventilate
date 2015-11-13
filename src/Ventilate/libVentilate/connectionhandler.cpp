@@ -76,7 +76,6 @@ void ConnectionHandler::readyRead()
 }
 
 
-
 /**
  * @brief Sends a message to the client.
  * @param data A preformatted message ready to be written directly to the client.
