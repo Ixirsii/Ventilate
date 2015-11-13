@@ -1,6 +1,9 @@
 #include "chatscreen.h"
 #include "ui_chatscreen.h"
 #include <QDateTime>
+#include <QListWidget>
+#include <QPlainTextEdit>
+#include <QPushButton>
 
 chatscreen::chatscreen(QWidget *parent) :
     QWidget(parent),
@@ -21,5 +24,6 @@ void chatscreen::on_btnSend_clicked()
 
 void chatscreen::on_btnClear_clicked()
 {
-
+    ui->ptxtMessagebox->clear();
+    ui->ptxtMessagebox->setFocus();
 }

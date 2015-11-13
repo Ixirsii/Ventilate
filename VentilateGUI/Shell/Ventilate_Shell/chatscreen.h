@@ -2,6 +2,10 @@
 #define CHATSCREEN_H
 
 #include <QWidget>
+#include <QDateTime>
+#include <QListWidget>
+#include <QPlainTextEdit>
+#include <QPushButton>
 
 namespace Ui {
 class chatscreen;

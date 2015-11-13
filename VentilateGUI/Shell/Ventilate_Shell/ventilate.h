@@ -32,6 +32,8 @@ private slots:
 
     void on_btnTabInfo_clicked();
 
+    void on_tbwChatrooms_tabCloseRequested(int index);
+
 private:
     Ui::Ventilate *ui;
 };
