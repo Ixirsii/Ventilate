@@ -25,6 +25,8 @@ void ventilate_newuser::on_buttonBox_clicked(QAbstractButton *button)
         ui->lnedEmail->clear();
         ui->lnedPassword->clear();
         ui->lnedUsername->clear();
+        ui->lblConfirmEmailContextInfo->clear();
+        ui->lblConfirmPasswordContextInfo->clear();
         ui->lnedUsername->setFocus();
     }
 }

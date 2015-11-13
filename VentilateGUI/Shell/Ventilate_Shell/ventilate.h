@@ -19,20 +19,11 @@ public:
 private slots:
     void on_actionCreate_Chat_room_triggered();
     void on_actionLogin_triggered();
-
     void on_actionAbout_Qt_triggered();
-
     void on_actionLogout_triggered();
-
     void on_btnSend_clicked();
-
     void on_btnClear_clicked();
-
-    void on_btnAddTab_clicked();
-
-    void on_btnTabInfo_clicked();
-
-    void on_tbwChatrooms_tabCloseRequested(int index);
+    void on_actionAbout_Ventilate_triggered();
 
 private:
     Ui::Ventilate *ui;

@@ -368,7 +368,8 @@ background-color:rgb(255,255,255);</string>
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(66, 66, 66);</string>
+      <string notr="true">background-color: rgb(66, 66, 66);
+color: rgb(255, 255, 255);</string>
      </property>
      <property name="locale">
       <locale language="English" country="UnitedStates"/>
@@ -384,18 +385,6 @@ background-color:rgb(255,255,255);</string>
   </layout>
   <zorder>buttonBox</zorder>
   <zorder>lblTitle</zorder>
-  <zorder>btnNewUser</zorder>
-  <zorder>hspNewUser</zorder>
-  <zorder>lblUsername</zorder>
-  <zorder>lblPassword</zorder>
-  <zorder>lnedUsername</zorder>
-  <zorder>lnedPassword</zorder>
-  <zorder>hspPasswordLeft</zorder>
-  <zorder>hspPasswordRight</zorder>
-  <zorder>lnedUsername</zorder>
-  <zorder>lblUsername</zorder>
-  <zorder>hspUsernameLeft</zorder>
-  <zorder>hspUsernameRight</zorder>
   <zorder>vspControlsTop</zorder>
   <zorder>vspControlsBottom</zorder>
  </widget>

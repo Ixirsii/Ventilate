@@ -103,27 +103,7 @@ void Ventilate::on_btnClear_clicked()
     ui->ptxtMessageBox->setFocus();
 }
 
-void Ventilate::on_btnAddTab_clicked()
+void Ventilate::on_actionAbout_Ventilate_triggered()
 {
-    if(ui->tbwChatrooms->count() <= 6){
-        ui->tbwChatrooms->addTab(new chatscreen, tr("Tab %0").arg(QString::number(ui->tbwChatrooms->count())));
-    }else{
-        QMessageBox::warning(this, "Too Many Open Tabs", "Please leave a chat-room if you wish to open another");
-    }
-}
-
-void Ventilate::on_btnTabInfo_clicked()
-{
-    QString msg = "Tab Texts";
-    for(int i = 1; i < 6; i++){
-        msg += ui->tbwChatrooms->tabText(i) + "\n";
-    }
-    msg += QString::number(ui->tbwChatrooms->count());
-    QMessageBox::information(this, "Tab texts", msg);
-}
-
-void Ventilate::on_tbwChatrooms_tabCloseRequested(int index)
-{
-    ui->tbwChatrooms->setTabText(index, "");
-    ui->tbwChatrooms->removeTab(index);
+    QMessageBox::about(this, "About Ventilate", "");
 }

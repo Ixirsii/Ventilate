@@ -434,32 +434,6 @@ background-color: rgb(255, 255, 255);</string>
        </layout>
       </item>
       <item>
-       <widget class="QPushButton" name="btnAddTab">
-        <property name="styleSheet">
-         <string notr="true">color: rgb(255, 255, 255);</string>
-        </property>
-        <property name="text">
-         <string>Add Tab</string>
-        </property>
-        <property name="flat">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="btnTabInfo">
-        <property name="styleSheet">
-         <string notr="true">color: rgb(255, 255, 255);</string>
-        </property>
-        <property name="text">
-         <string>Tab Info</string>
-        </property>
-        <property name="flat">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
        <spacer name="horizontalSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -511,7 +485,6 @@ background-color: rgb(255, 255, 255);</string>
     <property name="title">
      <string>Help</string>
     </property>
-    <addaction name="actionHelp"/>
     <addaction name="actionAbout_Ventilate"/>
     <addaction name="separator"/>
     <addaction name="actionAbout_Qt"/>
@@ -562,11 +535,6 @@ background-color: rgb(255, 255, 255);</string>
   <action name="actionExit">
    <property name="text">
     <string>Exit</string>
-   </property>
-  </action>
-  <action name="actionHelp">
-   <property name="text">
-    <string>Help</string>
    </property>
   </action>
   <action name="actionAbout_Ventilate">
