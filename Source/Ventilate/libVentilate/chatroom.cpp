@@ -8,10 +8,10 @@
 #include "chatroom.h"
 #include <memory>
 #include <QUuid>
-#include "chatroomdatabase.h"
-#include "messagedatabase.h"
-#include "moddatabase.h"
-#include "userdatabase.h"
+#include "database/chatroomdatabase.h"
+#include "database/messagedatabase.h"
+#include "database/moddatabase.h"
+#include "database/userdatabase.h"
 
 ChatRoom::ChatRoom(const ChatRoom& copy)
     : QObject(copy.parent()), uuid(copy.uuid), owner(copy.owner),
@@ -80,8 +80,8 @@ void ChatRoom::addUsers(const QList<QString>& users)
 void ChatRoom::getHistory()
 {
     MessageDatabase db;
-    QList<QString> history = db.getMessages(uuid, messages.size());
-    QList<QString>::iterator iter = history.end() - 1;
+    QList<Message> history = db.getMessages(uuid, messages.size());
+    QList<Message>::iterator iter = history.end() - 1;
     for (; iter != history.begin(); --iter)
         messages.prepend(*iter);
 }

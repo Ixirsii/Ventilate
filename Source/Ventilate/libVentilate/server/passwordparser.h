@@ -1,5 +1,5 @@
 /*! \file
- * \brief Provides data types for modeling user classes.
+ * \brief Parses Password based network requests.
  * \author Ryan Porterfield
  * \since 2015-11-12
  * \copyright 2015-11-10
@@ -8,21 +8,20 @@
 #ifndef PASSWORDPARSER_H
 #define PASSWORDPARSER_H
 
-#include <QString>
-#include <QStringList>
+#include <QDataStream>
 #include "commandparser.h"
-#include "../connectionhandler.h"
-#include "server.h"
+#include "connectionhandler.h"
 
 class PasswordParser : public CommandParser
 {
 public:
-    explicit PasswordParser(Server& server);
+    explicit PasswordParser();
+    virtual ~PasswordParser();
 
-    virtual void parse(const ConnectionHandler& handler, QStringList& command);
+    virtual void parse(const ConnectionHandler& handler, QDataStream& stream);
 
 private:
-    void change(const ConnectionHandler& handler, QString& command);
+    void change(const ConnectionHandler& handler, QDataStream& stream);
 };
 
 #endif // PASSWORDPARSER_H

@@ -8,11 +8,16 @@
 #ifndef SERVER_H
 #define SERVER_H
 
-#include <QHash>
+#include <QDataStream>
+#include <QList>
 #include <QString>
 #include <QTcpServer>
+#include "accountparser.h"
 #include "connectionhandler.h"
 #include "libventilate_global.h"
+#include "passwordparser.h"
+#include "peerparser.h"
+#include "roomparser.h"
 
 class LIBVENTILATESHARED_EXPORT Server : public QTcpServer
 {
@@ -21,9 +26,9 @@ public:
     explicit Server(QObject *parent = 0);
     virtual ~Server();
 
-    void connectClient(qintptr socketDescriptor, QHostAddress clientAddress);
-    void disconnectClient(qintptr socketDescriptor);
-    void onClientRequest(const ConnectionHandler& handler, QString& request);
+    void disconnectClient(ConnectionHandler* handler);
+    const QList<ConnectionHandler*>& getClientList() const;
+    void onClientRequest(const ConnectionHandler& handler, QDataStream& stream);
     QString serializePeerList();
     void startServer();
 
@@ -31,7 +36,11 @@ protected:
     void incomingConnection(qintptr socketDescriptor);
 
 private:
-    QHash<qintptr, QHostAddress> connectedClients;
+    QList<ConnectionHandler*> clientList;
+    AccountParser accountParser;
+    PasswordParser passwordParser;
+    PeerParser peerParser;
+    RoomParser roomParser;
 };
 
 #endif // SERVER_H

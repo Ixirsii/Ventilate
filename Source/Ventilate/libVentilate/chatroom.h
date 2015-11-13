@@ -1,5 +1,5 @@
 /*! \file
- * \brief Provides data types for modeling user classes.
+ * \brief Provides data types for modeling chat rooms.
  * \author Ryan Porterfield
  * \since 2015-10-30
  * \copyright 2015-11-10

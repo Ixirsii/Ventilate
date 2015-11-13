@@ -1,5 +1,5 @@
 /*! \file
- * \brief
+ * \brief Abstract base class that defines database interfaces.
  * \author Ryan Porterfield
  * \since 2015-11-11
  * \copyright BSD 3 Clause

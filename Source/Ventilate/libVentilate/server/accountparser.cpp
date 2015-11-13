@@ -5,34 +5,37 @@
  * \copyright BSD 3 Clause
  */
 
-#include "account.h"
-#include "../database/accountdatabase.h"
 #include "accountparser.h"
+
 #include <QByteArray>
+#include <QDataStream>
 #include <QString>
-#include <QStringList>
 #include <QUuid>
+
+#include "account.h"
+#include "database/accountdatabase.h"
 #include "commandparser.h"
 #include "connectionhandler.h"
 #include "server.h"
 
-AccountParser::AccountParser(Server& server)
-    : CommandParser(server)
+
+AccountParser::AccountParser()
 {
 }
 
 
-virtual AccountParser::~AccountParser()
+AccountParser::~AccountParser()
 {
 }
 
-void AccountParser::create(const ConnectionHandler& handler, QStringList& command)
+void AccountParser::create(const ConnectionHandler& handler, QDataStream& stream)
 {
-    QUuid uuid(command.at(2));
-    QString username = command.at(3);
-    QDateTime time(command.at(4));
-    QByteArray phash(command.at(5));
-    QString email = command.at(6);
+    QUuid uuid;
+    QString username, email;
+    QDateTime time;
+    QByteArray phash;
+    stream >> uuid >> username >> time >> phash >> email;
+
     Account acc(uuid, username, time, phash, email);
     AccountDatabase db;
     if (db.add(acc))
@@ -41,32 +44,35 @@ void AccountParser::create(const ConnectionHandler& handler, QStringList& comman
         handler.write(REJECT + " " + GENERIC_ERROR);
 }
 
-void AccountParser::login(const ConnectionHandler& handler, QStringList& command)
+void AccountParser::login(const ConnectionHandler& handler, QDataStream& stream)
 {
-    QString username = command.at(2);
-    QByteArray phash(command.at(3));
+    QString username;
+    QByteArray phash;
+    stream >> username >> phash;
     if (Account::authenticateUser(username, phash))
         handler.write(ACCEPT);
     else
         handler.write(REJECT + " " + INVALID_PASSWORD);
 }
 
-void AccountParser::parse(const ConnectionHandler& handler, QStringList& command)
+void AccountParser::parse(const ConnectionHandler& handler, QDataStream& stream)
 {
-    QString cmd = command.at(1);
+    QString cmd;
+    stream >> cmd;
     if (cmd == LOGIN)
-        login(handler, command);
+        login(handler, stream);
     else if (cmd == CREATE)
-        create(handler, command);
+        create(handler, stream);
     else if (cmd == DELETE)
-        remove(handler, command);
+        remove(handler, stream);
 
 }
 
-void AccountParser::remove(const ConnectionHandler& handler, QStringList& command)
+void AccountParser::remove(const ConnectionHandler& handler, QDataStream& stream)
 {
-    QString username = command.at(2);
-    QByteArray phash(command.at(3));
+    QString username;
+    QByteArray phash;
+    stream >> username >> phash;
     if (!Account::authenticateUser(username, phash)) {
         handler.write(REJECT + " " + INVALID_PASSWORD);
         return;

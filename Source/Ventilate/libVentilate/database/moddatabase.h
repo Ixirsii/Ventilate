@@ -1,5 +1,5 @@
 /*! \file
- * \brief
+ * \brief Helper class that interfaces with the moderator <-> chat room database.
  * \author Ryan Porterfield
  * \since 2015-11-12
  * \copyright BSD 3 Clause

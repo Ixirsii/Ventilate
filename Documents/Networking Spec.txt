@@ -52,6 +52,6 @@ Get room list
 Return room list
 	"ROOM LIST <comma separated list of public room names>"
 Send a message
-        "ROOM MESSAGE <room ID> <date time> <sender> <message>"
+        "ROOM MESSAGE <message ID> <room ID> <date time> <sender> <message>"
 Chat room mode change
 	"ROOM MODE <public|private> <username>"

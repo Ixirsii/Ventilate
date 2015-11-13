@@ -1,4 +1,5 @@
 /*! \file
+ * \brief Helper class that interfaces with the account database.
  * \author Ryan Porterfield
  * \since 2015-11-09
  * \copyright BSD 3 Clause

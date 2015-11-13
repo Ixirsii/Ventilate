@@ -13,6 +13,7 @@
 #include <QIODevice>
 #include <QObject>
 #include <QString>
+#include "database/accountdatabase.h"
 
 
 /*!
@@ -80,8 +81,8 @@ Account::Account(QUuid& uuid, QString& username, QDateTime& creationDate,
 Account::Account(QString& username, QByteArray& passwordHash,
                  QString& emailAddress, QObject *parent)
     : QObject(parent), uuid(QUuid::createUuid()),
-      creationDate(QDateTime::currentDateTime()), passwordHash(passwordHash),
-      emailAddress(emailAddress), username(username)
+      creationDate(QDateTime::currentDateTime()), emailAddress(emailAddress),
+      passwordHash(passwordHash), username(username)
 {
 }
 

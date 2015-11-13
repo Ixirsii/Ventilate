@@ -1,5 +1,5 @@
 /*! \file
- * \brief Provides data types for modeling user classes.
+ * \brief Define functionality for Message class.
  * \author Ryan Porterfield
  * \since 2015-10-30
  * \copyright 2015-11-10
@@ -39,6 +39,30 @@ Message::Message(const QUuid& uuid, const QUuid& roomID,
       username(username), message(message)
 {
 }
+
+QString Message::getFormattedMessage() const
+{
+    QString msgstr = getHeader();
+    msgstr = msgstr.append(message);
+    return msgstr;
+}
+
+QString Message::getHeader() const
+{
+    QString msgstr("[");
+    msgstr.append(timestamp.time().toString()).append("] ").append(username);
+    return msgstr.append(": ");
+}
+
+
+QString Message::getSanitizedMessage() const
+{
+    QString msgstr = getHeader();
+    QString clone(message);
+    clone.replace(QChar('\\'), QString("\\\\"));
+    return msgstr.append(clone);
+}
+
 
 const QString& Message::getMessage() const
 {

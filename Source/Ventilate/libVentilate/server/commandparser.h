@@ -1,5 +1,5 @@
 /*! \file
- * \brief Provides data types for modeling user classes.
+ * \brief Abstract base class that defines behavior for command parsers.
  * \author Ryan Porterfield
  * \since 2015-11-12
  * \copyright 2015-11-10
@@ -8,10 +8,8 @@
 #ifndef COMMANDPARSER_H
 #define COMMANDPARSER_H
 
-#include <QString>
-#include <QStringList>
+#include <QDataStream>
 #include "connectionhandler.h"
-#include "server.h"
 
 class CommandParser
 {
@@ -39,14 +37,13 @@ public:
     static const QString GENERIC_ERROR;
     static const QString INVALID_PASSWORD;
 
-    explicit CommandParser(Server& server);
+    explicit CommandParser();
     virtual ~CommandParser();
 
-    virtual void parse(const ConnectionHandler& handler, QStringList& command) = 0;
+    virtual void parse(const ConnectionHandler& handler, QDataStream& stream) = 0;
 
 protected:
-    static const QSring LIST_SEPARATOR;
-    Server& server;
+    static const QString LIST_SEPARATOR;
 };
 
 #endif // COMMANDPARSER_H

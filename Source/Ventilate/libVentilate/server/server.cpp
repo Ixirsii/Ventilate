@@ -8,6 +8,7 @@
 #include "server.h"
 #include <QDataStream>
 #include <QIODevice>
+#include <QList>
 #include <QString>
 #include <QStringList>
 #include "accountparser.h"
@@ -21,7 +22,7 @@
  * \param parent The object creating the parent.
  */
 Server::Server(QObject *parent)
-    : QTcpServer(parent)
+    : QTcpServer(parent), peerParser(clientList), roomParser(clientList)
 {
 }
 
@@ -33,24 +34,9 @@ Server::~Server()
 }
 
 
-/*!
- * \brief Add a client to the list of connected clients.
- * \param socketDescriptor
- * \param clientAddress
- */
-void Server::connectClient(qintptr socketDescriptor, QHostAddress clientAddress)
+void Server::disconnectClient(ConnectionHandler* handler)
 {
-    connectedClients.insert(socketDescriptor, clientAddress);
-}
-
-
-/*!
- * \brief Server::disconnectClient
- * \param socketDescriptor
- */
-void Server::disconnectClient(qintptr socketDescriptor)
-{
-    qDebug() << connectedClients.remove(socketDescriptor);
+    clientList.removeOne(handler);
 }
 
 
@@ -61,16 +47,15 @@ void Server::disconnectClient(qintptr socketDescriptor)
 void Server::incomingConnection(qintptr socketDescriptor) {
     qDebug() << "Connecting to " << socketDescriptor;
     ConnectionHandler *handler = new ConnectionHandler(socketDescriptor, this);
+    clientList.append(handler);
     connect(handler, SIGNAL(finished()), handler, SLOT(deleteLater()));
     handler->start();
 }
 
-/*!
- * \brief Server::login
- */
-void Server::login()
-{
 
+const QList<ConnectionHandler*>& Server::getClientList() const
+{
+    return clientList;
 }
 
 
@@ -79,35 +64,20 @@ void Server::login()
  * \param handler
  * \param request
  */
-void Server::onClientRequest(const ConnectionHandler& handler, QString& request)
+void Server::onClientRequest(const ConnectionHandler& handler, QDataStream& stream)
 {
-    QStringList tokens = request.split(" ");
-    QString cmd = tokens.at(0);
+    QString cmd;
+    stream >> cmd;
+    qDebug() << "Got string: " << cmd << " from stream";
     if (cmd == CommandParser::ROOM)
-        RoomParser(*this).parse(handler, tokens);
+        roomParser.parse(handler, stream);
     else if (cmd == CommandParser::ACCOUNT || cmd == CommandParser::LOGIN)
-        AccountParser(*this).parse(handler, tokens);
+        accountParser.parse(handler, stream);
     else if (cmd == CommandParser::PEER)
-        PeerParser(*this).parse(handler, tokens);
+        peerParser.parse(handler, stream);
     else if (cmd == CommandParser::PASSWORD)
-        PasswordParser(*this).parse(handler, tokens);
+        passwordParser.parse(handler, stream);
     // Drop incorrectly formatted requests
-}
-
-
-/*!
- * \brief Server::serializePeerList
- * \return
- */
-QString Server::serializePeerList()
-{
-    QString list = PEER_LIST;
-    QHash<qintptr, QHostAddress>::iterator iter;
-    for (iter = connectedClients.begin(); iter != connectedClients.end(); ++iter) {
-        list = list.append(" ");
-        list = list.append(iter.value().toString());
-    }
-    return list;
 }
 
 
