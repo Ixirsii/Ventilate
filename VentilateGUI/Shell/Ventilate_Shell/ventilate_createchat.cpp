@@ -23,10 +23,7 @@ ventilate_createchat::~ventilate_createchat()
 
 void ventilate_createchat::on_buttonBox_clicked(QAbstractButton *button)
 {
-    if(button->text() == "Ok") QMessageBox::information(this, "Accepted", "<font color='#FFFFFF'>Accepted<font/>");
     if(button->text() == "Reset") reset();
-    if(button->text() == "Cancel") QMessageBox::information(this, "Canceled", "<font color='#FFFFFF'>Canceled<font/>");
-
 }
 
 void ventilate_createchat::reset()

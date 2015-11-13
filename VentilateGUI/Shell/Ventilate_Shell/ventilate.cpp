@@ -3,7 +3,6 @@
 #include "ventilate_createchat.h"
 #include "ventilate_login.h"
 #include "chatroom.h"
-#include "chatscreen.h"
 #include <QDialog>
 #include <QString>
 #include <QMessageBox>
@@ -32,12 +31,28 @@ void Ventilate::on_actionCreate_Chat_room_triggered()
     createchat.setModal(true);
     if(createchat.exec() == QDialog::Accepted){
         chatroom cr = createchat.getinfo(UserID);
-        int index = ui->tbwChatrooms->count() + 1;
-        switch (index) {
+        int i = 1;
+        while(i < 6) if(ui->tbwChatrooms->tabText(i) == "") break;
+        switch (i) {
         case 1:
-            QListWidget *lst_t1;
-            lst_t1->setObjectName("lst_t1");
-            lst_t1->setStyleSheet("background-color:rgb(255,255,255);\ncolor:rgb(0,0,0);");
+            ui->tbwChatrooms->setTabText(i, "Name");
+            ui->lst1->clear();
+            break;
+        case 2:
+            ui->tbwChatrooms->setTabText(i, "Name");
+            ui->lst2->clear();
+            break;
+        case 3:
+            ui->tbwChatrooms->setTabText(i, "Name");
+            ui->lst3->clear();
+            break;
+        case 4:
+            ui->tbwChatrooms->setTabText(i, "Name");
+            ui->lst4->clear();
+            break;
+        case 5:
+            ui->tbwChatrooms->setTabText(i, "Name");
+            ui->lst5->clear();
             break;
         default:
             break;
@@ -77,19 +92,19 @@ void Ventilate::on_btnSend_clicked()
         ui->lst0->addItem(+ "<" + QDateTime::currentDateTime().toString("MM/dd/yyyy") + "> " + ui->ptxtMessageBox->toPlainText());
         break;
     case 1:
-        ui->lst1->addItem(+ "<" + QDateTime::currentDateTime().toString("MM/dd/yyyy") + "> " + ui->ptxtMessageBox->toPlainText());
+        if(ui->tbwChatrooms->tabText(index) != "")ui->lst1->addItem(+ "<" + QDateTime::currentDateTime().toString("MM/dd/yyyy") + "> " + ui->ptxtMessageBox->toPlainText());
         break;
     case 2:
-        ui->lst2->addItem(+ "<" + QDateTime::currentDateTime().toString("MM/dd/yyyy") + "> " + ui->ptxtMessageBox->toPlainText());
+        if(ui->tbwChatrooms->tabText(index) != "")ui->lst2->addItem(+ "<" + QDateTime::currentDateTime().toString("MM/dd/yyyy") + "> " + ui->ptxtMessageBox->toPlainText());
         break;
     case 3:
-        ui->lst3->addItem(+ "<" + QDateTime::currentDateTime().toString("MM/dd/yyyy") + "> " + ui->ptxtMessageBox->toPlainText());
+        if(ui->tbwChatrooms->tabText(index) != "")ui->lst3->addItem(+ "<" + QDateTime::currentDateTime().toString("MM/dd/yyyy") + "> " + ui->ptxtMessageBox->toPlainText());
         break;
     case 4:
-        ui->lst4->addItem(+ "<" + QDateTime::currentDateTime().toString("MM/dd/yyyy") + "> " + ui->ptxtMessageBox->toPlainText());
+        if(ui->tbwChatrooms->tabText(index) != "")ui->lst4->addItem(+ "<" + QDateTime::currentDateTime().toString("MM/dd/yyyy") + "> " + ui->ptxtMessageBox->toPlainText());
         break;
     case 5:
-        ui->lst5->addItem(+ "<" + QDateTime::currentDateTime().toString("MM/dd/yyyy") + "> " + ui->ptxtMessageBox->toPlainText());
+        if(ui->tbwChatrooms->tabText(index) != "")ui->lst5->addItem(+ "<" + QDateTime::currentDateTime().toString("MM/dd/yyyy") + "> " + ui->ptxtMessageBox->toPlainText());
         break;
     default:
         break;
@@ -106,4 +121,32 @@ void Ventilate::on_btnClear_clicked()
 void Ventilate::on_actionAbout_Ventilate_triggered()
 {
     QMessageBox::about(this, "About Ventilate", "");
+}
+
+void Ventilate::on_actionLeave_Chat_room_triggered()
+{
+    int index = ui->tbwChatrooms->currentIndex();
+    if(ui->tbwChatrooms->tabText(index) != "" && index != 0){
+        ui->tbwChatrooms->setTabText(index, "");
+        switch (index) {
+        case 1:
+            ui->lst1->clear();
+            break;
+        case 2:
+            ui->lst2->clear();
+            break;
+        case 3:
+            ui->lst3->clear();
+            break;
+        case 4:
+            ui->lst4->clear();
+            break;
+        case 5:
+            ui->lst5->clear();
+            break;
+        default:
+            break;
+        }
+        ui->tbwChatrooms->setCurrentIndex(0);
+    }
 }

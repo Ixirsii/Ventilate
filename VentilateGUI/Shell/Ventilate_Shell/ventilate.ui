@@ -479,7 +479,6 @@ background-color: rgb(255, 255, 255);</string>
     <addaction name="separator"/>
     <addaction name="actionCreate_Chat_room"/>
     <addaction name="separator"/>
-    <addaction name="actionReport_Chat_room"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -517,24 +516,28 @@ background-color: rgb(255, 255, 255);</string>
     <string>Create Chat-room</string>
    </property>
   </action>
-  <action name="actionReport_Chat_room">
-   <property name="text">
-    <string>Report Chat-room</string>
-   </property>
-  </action>
   <action name="actionLogin">
    <property name="text">
     <string>Login</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+L</string>
    </property>
   </action>
   <action name="actionLogout">
    <property name="text">
     <string>Logout</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+L</string>
+   </property>
   </action>
   <action name="actionExit">
    <property name="text">
     <string>Exit</string>
+   </property>
+   <property name="shortcut">
+    <string>Esc</string>
    </property>
   </action>
   <action name="actionAbout_Ventilate">

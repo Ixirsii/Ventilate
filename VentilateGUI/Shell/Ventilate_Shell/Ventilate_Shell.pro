@@ -17,21 +17,18 @@ SOURCES += main.cpp\
     ventilate_createchat.cpp \
     chatroom.cpp \
     ventilate_login.cpp \
-    ventilate_newuser.cpp \
-    chatscreen.cpp
+    ventilate_newuser.cpp
 
 HEADERS  += ventilate.h \
     ventilate_createchat.h \
     chatroom.h \
     ventilate_login.h \
-    ventilate_newuser.h \
-    chatscreen.h
+    ventilate_newuser.h
 
 FORMS    += ventilate.ui \
     ventilate_createchat.ui \
     ventilate_login.ui \
-    ventilate_newuser.ui \
-    chatscreen.ui
+    ventilate_newuser.ui
 
 RESOURCES += \
     ventilate.qrc

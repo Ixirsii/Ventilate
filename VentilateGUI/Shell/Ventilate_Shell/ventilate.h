@@ -25,6 +25,8 @@ private slots:
     void on_btnClear_clicked();
     void on_actionAbout_Ventilate_triggered();
 
+    void on_actionLeave_Chat_room_triggered();
+
 private:
     Ui::Ventilate *ui;
 };
