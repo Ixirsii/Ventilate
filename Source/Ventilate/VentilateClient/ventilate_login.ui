@@ -6,40 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>480</width>
-    <height>640</height>
+    <width>484</width>
+    <height>608</height>
    </rect>
   </property>
-  <property name="minimumSize">
-   <size>
-    <width>480</width>
-    <height>640</height>
-   </size>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>480</width>
-    <height>640</height>
-   </size>
-  </property>
   <property name="windowTitle">
-   <string>Ventilate Login</string>
-  </property>
-  <property name="autoFillBackground">
-   <bool>false</bool>
+   <string>Ventilate: Login</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(66, 66, 66);</string>
+   <string notr="true">background-color:rgb(66,66,66);</string>
   </property>
-  <property name="sizeGripEnabled">
-   <bool>false</bool>
-  </property>
-  <property name="modal">
-   <bool>true</bool>
-  </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2">
+  <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLabel" name="lblLogo">
+    <widget class="QLabel" name="lblTitle">
      <property name="minimumSize">
       <size>
        <width>461</width>
@@ -52,77 +31,89 @@
        <height>101</height>
       </size>
      </property>
-     <property name="font">
-      <font>
-       <pointsize>48</pointsize>
-      </font>
+     <property name="baseSize">
+      <size>
+       <width>461</width>
+       <height>101</height>
+      </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">image: url(:/Ventilate.svg);</string>
+      <string notr="true">image: url(:/Images/Ventilate.svg);</string>
      </property>
      <property name="text">
       <string/>
      </property>
-     <property name="scaledContents">
-      <bool>true</bool>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-     <property name="textInteractionFlags">
-      <set>Qt::NoTextInteraction</set>
-     </property>
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="hlLoginControls">
-     <property name="sizeConstraint">
-      <enum>QLayout::SetFixedSize</enum>
+    <spacer name="vspControlsTop">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
-     <property name="leftMargin">
-      <number>50</number>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>172</height>
+      </size>
      </property>
-     <property name="topMargin">
-      <number>200</number>
-     </property>
-     <property name="rightMargin">
-      <number>40</number>
-     </property>
+    </spacer>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="hlUsernameLayout">
      <item>
-      <layout class="QVBoxLayout" name="vlLoginHeaders">
-       <property name="sizeConstraint">
-        <enum>QLayout::SetFixedSize</enum>
+      <spacer name="hspUsernameLeft">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="hlUsernameControls">
+       <property name="spacing">
+        <number>7</number>
        </property>
        <item>
         <widget class="QLabel" name="lblUsername">
          <property name="minimumSize">
           <size>
-           <width>72</width>
-           <height>20</height>
+           <width>77</width>
+           <height>21</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>72</width>
-           <height>20</height>
+           <width>77</width>
+           <height>21</height>
           </size>
          </property>
          <property name="baseSize">
           <size>
-           <width>72</width>
-           <height>20</height>
+           <width>77</width>
+           <height>21</height>
           </size>
          </property>
          <property name="font">
           <font>
-           <pointsize>11</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="styleSheet">
-          <string notr="true">color: rgb(255, 255, 255);</string>
+          <string notr="true">color:rgb(255,255,255);</string>
          </property>
          <property name="text">
-          <string>Username:</string>
+          <string>Username: </string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
+         </property>
+         <property name="scaledContents">
+          <bool>true</bool>
          </property>
          <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -130,109 +121,154 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_2">
+        <widget class="QLineEdit" name="lnedUsername">
          <property name="minimumSize">
           <size>
-           <width>72</width>
-           <height>20</height>
+           <width>140</width>
+           <height>21</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>72</width>
-           <height>20</height>
+           <width>140</width>
+           <height>21</height>
           </size>
          </property>
          <property name="baseSize">
           <size>
-           <width>72</width>
-           <height>20</height>
+           <width>140</width>
+           <height>21</height>
           </size>
          </property>
-         <property name="font">
-          <font>
-           <pointsize>11</pointsize>
-          </font>
-         </property>
          <property name="styleSheet">
-          <string notr="true">color: rgb(255, 255, 255);</string>
+          <string notr="true">color:rgb(0,0,0);
+background-color:rgb(255,255,255);</string>
          </property>
-         <property name="text">
-          <string>Password:</string>
+         <property name="maxLength">
+          <number>64</number>
          </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="clearButtonEnabled">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
       </layout>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="vlLoginFields">
-       <property name="sizeConstraint">
-        <enum>QLayout::SetFixedSize</enum>
+      <spacer name="hspUsernameRight">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="hlPasswordLayout">
+     <item>
+      <spacer name="hspPasswordLeft">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="hlPasswordControls">
+       <property name="spacing">
+        <number>7</number>
        </property>
        <item>
-        <widget class="QLineEdit" name="lnedUsername">
+        <widget class="QLabel" name="lblPassword">
          <property name="minimumSize">
           <size>
-           <width>289</width>
-           <height>20</height>
+           <width>77</width>
+           <height>21</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>289</width>
-           <height>20</height>
+           <width>77</width>
+           <height>21</height>
           </size>
          </property>
          <property name="baseSize">
           <size>
-           <width>289</width>
-           <height>20</height>
+           <width>77</width>
+           <height>21</height>
           </size>
          </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
          <property name="styleSheet">
-          <string notr="true">background-color: rgb(255, 255, 255);
-color: rgb(0, 0, 0);</string>
+          <string notr="true">color:rgb(255,255,255);</string>
          </property>
-         <property name="maxLength">
-          <number>32</number>
+         <property name="text">
+          <string>Password: </string>
          </property>
-         <property name="echoMode">
-          <enum>QLineEdit::Normal</enum>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
          </property>
-         <property name="cursorMoveStyle">
-          <enum>Qt::VisualMoveStyle</enum>
-         </property>
-         <property name="clearButtonEnabled">
+         <property name="scaledContents">
           <bool>true</bool>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QLineEdit" name="lnedPassword">
+         <property name="minimumSize">
+          <size>
+           <width>140</width>
+           <height>21</height>
+          </size>
+         </property>
          <property name="maximumSize">
           <size>
-           <width>289</width>
-           <height>20</height>
+           <width>140</width>
+           <height>21</height>
           </size>
          </property>
          <property name="baseSize">
           <size>
-           <width>289</width>
-           <height>20</height>
+           <width>140</width>
+           <height>21</height>
           </size>
          </property>
          <property name="styleSheet">
-          <string notr="true">background-color: rgb(255, 255, 255);
-color: rgb(0, 0, 0);</string>
+          <string notr="true">color:rgb(0,0,0);
+background-color:rgb(255,255,255);</string>
          </property>
          <property name="maxLength">
-          <number>32</number>
+          <number>64</number>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
          </property>
          <property name="echoMode">
           <enum>QLineEdit::Password</enum>
+         </property>
+         <property name="placeholderText">
+          <string/>
          </property>
          <property name="clearButtonEnabled">
           <bool>true</bool>
@@ -241,100 +277,74 @@ color: rgb(0, 0, 0);</string>
        </item>
       </layout>
      </item>
+     <item>
+      <spacer name="hspPasswordRight">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
     </layout>
    </item>
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <property name="sizeConstraint">
-      <enum>QLayout::SetFixedSize</enum>
+    <spacer name="vspControlsBottom">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
-     <property name="leftMargin">
-      <number>181</number>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>171</height>
+      </size>
      </property>
-     <property name="topMargin">
-      <number>195</number>
-     </property>
-     <property name="rightMargin">
-      <number>100</number>
-     </property>
+    </spacer>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="hlNewUserLayout">
      <item>
-      <widget class="QPushButton" name="btnLogin">
-       <property name="minimumSize">
+      <spacer name="hspNewUser">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
         <size>
-         <width>99</width>
-         <height>24</height>
+         <width>40</width>
+         <height>20</height>
         </size>
        </property>
-       <property name="maximumSize">
-        <size>
-         <width>99</width>
-         <height>24</height>
-        </size>
-       </property>
-       <property name="sizeIncrement">
-        <size>
-         <width>0</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="baseSize">
-        <size>
-         <width>99</width>
-         <height>24</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: rgb(255, 255, 255);</string>
-       </property>
-       <property name="text">
-        <string>Login</string>
-       </property>
-       <property name="autoDefault">
-        <bool>false</bool>
-       </property>
-       <property name="flat">
-        <bool>true</bool>
-       </property>
-      </widget>
+      </spacer>
      </item>
      <item>
       <widget class="QPushButton" name="btnNewUser">
        <property name="minimumSize">
         <size>
-         <width>99</width>
-         <height>24</height>
+         <width>70</width>
+         <height>21</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>99</width>
-         <height>24</height>
+         <width>70</width>
+         <height>21</height>
         </size>
        </property>
        <property name="baseSize">
         <size>
-         <width>99</width>
-         <height>24</height>
+         <width>70</width>
+         <height>21</height>
         </size>
        </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(255, 255, 255);</string>
+        <string notr="true">color:rgb(255,255,255);</string>
        </property>
        <property name="text">
-        <string>New user?</string>
-       </property>
-       <property name="autoDefault">
-        <bool>false</bool>
+        <string>New User</string>
        </property>
        <property name="flat">
         <bool>true</bool>
@@ -343,8 +353,74 @@ color: rgb(0, 0, 0);</string>
      </item>
     </layout>
    </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>31</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>31</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(66, 66, 66);
+color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="locale">
+      <locale language="English" country="UnitedStates"/>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
   </layout>
+  <zorder>buttonBox</zorder>
+  <zorder>lblTitle</zorder>
+  <zorder>vspControlsTop</zorder>
+  <zorder>vspControlsBottom</zorder>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>ventilate_login</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>ventilate_login</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
