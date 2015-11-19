@@ -10,8 +10,7 @@
 #include <QUuid>
 
 ventilate_createchat::ventilate_createchat(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::ventilate_createchat)
+    QDialog(parent), ui(new Ui::ventilate_createchat)
 {
     ui->setupUi(this);
 }

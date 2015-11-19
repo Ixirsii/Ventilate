@@ -11,7 +11,7 @@
 #include <QSqlDatabase>
 #include "libventilate_global.h"
 
-class LIBVENTILATESHARED_EXPORT Database
+class Database
 {
 public:
     explicit Database();

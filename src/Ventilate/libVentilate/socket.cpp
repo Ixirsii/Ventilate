@@ -37,10 +37,8 @@
 #include "socket.h"
 #include <QByteArray>
 #include <QDataStream>
-#include <QPlainTextEdit>
 #include <QString>
 #include <QThread>
-#include "mainwindow.h"
 
 
 /*!
@@ -49,10 +47,10 @@
  * \param port
  * \param parent
  */
-Socket::Socket(QString host, qint16 port, MainWindow& mw, QObject *parent)
-    : QObject(parent), mw(mw)
+Socket::Socket(QString host, qint16 port, QObject *parent)
+    : QObject(parent), waitingForResponse(false),
+      stream(&buffer, QIODevice::ReadWrite), socket(new QTcpSocket(this))
 {
-    socket = new QTcpSocket(this);
     socket->connectToHost(host, port);
     connect(socket, &QTcpSocket::readyRead, this, &Socket::listen);
 }
@@ -65,6 +63,7 @@ Socket::~Socket()
 {
     socket->deleteLater();
 }
+
 
 /*!
  * \brief Socket::listen
@@ -81,11 +80,13 @@ void Socket::listen()
     }
     if (socket->bytesAvailable() < blockSize)
         return;
-    QString data;
-    in >> data;
+    QByteArray tmp;
+    while (!in.atEnd()) {
+        in >> tmp;
+        stream << tmp;
+    }
     blockSize = 0;
-    // Debugging!
-    mw.findChild<QPlainTextEdit*>("ptxtMessageBox")->appendPlainText(data);
+    waitingForResponse = false;
 }
 
 /*!
@@ -101,4 +102,11 @@ void Socket::send(QString data) {
     out.device()->seek(0);
     out << (quint16) (block.size() - sizeof(quint16));
     socket->write(block);
+    waitingForResponse = true;
+}
+
+void Socket::waitForResponse()
+{
+    while (waitingForResponse)
+        QThread::currentThread()->sleep(500);
 }

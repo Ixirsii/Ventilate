@@ -43,6 +43,20 @@ void AccountParser::create(const ConnectionHandler& handler, QDataStream& stream
         handler.write(REJECT + " " + GENERIC_ERROR);
 }
 
+
+void AccountParser::get(const ConnectionHandler& handler, QDataStream& stream)
+{
+    AccountDatabase db;
+    QByteArray data;
+    QDataStream str(&data, QIODevice::WriteOnly);
+    QString username;
+    stream >> username;
+    Account acc = db.find(username);
+    str << acc;
+    handler.write(data);
+}
+
+
 void AccountParser::login(const ConnectionHandler& handler, QDataStream& stream)
 {
     QString username;
@@ -60,6 +74,8 @@ void AccountParser::parse(const ConnectionHandler& handler, QDataStream& stream)
     stream >> cmd;
     if (cmd == LOGIN)
         login(handler, stream);
+    else if (cmd == GET)
+        get(handler, stream);
     else if (cmd == CREATE)
         create(handler, stream);
     else if (cmd == DELETE)

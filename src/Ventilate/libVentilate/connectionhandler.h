@@ -25,7 +25,8 @@ public:
 
     const QHostAddress& getHostAddress() const;
     void run();
-    void write(QString data) const;
+    void write(const QByteArray& data) const;
+    void write(const QString& data) const;
 
     friend bool operator==(const ConnectionHandler& ch0,
                            const ConnectionHandler& ch1);

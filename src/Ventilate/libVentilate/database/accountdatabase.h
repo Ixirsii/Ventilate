@@ -13,8 +13,7 @@
 #include "databaseinterface.h"
 #include "libventilate_global.h"
 
-class LIBVENTILATESHARED_EXPORT AccountDatabase
-        : public DatabaseInterface<Account>
+class AccountDatabase : public DatabaseInterface<Account>
 {
 public:
     AccountDatabase();

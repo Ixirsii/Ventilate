@@ -22,6 +22,7 @@ public:
 
 private:
     void create(const ConnectionHandler& handler, QDataStream& stream);
+    void get(const ConnectionHandler& handler, QDataStream& stream);
     void login(const ConnectionHandler& handler, QDataStream& stream);
     void remove(const ConnectionHandler& handler, QDataStream& stream);
 };

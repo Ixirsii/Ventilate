@@ -1,13 +1,14 @@
 #include "ventilate_newuser.h"
-#include "ui_ventilate_newuser.h"
 #include <QDialog>
 #include <QString>
 #include <QMessageBox>
 #include <QAbstractButton>
+#include "account.h"
+#include "ui_ventilate_newuser.h"
+#include "server/commandparser.h"
 
-ventilate_newuser::ventilate_newuser(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::ventilate_newuser)
+ventilate_newuser::ventilate_newuser(Socket& socket, QWidget *parent)
+    : QDialog(parent), socket(socket), ui(new Ui::ventilate_newuser)
 {
     ui->setupUi(this);
 }
@@ -20,36 +21,26 @@ ventilate_newuser::~ventilate_newuser()
 void ventilate_newuser::on_buttonBox_clicked(QAbstractButton *button)
 {
     if(button->text() == "Reset"){
-        ui->lnedConfirmEmail->clear();
-        ui->lnedConfirmPassword->clear();
-        ui->lnedEmail->clear();
-        ui->lnedPassword->clear();
-        ui->lnedUsername->clear();
-        ui->lblConfirmEmailContextInfo->clear();
-        ui->lblConfirmPasswordContextInfo->clear();
-        ui->lnedUsername->setFocus();
+        //ui->confirmEmailText->clear();
+        //ui->confirmPasswordText->clear();
+        ui->emailText->clear();
+        ui->passwordText->clear();
+        ui->usernameText->clear();
+        ui->usernameText->setFocus();
     }
 }
 
-
-
-void ventilate_newuser::on_lnedUsername_textChanged(const QString &arg1)
+void ventilate_newuser::on_buttonBox_accepted()
 {
-    if(arg1.length() >= 50){
-         ui->lblUsernameContextInfo->setText("<font color='#FFFFFF'>" + QString::number(64-arg1.length()) + " characters left.<font/>");
-    }else{
-        ui->lblUsernameContextInfo->setText("");
-    }
-}
-
-void ventilate_newuser::on_lnedConfirmPassword_textChanged(const QString &arg1)
-{
-    if(arg1 != ui->lnedPassword->text()) ui->lblConfirmPasswordContextInfo->setText("<font color='#FFFFFF'>Passwords don't match.<font/>");
-    if(arg1 == ui->lnedPassword->text()) ui->lblConfirmPasswordContextInfo->setText("<font color='#FFFFFF'>Passwords match.<font/>");
-}
-
-void ventilate_newuser::on_lnedConfirmEmail_textChanged(const QString &arg1)
-{
-    if(arg1 != ui->lnedEmail->text()) ui->lblConfirmEmailContextInfo->setText("<font color='#FFFFFF'>Emails don't match.<font/>");
-    if(arg1 == ui->lnedEmail->text()) ui->lblConfirmEmailContextInfo->setText("<font color='#FFFFFF'>Emails match.<font/>");
+    QString username = ui->usernameText->text();
+    QString password = ui->passwordText->text();
+    QString email = ui->emailText->text();
+    Account acc(username, password, email);
+    QString cmd = CommandParser::ACCOUNT + " " + CommandParser::CREATE + " ";
+    cmd += acc.getUUID().toString() + " " + acc.getUsername() + " ";
+    cmd += acc.getCreationDate().time().toString() + " ";
+    cmd += acc.getPasswordHash() + " ";
+    cmd += acc.getEmailAddress();
+    socket.send(cmd);
+    socket.waitForResponse();
 }

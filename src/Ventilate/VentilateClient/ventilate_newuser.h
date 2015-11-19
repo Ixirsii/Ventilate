@@ -5,6 +5,7 @@
 #include <QString>
 #include <QMessageBox>
 #include <QAbstractButton>
+#include "socket.h"
 
 namespace Ui {
 class ventilate_newuser;
@@ -15,19 +16,16 @@ class ventilate_newuser : public QDialog
     Q_OBJECT
 
 public:
-    explicit ventilate_newuser(QWidget *parent = 0);
+    explicit ventilate_newuser(Socket& socket, QWidget *parent = 0);
     ~ventilate_newuser();
 
 private slots:
+
     void on_buttonBox_clicked(QAbstractButton *button);
-
-    void on_lnedUsername_textChanged(const QString &arg1);
-
-    void on_lnedConfirmPassword_textChanged(const QString &arg1);
-
-    void on_lnedConfirmEmail_textChanged(const QString &arg1);
+    void on_buttonBox_accepted();
 
 private:
+    Socket& socket;
     Ui::ventilate_newuser *ui;
 };
 

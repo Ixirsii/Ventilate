@@ -14,25 +14,22 @@ TEMPLATE = app
 CONFIG += c++11
 
 SOURCES += main.cpp\
-    mainwindow.cpp \
     chatroomlistener.cpp \
     client.cpp \
-    socket.cpp \
     ventilate.cpp \
     ventilate_createchat.cpp \
     ventilate_login.cpp \
     ventilate_newuser.cpp
 
-HEADERS  += mainwindow.h \
+HEADERS  += \
     chatroomlistener.h \
     client.h \
-    socket.h \
     ventilate.h \
     ventilate_createchat.h \
     ventilate_login.h \
     ventilate_newuser.h
 
-FORMS    += mainwindow.ui \
+FORMS    += \
     ventilate.ui \
     ventilate_createchat.ui \
     ventilate_login.ui \
@@ -45,3 +42,6 @@ else:unix: LIBS += -L$$OUT_PWD/../libVentilate/ -llibVentilate
 
 INCLUDEPATH += $$PWD/../libVentilate
 DEPENDPATH += $$PWD/../libVentilate
+
+RESOURCES += \
+    ventilate.qrc

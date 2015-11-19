@@ -11,7 +11,7 @@
 #include <QDataStream>
 #include "connectionhandler.h"
 
-class CommandParser
+class LIBVENTILATESHARED_EXPORT CommandParser
 {
 public:
     static const QString ACCEPT;
@@ -20,6 +20,7 @@ public:
     static const QString CHANGE;
     static const QString CREATE;
     static const QString DELETE;
+    static const QString GET;
     static const QString HISTORY;
     static const QString JOIN;
     static const QString LEAVE;

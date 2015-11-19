@@ -37,28 +37,37 @@
 #ifndef SOCKET_H
 #define SOCKET_H
 
+#include <QByteArray>
+#include <QDataStream>
 #include <QObject>
 #include <QTcpSocket>
-#include "mainwindow.h"
 #include "message.h"
 
-class Socket : public QObject
+class LIBVENTILATESHARED_EXPORT Socket : public QObject
 {
     Q_OBJECT
 public:
-    explicit Socket(QString host, qint16 port, MainWindow& mw, QObject *parent = 0);
+    explicit Socket(QString host, qint16 port, QObject *parent = 0);
     virtual ~Socket();
 
-    void propogateMessage(QString data);
-    // Temporary function for testing
+    template <typename T> T get()
+    {
+        T obj;
+        stream >> obj;
+        return std::move(obj);
+    }
+
     void send(QString data);
+    void waitForResponse();
 
 public slots:
     void listen();
 
 private:
+    bool waitingForResponse;
+    QByteArray buffer;
+    QDataStream stream;
     QTcpSocket *socket;
-    QMainWindow& mw;
 };
 
 #endif // SOCKET_H

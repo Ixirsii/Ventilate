@@ -17,6 +17,7 @@ const QString CommandParser::ADD = "ADD";
 const QString CommandParser::CHANGE = "CHANGE";
 const QString CommandParser::CREATE = "CREATE";
 const QString CommandParser::DELETE = "DELETE";
+const QString CommandParser::GET = "GET";
 const QString CommandParser::HISTORY = "HISTORY";
 const QString CommandParser::JOIN = "JOIN";
 const QString CommandParser::LEAVE = "LEAVE";

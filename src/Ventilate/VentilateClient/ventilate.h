@@ -2,7 +2,9 @@
 #define VENTILATE_H
 
 #include <QMainWindow>
-#include<QUuid>
+#include <QUuid>
+#include "account.h"
+
 namespace Ui {
 class Ventilate;
 }
@@ -13,7 +15,7 @@ class Ventilate : public QMainWindow
 private:
     QUuid UserID;
 public:
-    explicit Ventilate(QWidget *parent = 0);
+    explicit Ventilate(Socket& socket, QWidget *parent = 0);
     ~Ventilate();
 
 private slots:
@@ -28,6 +30,8 @@ private slots:
     void on_actionLeave_Chat_room_triggered();
 
 private:
+    Account account;
+    Socket& socket;
     Ui::Ventilate *ui;
 };
 

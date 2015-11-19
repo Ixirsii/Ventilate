@@ -13,8 +13,7 @@
 #include "libventilate_global.h"
 #include "message.h"
 
-class LIBVENTILATESHARED_EXPORT MessageDatabase
-        : public DatabaseInterface<Message>
+class MessageDatabase : public DatabaseInterface<Message>
 {
 public:
     explicit MessageDatabase();

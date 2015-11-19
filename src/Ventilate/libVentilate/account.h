@@ -14,10 +14,7 @@
 #include <QString>
 #include <QUuid>
 #include "libventilate_global.h"
-
-
-QByteArray hashPassword(QString& password, QString& username);
-
+#include "socket.h"
 
 class LIBVENTILATESHARED_EXPORT Account : public QObject
 {
@@ -26,6 +23,7 @@ public:
     Account(const Account& copy);
     Account(Account&& move);
 
+    explicit Account();
     explicit Account(QUuid& uuid, QString& username, QDateTime& creationDate,
                      QObject *parent = 0);
 
@@ -40,6 +38,9 @@ public:
                      QObject *parent = 0);
 
     static bool authenticateUser(QString& username, QByteArray passwordHash);
+    static Account getAccount(Socket& socket, QString& username);
+    static QByteArray hashPassword(QString& password, QString& username);
+
     const QUuid& getUUID() const;
     const QDateTime& getCreationDate() const;
     const QString& getEmailAddress() const;

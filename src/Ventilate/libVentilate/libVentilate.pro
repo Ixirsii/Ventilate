@@ -19,6 +19,7 @@ SOURCES += \
     account.cpp \
     chatroom.cpp \
     message.cpp \
+    socket.cpp \
     database/accountdatabase.cpp \
     database/messagedatabase.cpp \
     database/chatroomdatabase.cpp \
@@ -40,6 +41,7 @@ HEADERS +=\
     account.h \
     chatroom.h \
     message.h \
+    socket.h \
     database/databaseinterface.h \
     database/accountdatabase.h \
     database/messagedatabase.h \

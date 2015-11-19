@@ -13,8 +13,7 @@
 #include "databaseinterface.h"
 #include "libventilate_global.h"
 
-class LIBVENTILATESHARED_EXPORT ChatRoomDatabase
-        : public DatabaseInterface<ChatRoom>
+class ChatRoomDatabase : public DatabaseInterface<ChatRoom>
 {
 public:
     explicit ChatRoomDatabase();

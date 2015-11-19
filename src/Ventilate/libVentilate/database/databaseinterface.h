@@ -18,8 +18,7 @@
 #include "database.h"
 #include "libventilate_global.h"
 
-template <typename T> class LIBVENTILATESHARED_EXPORT DatabaseInterface
-        : public Database
+template <typename T> class DatabaseInterface : public Database
 {
 public:
     explicit DatabaseInterface()

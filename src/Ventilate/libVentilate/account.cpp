@@ -14,6 +14,12 @@
 #include <QObject>
 #include <QString>
 #include "database/accountdatabase.h"
+#include "server/commandparser.h"
+
+
+Account::Account()
+{
+}
 
 
 /*!
@@ -153,6 +159,17 @@ bool Account::authenticateUser(QString& username, QByteArray passwordHash)
 }
 
 
+Account Account::getAccount(Socket& socket, QString& username)
+{
+    QString cmd = CommandParser::ACCOUNT + " " + CommandParser::GET + " ";
+    cmd += username;
+    socket.send(cmd);
+    socket.waitForResponse();
+    Account acc = socket.get<Account>();
+    return std::move(acc);
+}
+
+
 /*!
  * \brief Get the unique ID for the user account.
  * \return  unique ID for the user account.
@@ -211,7 +228,7 @@ const QString& Account::getUsername() const
  * \param password String password that is being salted and hashed.
  * \return A cryptographic hash of the user's password.
  */
-QByteArray hashPassword(QString& password, QString& username)
+QByteArray Account::hashPassword(QString& password, QString& username)
 {
     QByteArray saltedArray;
     QDataStream out(&saltedArray, QIODevice::WriteOnly);
@@ -264,8 +281,6 @@ QDataStream& operator<<(QDataStream& out, const Account& account)
     out << account.uuid;
     out << account.username;
     out << account.creationDate;
-    out << account.passwordHash;
-    out << account.emailAddress;
     return out;
 }
 
@@ -281,8 +296,6 @@ QDataStream& operator>>(QDataStream& in, Account& account)
     in >> account.uuid;
     in >> account.username;
     in >> account.creationDate;
-    in >> account.passwordHash;
-    in >> account.emailAddress;
     return in;
 }
 

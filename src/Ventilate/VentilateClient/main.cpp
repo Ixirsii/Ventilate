@@ -5,10 +5,10 @@
  * \copyright BSD 3 Clause
  */
 
-#include "mainwindow.h"
 #include <QApplication>
-#include "server/server.h"
+#include "ventilate.h"
 #include "socket.h"
+#include "server/server.h"
 
 /*!
  * \brief Start Ventilate
@@ -22,11 +22,11 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
+    Socket s("127.0.0.1", 37377);
+    Ventilate v(s);
+    v.show();
 
     // Connect to the central server
-    //Socket s("127.0.0.1", 37377, w);
     // Test for now, gets the peer list
     //s.send("PEER LIST REQUEST");
 
