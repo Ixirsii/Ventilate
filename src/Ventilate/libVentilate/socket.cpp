@@ -48,8 +48,8 @@
  * \param parent
  */
 Socket::Socket(QString host, qint16 port, QObject *parent)
-    : QObject(parent), waitingForResponse(false),
-      stream(&buffer, QIODevice::ReadWrite), socket(new QTcpSocket(this))
+    : QObject(parent), stream(&buffer, QIODevice::ReadWrite),
+      socket(new QTcpSocket(this))
 {
     socket->connectToHost(host, port);
     connect(socket, &QTcpSocket::readyRead, this, &Socket::listen);
@@ -80,33 +80,28 @@ void Socket::listen()
     }
     if (socket->bytesAvailable() < blockSize)
         return;
-    QByteArray tmp;
-    while (!in.atEnd()) {
-        in >> tmp;
-        stream << tmp;
-    }
     blockSize = 0;
-    waitingForResponse = false;
+    QString data;
+    in >> data;
+    qDebug() << "Received from server: " << data;
+    emit response(data);
 }
+
 
 /*!
  * \brief Socket::send
  * \param data
  */
-void Socket::send(QString data) {
+void Socket::send(QString& data) {
+    qDebug() << "Sending command to server: " << data;
     QByteArray block;
     QDataStream out(&block, QIODevice::WriteOnly);
     out.setVersion(QDataStream::Qt_5_0);
+
     out << (quint16) 0;
     out << data;
+
     out.device()->seek(0);
     out << (quint16) (block.size() - sizeof(quint16));
     socket->write(block);
-    waitingForResponse = true;
-}
-
-void Socket::waitForResponse()
-{
-    while (waitingForResponse)
-        QThread::currentThread()->sleep(500);
 }

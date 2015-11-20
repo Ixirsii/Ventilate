@@ -19,9 +19,14 @@ public:
 
     Account getAccount();
 
+public slots:
+    void response(QString response);
+
 private slots:
     void on_newUserButton_clicked();
-    void on_buttonBox_accepted();
+    void on_loginButton_clicked();
+
+    void on_cancelButton_clicked();
 
 private:
     Account account;

@@ -19,21 +19,21 @@ public:
     explicit RoomParser(QList<ConnectionHandler*>& clientList);
     virtual ~RoomParser();
 
-    virtual void parse(const ConnectionHandler& handler, QDataStream& stream);
+    virtual void parse(const ConnectionHandler& handler, QStringList& tokens);
 
 private:
     const QList<ConnectionHandler*>& clientList;
 
-    void add(const ConnectionHandler& handler, QDataStream& stream);
-    void create(const ConnectionHandler& handler, QDataStream& stream);
-    void history(const ConnectionHandler& handler, QDataStream& stream);
-    void join(const ConnectionHandler& handler, QDataStream& stream);
-    void leave(const ConnectionHandler& handler, QDataStream& stream);
-    void list(const ConnectionHandler& handler, QDataStream& stream);
-    void message(QDataStream& stream);
-    void mode(const ConnectionHandler& handler, QDataStream& stream);
+    void add(const ConnectionHandler& handler, QStringList& tokens);
+    void create(const ConnectionHandler& handler, QStringList& tokens);
+    void history(const ConnectionHandler& handler, QStringList& tokens);
+    void join(const ConnectionHandler& handler, QStringList& tokens);
+    void leave(const ConnectionHandler& handler, QStringList& tokens);
+    void list(const ConnectionHandler& handler, QStringList& tokens);
+    void message(QStringList& tokens);
+    void mode(const ConnectionHandler& handler, QStringList& tokens);
     void propogateMessage(const Message& message);
-    void remove(const ConnectionHandler& handler, QDataStream& stream);
+    void remove(const ConnectionHandler& handler, QStringList& tokens);
 };
 
 #endif // ROOMPARSER_H

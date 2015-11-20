@@ -38,19 +38,21 @@ public:
                      QObject *parent = 0);
 
     static bool authenticateUser(QString& username, QByteArray passwordHash);
-    static Account getAccount(Socket& socket, QString& username);
+    static Account fromString(QString& serialized);
     static QByteArray hashPassword(QString& password, QString& username);
+    static void requestAccount(Socket& socket, QString& username);
 
     const QUuid& getUUID() const;
     const QDateTime& getCreationDate() const;
     const QString& getEmailAddress() const;
     const QByteArray& getPasswordHash() const;
     const QString& getUsername() const;
+    QString toString() const;
 
     Account& operator=(const Account& copy);
     Account& operator=(Account&& move);
-    friend QDataStream& operator<<(QDataStream& out, const Account& account);
     friend QDataStream& operator>>(QDataStream& in, Account& account);
+    friend QDataStream& operator<<(QDataStream& out, const Account& account);
 
 private:
     QUuid uuid;

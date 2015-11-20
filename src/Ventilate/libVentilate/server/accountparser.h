@@ -8,7 +8,7 @@
 #ifndef ACCOUNTPARSER_H
 #define ACCOUNTPARSER_H
 
-#include <QDataStream>
+#include <QStringList>
 #include "commandparser.h"
 #include "connectionhandler.h"
 
@@ -18,13 +18,13 @@ public:
     explicit AccountParser();
     virtual ~AccountParser();
 
-    virtual void parse(const ConnectionHandler& handler, QDataStream& stream);
+    virtual void parse(const ConnectionHandler& handler, QStringList& tokens);
 
 private:
-    void create(const ConnectionHandler& handler, QDataStream& stream);
-    void get(const ConnectionHandler& handler, QDataStream& stream);
-    void login(const ConnectionHandler& handler, QDataStream& stream);
-    void remove(const ConnectionHandler& handler, QDataStream& stream);
+    void create(const ConnectionHandler& handler, QStringList& tokens);
+    void get(const ConnectionHandler& handler, QStringList& tokens);
+    void login(const ConnectionHandler& handler, QStringList& tokens);
+    void remove(const ConnectionHandler& handler, QStringList& tokens);
 };
 
 #endif // ACCOUNTPARSER_H

@@ -159,16 +159,20 @@ bool Account::authenticateUser(QString& username, QByteArray passwordHash)
 }
 
 
-Account Account::getAccount(Socket& socket, QString& username)
+Account Account::fromString(QString& serialized)
 {
-    QString cmd = CommandParser::ACCOUNT + " " + CommandParser::GET + " ";
-    cmd += username;
-    socket.send(cmd);
-    socket.waitForResponse();
-    Account acc = socket.get<Account>();
+    qDebug() << "Buiding account from: " << serialized;
+    QStringList tokens = serialized.split(" ");
+    QUuid uuid(tokens.at(0));
+    QString username = tokens.at(1);
+    QDateTime dt = QDateTime::fromString(tokens.at(2));
+    QByteArray phash;
+    phash.append(tokens.at(3));
+    QString email = tokens.at(4);
+    Account acc(uuid, username, dt, phash, email);
+
     return std::move(acc);
 }
-
 
 /*!
  * \brief Get the unique ID for the user account.
@@ -238,6 +242,24 @@ QByteArray Account::hashPassword(QString& password, QString& username)
 }
 
 
+void Account::requestAccount(Socket& socket, QString& username)
+{
+    QString cmd = CommandParser::ACCOUNT + " " + CommandParser::GET + " ";
+    cmd += username;
+    socket.send(cmd);
+}
+
+
+QString Account::toString() const
+{
+    QString str;
+    str += uuid.toString() + " " + username + " ";
+    str += creationDate.toString(Qt::ISODate) + " ";
+    str += QString(passwordHash.data()) + " " + emailAddress;
+    return str;
+}
+
+
 /*!
  * \brief Copy operator.
  * \param copy
@@ -270,6 +292,15 @@ Account& Account::operator=(Account&& move)
 }
 
 
+QDataStream& operator<<(QDataStream& in, Account& account)
+{
+    QString str;
+    in >> str;
+    account = Account::fromString(str);
+    return in;
+}
+
+
 /*!
  * \brief Serialize the Account to a QDataStream.
  * \param out QDataStream the Account is being serialized to.
@@ -278,26 +309,10 @@ Account& Account::operator=(Account&& move)
  */
 QDataStream& operator<<(QDataStream& out, const Account& account)
 {
-    out << account.uuid;
-    out << account.username;
-    out << account.creationDate;
+    out << account.toString();
     return out;
 }
 
-
-/*!
- * \brief Get an account that was serialized.
- * \param in
- * \param account
- * \return
- */
-QDataStream& operator>>(QDataStream& in, Account& account)
-{
-    in >> account.uuid;
-    in >> account.username;
-    in >> account.creationDate;
-    return in;
-}
 
 /* ************************************************************************* *
  *                                    EOF                                    *

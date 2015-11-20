@@ -1,12 +1,16 @@
 #include "ventilate_login.h"
 #include <QAbstractButton>
+#include <QByteArray>
+#include <QDataStream>
 #include <QDialog>
+#include <QIODevice>
 #include <QString>
 #include <QMessageBox>
 #include <QUuid>
 #include "account.h"
 #include "ui_ventilate_login.h"
 #include "ventilate_newuser.h"
+#include "server/commandparser.h"
 
 ventilate_login::ventilate_login(Socket& socket, QWidget *parent) :
     QDialog(parent), socket(socket), ui(new Ui::ventilate_login)
@@ -35,15 +39,35 @@ void ventilate_login::on_newUserButton_clicked()
     }
 }
 
-void ventilate_login::on_buttonBox_accepted()
+void ventilate_login::response(QString response)
 {
+    qDebug() << "ventilate_login::response(" << response << ")";
+    /* This REALLY needs to be more state based */
+    if (response == CommandParser::ACCEPT) {
+        QString username = ui->usernameText->text();
+        Account::requestAccount(socket, username);
+    } else if (response.startsWith(
+                   CommandParser::ACCOUNT + " " + CommandParser::SEND)) {
+        QString accountStr = response.section(' ', 2, -1);
+        account = Account::fromString(accountStr);
+        accept();
+    } else {
+        qDebug() << "Something went wrong";
+    }
+}
+
+void ventilate_login::on_loginButton_clicked()
+{
+
     QString username = ui->usernameText->text();
     QString password = ui->passwordText->text();
     QByteArray phash = Account::hashPassword(password, username);
-    if (Account::authenticateUser(username, phash)) {
-        account = Account::getAccount(socket, username);
-        this->accept();
-    } else {
-        this->reject();
-    }
+    QString data = CommandParser::ACCOUNT + " " + CommandParser::LOGIN + " ";
+    data += username + " " + QString(phash.data());
+    socket.send(data);
+}
+
+void ventilate_login::on_cancelButton_clicked()
+{
+    reject();
 }

@@ -21,7 +21,12 @@ AccountDatabase::~AccountDatabase()
 
 bool AccountDatabase::add(const Account& elem)
 {
-    qDebug() << "Adding row to table: " << elem.getUsername();
+    qDebug() << "Adding row to table: ";
+    qDebug() << "\t" << elem.getUUID();
+    qDebug() << "\t" << elem.getUsername();
+    qDebug() << "\t" << elem.getCreationDate();
+    qDebug() << "\t" << elem.getPasswordHash();
+    qDebug() << "\t" << elem.getEmailAddress();
     db.transaction();
     QSqlQuery query(db);
     query.prepare("INSERT INTO " + ACCOUNT_TABLE +

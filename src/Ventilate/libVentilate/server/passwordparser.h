@@ -8,7 +8,7 @@
 #ifndef PASSWORDPARSER_H
 #define PASSWORDPARSER_H
 
-#include <QDataStream>
+#include <QStringList>
 #include "commandparser.h"
 #include "connectionhandler.h"
 
@@ -18,10 +18,10 @@ public:
     explicit PasswordParser();
     virtual ~PasswordParser();
 
-    virtual void parse(const ConnectionHandler& handler, QDataStream& stream);
+    virtual void parse(const ConnectionHandler& handler, QStringList& tokens);
 
 private:
-    void change(const ConnectionHandler& handler, QDataStream& stream);
+    void change(const ConnectionHandler& handler, QStringList& tokens);
 };
 
 #endif // PASSWORDPARSER_H

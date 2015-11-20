@@ -8,7 +8,7 @@
 #ifndef COMMANDPARSER_H
 #define COMMANDPARSER_H
 
-#include <QDataStream>
+#include <QStringList>
 #include "connectionhandler.h"
 
 class LIBVENTILATESHARED_EXPORT CommandParser
@@ -34,6 +34,7 @@ public:
     static const QString REQUEST;
     static const QString RESET;
     static const QString ROOM;
+    static const QString SEND;
 
     static const QString GENERIC_ERROR;
     static const QString INVALID_PASSWORD;
@@ -51,7 +52,7 @@ public:
      * request.
      * \param request QDataStream that the handler read in from the network.
      */
-    virtual void parse(const ConnectionHandler& handler, QDataStream& stream) = 0;
+    virtual void parse(const ConnectionHandler& handler, QStringList& tokens) = 0;
 
 protected:
     static const QString LIST_SEPARATOR;

@@ -8,7 +8,7 @@
 
 #include "ventilate.h"
 #include "ui_ventilate.h"
-#include "ventilate_createchat.h"
+#include "createchatui.h"
 #include "ventilate_login.h"
 #include "chatroom.h"
 #include <QDialog>
@@ -31,7 +31,7 @@ Ventilate::~Ventilate()
 
 void Ventilate::on_actionCreate_Chat_room_triggered()
 {
-    ventilate_createchat createchat;
+    CreateChatUI createchat;
     createchat.setModal(true);
     if (createchat.exec() == QDialog::Accepted) {
         //chatroom cr = createchat.getinfo(UserID);

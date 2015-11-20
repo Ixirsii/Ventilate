@@ -32,6 +32,7 @@ const QString CommandParser::REJECT = "REJECT";
 const QString CommandParser::REQUEST = "REQUEST";
 const QString CommandParser::RESET = "RESET";
 const QString CommandParser::ROOM = "ROOM";
+const QString CommandParser::SEND = "SEND";
 
 const QString CommandParser::GENERIC_ERROR = "An unkown error occurred";
 const QString CommandParser::INVALID_PASSWORD = "Invalid password";

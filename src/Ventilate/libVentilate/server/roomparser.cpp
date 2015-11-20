@@ -7,7 +7,7 @@
 
 #include "roomparser.h"
 #include <QString>
-#include <QDataStream>
+#include <QStringList>
 #include <QUuid>
 #include "../account.h"
 #include "../chatroom.h"
@@ -25,22 +25,20 @@ RoomParser::~RoomParser()
 {
 }
 
-void RoomParser::add(const ConnectionHandler& handler, QDataStream& stream)
+void RoomParser::add(const ConnectionHandler& handler, QStringList& tokens)
 {
-    QString username;
-    QUuid roomID;
-    stream >> username >> roomID;
+    QString username = tokens.at(2);
+    QUuid roomID(tokens.at(3));
     ChatRoomDatabase db;
     ChatRoom room = db.find(roomID);
     room.addUser(username);
     handler.write(ACCEPT);
 }
 
-void RoomParser::create(const ConnectionHandler& handler, QDataStream& stream)
+void RoomParser::create(const ConnectionHandler& handler, QStringList& tokens)
 {
-    QString roomName;
-    QString owner;
-    stream >> roomName >> owner;
+    QString roomName = tokens.at(2);
+    QString owner = tokens.at(3);
     ChatRoom room(owner, roomName);
     ChatRoomDatabase db;
     if (db.add(room))
@@ -49,16 +47,14 @@ void RoomParser::create(const ConnectionHandler& handler, QDataStream& stream)
         handler.write(REJECT);
 }
 
-void RoomParser::history(const ConnectionHandler& handler, QDataStream& stream)
+void RoomParser::history(const ConnectionHandler& handler, QStringList& tokens)
 {
-    QString cmd;
-    stream >> cmd;
+    QString cmd = tokens.at(1);
     // Need to do something if we receive a list
     if (cmd != LIST)
         return;
-    QUuid roomID;
-    quint32 offset;
-    stream >> roomID >> offset;
+    QUuid roomID(tokens.at(3));
+    quint32 offset = tokens.at(4).toInt();
     MessageDatabase db;
     QList<Message> history = db.getMessages(roomID, offset);
     QString hisstr = ROOM + " " + HISTORY + " ";
@@ -67,32 +63,29 @@ void RoomParser::history(const ConnectionHandler& handler, QDataStream& stream)
     handler.write(hisstr);
 }
 
-void RoomParser::join(const ConnectionHandler& handler, QDataStream& stream)
+void RoomParser::join(const ConnectionHandler& handler, QStringList& tokens)
 {
-    QUuid roomID;
-    QString username;
-    stream >> roomID >> username;
+    QUuid roomID(tokens.at(2));
+    QString username = tokens.at(3);
     ChatRoomDatabase db;
     ChatRoom room = db.find(roomID);
     room.addUser(username);
     handler.write(ACCEPT);
 }
 
-void RoomParser::leave(const ConnectionHandler& handler, QDataStream& stream)
+void RoomParser::leave(const ConnectionHandler& handler, QStringList& tokens)
 {
-    QUuid roomID;
-    QString username;
-    stream >> roomID >> username;
+    QUuid roomID(tokens.at(2));
+    QString username = tokens.at(3);
     ChatRoomDatabase db;
     ChatRoom room = db.find(roomID);
     room.removeUser(username);
     handler.write(ACCEPT);
 }
 
-void RoomParser::list(const ConnectionHandler& handler, QDataStream& stream)
+void RoomParser::list(const ConnectionHandler& handler, QStringList& tokens)
 {
-    QString cmd;
-    stream >> cmd;
+    QString cmd = tokens.at(2);
     // Need to do something if we receive a list
     if (cmd != LIST)
         return;
@@ -104,49 +97,47 @@ void RoomParser::list(const ConnectionHandler& handler, QDataStream& stream)
     handler.write(roomstr);
 }
 
-void RoomParser::message(QDataStream& stream)
+void RoomParser::message(QStringList& tokens)
 {
-    QUuid messageID;
-    QUuid roomID;
-    QDateTime time;
-    QString sender;
-    QString message;
-    stream >> messageID >> roomID >> time >> sender >> message;
+    QUuid messageID(tokens.at(2));
+    QUuid roomID(tokens.at(3));
+    QDateTime time = QDateTime::fromString(tokens.at(4));
+    QString sender = tokens.at(5);
+    QString message = tokens.at(6);
     Message msg(messageID, roomID, time, sender, message);
     MessageDatabase db;
     db.add(msg);
     propogateMessage(msg);
 }
 
-void RoomParser::mode(const ConnectionHandler& handler, QDataStream& stream)
+void RoomParser::mode(const ConnectionHandler& handler, QStringList& tokens)
 {
     // Do nothing, not enough time to implement this
 }
 
-void RoomParser::parse(const ConnectionHandler& handler, QDataStream& stream)
+void RoomParser::parse(const ConnectionHandler& handler, QStringList& tokens)
 {
-    QString cmd;
-    stream >> cmd;
+    QString cmd = tokens.at(1);
     /* Try to order these in most common first so we're not spending excess
      * time doing unnecessary string comparisons. */
     if (cmd == MESSAGE)
-        message(stream);
+        message(tokens);
     else if (cmd == JOIN)
-        join(handler, stream);
+        join(handler, tokens);
     else if (cmd == LEAVE)
-        leave(handler, stream);
+        leave(handler, tokens);
     else if (cmd == ADD)
-        add(handler, stream);
+        add(handler, tokens);
     else if (cmd == HISTORY)
-        history(handler, stream);
+        history(handler, tokens);
     else if (cmd == LIST)
-        list(handler, stream);
+        list(handler, tokens);
     else if (cmd == CREATE)
-        create(handler, stream);
+        create(handler, tokens);
     else if (cmd == DELETE)
-        remove(handler, stream);
+        remove(handler, tokens);
     else if (cmd == MODE)
-        mode(handler, stream);
+        mode(handler, tokens);
 }
 
 void RoomParser::propogateMessage(const Message& message)
@@ -160,12 +151,12 @@ void RoomParser::propogateMessage(const Message& message)
 }
 
 
-void RoomParser::remove(const ConnectionHandler& handler, QDataStream& stream)
+void RoomParser::remove(const ConnectionHandler& handler, QStringList& tokens)
 {
-    QUuid roomID;
-    QString username;
+    QUuid roomID(tokens.at(2));
+    QString username = tokens.at(3);
     QByteArray phash;
-    stream >> roomID >> username >> phash;
+    phash.append(tokens.at(4));
     if (!Account::authenticateUser(username, phash)) {
         handler.write(REJECT + " " + INVALID_PASSWORD);
         return;

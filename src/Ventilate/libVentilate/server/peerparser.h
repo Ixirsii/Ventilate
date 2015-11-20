@@ -8,7 +8,7 @@
 #ifndef PEERPARSER_H
 #define PEERPARSER_H
 
-#include <QDataStream>
+#include <QStringList>
 #include "commandparser.h"
 #include "connectionhandler.h"
 
@@ -18,7 +18,7 @@ public:
     explicit PeerParser(QList<ConnectionHandler*>& clientList);
     virtual ~PeerParser();
 
-    virtual void parse(const ConnectionHandler& handler, QDataStream& stream);
+    virtual void parse(const ConnectionHandler& handler, QStringList& tokens);
 
 private:
     const QList<ConnectionHandler*>& clientList;

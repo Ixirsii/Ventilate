@@ -80,29 +80,19 @@ void ConnectionHandler::readyRead()
  * @brief Sends a message to the client.
  * @param data A preformatted message ready to be written directly to the client.
  */
-void ConnectionHandler::write(const QByteArray& data) const
+void ConnectionHandler::write(const QString& data) const
 {
+    qDebug() << "Sending data: " << data;
     QByteArray block;
     QDataStream out(&block, QIODevice::WriteOnly);
     out.setVersion(QDataStream::Qt_5_0);
+
     out << (quint16) 0;
     out << data;
-
     out.device()->seek(0);
     out << (quint16) (block.size() - sizeof(quint16));
 
-    qDebug() << "Sending data: " << data;
     socket->write(block);
-}
-
-
-void ConnectionHandler::write(const QString& data) const
-{
-    QByteArray block;
-    QDataStream out(&block, QIODevice::WriteOnly);
-    out.setVersion(QDataStream::Qt_5_0);
-    out << data;
-    write(block);
 }
 
 

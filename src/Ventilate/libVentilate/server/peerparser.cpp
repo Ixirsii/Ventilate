@@ -7,7 +7,7 @@
 
 #include "peerparser.h"
 #include <QString>
-#include <QDataStream>
+#include <QStringList>
 #include "commandparser.h"
 #include "connectionhandler.h"
 
@@ -21,13 +21,12 @@ PeerParser::~PeerParser()
 {
 }
 
-void PeerParser::parse(const ConnectionHandler& handler, QDataStream& stream)
+void PeerParser::parse(const ConnectionHandler& handler, QStringList& tokens)
 {
-    QString cmd;
-    stream >> cmd;
+    QString cmd = tokens.at(2);
     if (cmd != LIST)
         return;
-    stream >> cmd;
+    cmd = tokens.at(3);
     if (cmd == REQUEST)
         sendList(handler);
     // else save the peer list

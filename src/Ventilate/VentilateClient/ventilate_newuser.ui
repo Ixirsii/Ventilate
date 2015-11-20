@@ -186,6 +186,9 @@ background-color: rgb(255, 255, 255);</string>
        <property name="frame">
         <bool>false</bool>
        </property>
+       <property name="echoMode">
+        <enum>QLineEdit::PasswordEchoOnEdit</enum>
+       </property>
       </widget>
      </item>
      <item row="2" column="0">

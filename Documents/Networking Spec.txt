@@ -22,6 +22,10 @@ CLIENT COMMANDS:
 Request peer list:
 	"PEER LIST REQUEST"
 
+Get Account:
+        "ACCOUNT GET <username>"
+Send Account:
+        "ACCOUNT SEND <uuid> <username> <creation date> <password hash> <email address>"
 Login request:
         "ACCOUNT LOGIN <username> <password hash>"
 Account creation request:
@@ -36,7 +40,7 @@ Password reset request:
 Add a user to a private chat room
         "ROOM ADD <username> <room ID>"
 Chat room creation request:
-        "ROOM CREATE <public|private> <name> <owner>"
+        "ROOM CREATE <name> <owner>"
 Chat room deletion request
         "ROOM DELETE <name> <username> <password hash>"
 Get chat history for a room

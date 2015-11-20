@@ -16,6 +16,7 @@
 #include "passwordparser.h"
 #include "peerparser.h"
 #include "roomparser.h"
+#include "database/database.h"
 
 /*!
  * \brief Create a new Server.
@@ -75,14 +76,16 @@ void Server::onClientRequest(const ConnectionHandler& handler, QDataStream& stre
     QString cmd;
     stream >> cmd;
     qDebug() << "Got string: " << cmd << " from stream";
+    QStringList tokens = cmd.split(" ");
+    cmd = tokens.at(0);
     if (cmd == CommandParser::ROOM)
-        roomParser.parse(handler, stream);
+        roomParser.parse(handler, tokens);
     else if (cmd == CommandParser::ACCOUNT || cmd == CommandParser::LOGIN)
-        accountParser.parse(handler, stream);
+        accountParser.parse(handler, tokens);
     else if (cmd == CommandParser::PEER)
-        peerParser.parse(handler, stream);
+        peerParser.parse(handler, tokens);
     else if (cmd == CommandParser::PASSWORD)
-        passwordParser.parse(handler, stream);
+        passwordParser.parse(handler, tokens);
     // Drop incorrectly formatted requests
 }
 
@@ -93,6 +96,7 @@ void Server::onClientRequest(const ConnectionHandler& handler, QDataStream& stre
 void Server::startServer() {
     int port = 37377;
 
+    Database::init();
     if (!listen(QHostAddress::Any, port)) {
         qDebug() << "Failed to start server";
     } else {

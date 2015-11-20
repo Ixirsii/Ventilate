@@ -57,14 +57,15 @@ public:
         return std::move(obj);
     }
 
-    void send(QString data);
-    void waitForResponse();
+    void send(QString& data);
+
+signals:
+    void response(QString response);
 
 public slots:
     void listen();
 
 private:
-    bool waitingForResponse;
     QByteArray buffer;
     QDataStream stream;
     QTcpSocket *socket;

@@ -17,17 +17,19 @@ SOURCES += main.cpp\
     chatroomlistener.cpp \
     client.cpp \
     ventilate.cpp \
-    ventilate_createchat.cpp \
     ventilate_login.cpp \
-    ventilate_newuser.cpp
+    ventilate_newuser.cpp \
+    abstractdialog.cpp \
+    createchatui.cpp
 
 HEADERS  += \
     chatroomlistener.h \
     client.h \
     ventilate.h \
-    ventilate_createchat.h \
     ventilate_login.h \
-    ventilate_newuser.h
+    ventilate_newuser.h \
+    abstractdialog.h \
+    createchatui.h
 
 FORMS    += \
     ventilate.ui \
