@@ -8,10 +8,11 @@
 #include "chatroom.h"
 #include <memory>
 #include <QUuid>
-#include "database/chatroomdatabase.h"
-#include "database/messagedatabase.h"
-#include "database/moddatabase.h"
-#include "database/userdatabase.h"
+#include "server/commandparser.h"
+
+ChatRoom::ChatRoom()
+{
+}
 
 ChatRoom::ChatRoom(const ChatRoom& copy)
     : QObject(copy.parent()), uuid(copy.uuid), owner(copy.owner),
@@ -53,9 +54,9 @@ void ChatRoom::addMessages(const QList<Message>& messages)
 
 void ChatRoom::addModerator(const QString& mod)
 {
-    ModDatabase db;
+    //ModDatabase db;
     moderators.append(mod);
-    db.add(mod, uuid);
+    //db.add(mod, uuid);
 }
 
 void ChatRoom::addModerators(const QList<QString>& mods)
@@ -66,9 +67,9 @@ void ChatRoom::addModerators(const QList<QString>& mods)
 
 void ChatRoom::addUser(const QString& user)
 {
-    UserDatabase db;
+    //UserDatabase db;
     users.append(user);
-    db.add(user, uuid);
+    //db.add(user, uuid);
 }
 
 void ChatRoom::addUsers(const QList<QString>& users)
@@ -77,13 +78,32 @@ void ChatRoom::addUsers(const QList<QString>& users)
         addUser(user);
 }
 
+ChatRoom ChatRoom::fromString(const QString &serialized)
+{
+    qDebug() << "Buiding room from: " << serialized;
+    QStringList tokens = serialized.split(" ");
+    QUuid uuid(tokens.at(0));
+    QString name = tokens.at(1);
+    QString owner = tokens.at(2);
+    QList<QString> users;
+
+    tokens = serialized.split(CommandParser::LIST_SEPARATOR);
+    for (int i = 1; i < tokens.count(); ++i) {
+        users.append(tokens.at(i));
+    }
+    ChatRoom room(uuid, owner, name);
+    room.addUsers(users);
+
+    return std::move(room);
+}
+
 void ChatRoom::getHistory()
 {
-    MessageDatabase db;
+    /*MessageDatabase db;
     QList<Message> history = db.getMessages(uuid, messages.size());
     QList<Message>::iterator iter = history.end() - 1;
     for (; iter != history.begin(); --iter)
-        messages.prepend(*iter);
+        messages.prepend(*iter);*/
 }
 
 QString ChatRoom::getMessages()
@@ -121,18 +141,24 @@ const QList<QString>& ChatRoom::getUsers() const
     return users;
 }
 
+void ChatRoom::requestChat(Socket &socket, QString &name)
+{
+    QString cmd = CommandParser::ROOM + " " + CommandParser::GET + " " + name;
+    socket.send(cmd);
+}
+
 void ChatRoom::removeModerator(const QString& mod)
 {
-    ModDatabase db;
+    //ModDatabase db;
     moderators.removeOne(mod);
-    db.remove(mod, uuid);
+    //db.remove(mod, uuid);
 }
 
 void ChatRoom::removeUser(const QString& user)
 {
-    UserDatabase db;
+    //UserDatabase db;
     users.removeOne(user);
-    db.remove(user, uuid);
+    //db.remove(user, uuid);
 }
 
 QString ChatRoom::serializeMessage(const Message& message)
@@ -144,6 +170,14 @@ QString ChatRoom::serializeMessage(const Message& message)
     return msg_str;
 }
 
+QString ChatRoom::toString() const
+{
+    QString str = uuid.toString() + " " + name + " " + owner;
+    str += CommandParser::LIST_SEPARATOR;
+    for (QString user : users)
+        str += user + CommandParser::LIST_SEPARATOR;
+    return str;
+}
 
 ChatRoom& ChatRoom::operator=(const ChatRoom& copy)
 {
@@ -172,16 +206,14 @@ ChatRoom& ChatRoom::operator=(ChatRoom&& move)
 
 QDataStream& operator<<(QDataStream& out, const ChatRoom& room)
 {
-    out << room.getUUID();
-    out << room.getName();
-    out << room.getOwner();
+    out << room.toString();
     return out;
 }
 
 QDataStream& operator>>(QDataStream& in, ChatRoom& room)
 {
-    in >> room.uuid;
-    in >> room.name;
-    in >> room.owner;
+    QString str;
+    in >> str;
+    room = ChatRoom::fromString(str);
     return in;
 }

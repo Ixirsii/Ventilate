@@ -25,6 +25,7 @@ public:
     static const QString JOIN;
     static const QString LEAVE;
     static const QString LIST;
+    static const QString LIST_SEPARATOR;
     static const QString LOGIN;
     static const QString MESSAGE;
     static const QString MODE;
@@ -55,7 +56,6 @@ public:
     virtual void parse(const ConnectionHandler& handler, QStringList& tokens) = 0;
 
 protected:
-    static const QString LIST_SEPARATOR;
 };
 
 #endif // COMMANDPARSER_H

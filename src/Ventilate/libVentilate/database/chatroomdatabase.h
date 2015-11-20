@@ -19,6 +19,7 @@ public:
     explicit ChatRoomDatabase();
 
     virtual bool add(const ChatRoom& elem);
+    virtual ChatRoom find(const QString& name);
     virtual ChatRoom find(const QUuid& id);
     virtual QList<ChatRoom> getAll();
     virtual bool remove(const ChatRoom& elem);

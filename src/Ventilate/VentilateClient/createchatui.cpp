@@ -15,7 +15,7 @@
 #include "server/commandparser.h"
 
 CreateChatUI::CreateChatUI(Account& account, Socket& socket, QWidget *parent)
-    : QDialog(parent), account(account), socket(socket),
+    : AbstractDialog(socket, parent), account(account),
       ui(new Ui::CreateChatUI)
 {
     ui->setupUi(this);
@@ -24,6 +24,11 @@ CreateChatUI::CreateChatUI(Account& account, Socket& socket, QWidget *parent)
 CreateChatUI::~CreateChatUI()
 {
     delete ui;
+}
+
+ChatRoom CreateChatUI::getChat()
+{
+    return std::move(chat);
 }
 
 void CreateChatUI::on_cancelButton_clicked()
@@ -36,17 +41,23 @@ void CreateChatUI::on_createButton_clicked()
     QString roomName = ui->chatNameText->text();
     QString data = CommandParser::ROOM + " " + CommandParser::CREATE + " ";
     data += roomName + " " + account.getUsername();
-    socket.send(data);
+    getSocket().send(data);
 }
 
 void CreateChatUI::response(QString response)
 {
-
     qDebug() << "CreateChatUI::response(" << response << ")";
     /* This REALLY needs to be more state based */
     if (response == CommandParser::ACCEPT) {
+        QString name = ui->chatNameText->text();
+        ChatRoom::requestChat(getSocket(), name);
+    } else if (response.startsWith(CommandParser::ROOM + " "
+                                   + CommandParser::SEND)) {
+        QString roomStr = response.section(' ', 2, -1);
+        chat = ChatRoom::fromString(roomStr);
         accept();
     } else {
         qDebug() << "Something went wrong";
+        reject();
     }
 }

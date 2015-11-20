@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     ventilate_login.cpp \
     ventilate_newuser.cpp \
     abstractdialog.cpp \
-    createchatui.cpp
+    createchatui.cpp \
+    joinchatui.cpp
 
 HEADERS  += \
     chatroomlistener.h \
@@ -29,13 +30,15 @@ HEADERS  += \
     ventilate_login.h \
     ventilate_newuser.h \
     abstractdialog.h \
-    createchatui.h
+    createchatui.h \
+    joinchatui.h
 
 FORMS    += \
     ventilate.ui \
     ventilate_createchat.ui \
     ventilate_login.ui \
-    ventilate_newuser.ui
+    ventilate_newuser.ui \
+    joinchatui.ui
 
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../libVentilate/release/ -llibVentilate

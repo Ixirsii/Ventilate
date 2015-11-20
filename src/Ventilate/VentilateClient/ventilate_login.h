@@ -2,6 +2,7 @@
 #define VENTILATE_LOGIN_H
 
 #include <QDialog>
+#include "abstractdialog.h"
 #include "account.h"
 #include "socket.h"
 
@@ -9,7 +10,7 @@ namespace Ui {
 class ventilate_login;
 }
 
-class ventilate_login : public QDialog
+class ventilate_login : public AbstractDialog
 {
     Q_OBJECT
 
@@ -30,7 +31,6 @@ private slots:
 
 private:
     Account account;
-    Socket& socket;
     Ui::ventilate_login *ui;
 };
 

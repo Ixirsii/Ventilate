@@ -105,7 +105,7 @@ void Database::createRoomDB(QSqlDatabase& db)
     query.prepare("CREATE TABLE IF NOT EXISTS " + ROOM_TABLE + "("
         + ID_KEY + " BLOB NOT NULL UNIQUE PRIMARY KEY, "
         + OWNER_KEY + " TEXT NOT NULL, "
-        + NAME_KEY + " TEXT NOT NULL, "
+        + NAME_KEY + " TEXT UNIQUE NOT NULL, "
         + "FOREIGN KEY(" + OWNER_KEY + ") REFERENCES "
         + ACCOUNT_TABLE + "(" + NAME_KEY + ") ON UPDATE CASCADE);"
     );

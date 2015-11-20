@@ -26,6 +26,7 @@ private:
 
     void add(const ConnectionHandler& handler, QStringList& tokens);
     void create(const ConnectionHandler& handler, QStringList& tokens);
+    void get(const ConnectionHandler& handler, QStringList& tokens);
     void history(const ConnectionHandler& handler, QStringList& tokens);
     void join(const ConnectionHandler& handler, QStringList& tokens);
     void leave(const ConnectionHandler& handler, QStringList& tokens);

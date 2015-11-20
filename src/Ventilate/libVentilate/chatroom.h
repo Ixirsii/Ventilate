@@ -14,16 +14,21 @@
 #include <QUuid>
 #include "libventilate_global.h"
 #include "message.h"
+#include "socket.h"
 
 class LIBVENTILATESHARED_EXPORT ChatRoom : public QObject
 {
     Q_OBJECT
 public:
+    explicit ChatRoom();
     ChatRoom(const ChatRoom& copy);
     ChatRoom(ChatRoom&& move);
     explicit ChatRoom(const QString& owner, const QString& name);
     explicit ChatRoom(const QUuid& uuid, const QString& owner,
                       const QString& name);
+
+    static ChatRoom fromString(const QString& serialized);
+    static void requestChat(Socket& socket, QString& name);
 
     void addMessage(const Message& message);
     void addMessages(const QList<Message>& messages);
@@ -40,6 +45,7 @@ public:
     const QList<QString>& getUsers() const;
     void removeModerator(const QString& mod);
     void removeUser(const QString& user);
+    QString toString() const;
 
     ChatRoom& operator=(const ChatRoom& copy);
     ChatRoom& operator=(ChatRoom&& move);

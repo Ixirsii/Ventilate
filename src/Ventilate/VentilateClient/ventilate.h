@@ -3,7 +3,10 @@
 
 #include <QMainWindow>
 #include <QUuid>
+#include <QString>
+#include <QStringList>
 #include "account.h"
+#include "chatroom.h"
 
 namespace Ui {
 class Ventilate;
@@ -26,13 +29,17 @@ private slots:
     void on_btnSend_clicked();
     void on_btnClear_clicked();
     void on_actionAbout_Ventilate_triggered();
-
     void on_actionLeave_Chat_room_triggered();
+    void on_actionJoin_Chat_room_triggered();
 
 private:
     Account account;
+    ChatRoom chat;
     Socket& socket;
     Ui::Ventilate *ui;
+
+    void onChatRoomChanged();
+    void setChatRoom(ChatRoom chat);
 };
 
 #endif // VENTILATE_H

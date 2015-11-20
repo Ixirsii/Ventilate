@@ -22,6 +22,8 @@ public:
                           QWidget *parent = 0);
     ~CreateChatUI();
 
+    ChatRoom getChat();
+
 public slots:
     virtual void response(QString response);
 
@@ -31,7 +33,7 @@ private slots:
 
 private:
     Account& account;
-    Socket& socket;
+    ChatRoom chat;
     Ui::CreateChatUI *ui;
 };
 

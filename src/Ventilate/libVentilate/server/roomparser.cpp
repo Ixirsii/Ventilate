@@ -47,6 +47,15 @@ void RoomParser::create(const ConnectionHandler& handler, QStringList& tokens)
         handler.write(REJECT);
 }
 
+void RoomParser::get(const ConnectionHandler& handler, QStringList& tokens)
+{
+    ChatRoomDatabase db;
+    QString name = tokens.at(2);
+    ChatRoom chat = db.find(name);
+    QString cmd = ROOM + " " + SEND + " " + chat.toString();
+    handler.write(cmd);
+}
+
 void RoomParser::history(const ConnectionHandler& handler, QStringList& tokens)
 {
     QString cmd = tokens.at(1);
@@ -132,6 +141,8 @@ void RoomParser::parse(const ConnectionHandler& handler, QStringList& tokens)
         history(handler, tokens);
     else if (cmd == LIST)
         list(handler, tokens);
+    else if (cmd == GET)
+        get(handler, tokens);
     else if (cmd == CREATE)
         create(handler, tokens);
     else if (cmd == DELETE)

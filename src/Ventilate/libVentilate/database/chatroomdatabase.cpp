@@ -55,6 +55,20 @@ ChatRoom ChatRoomDatabase::find(const QUuid &roomID)
     return std::move(room);
 }
 
+ChatRoom ChatRoomDatabase::find(const QString &name)
+{
+    qDebug() << "Finding row in table: " << name;
+    db.transaction();
+    QSqlQuery query(db);
+    query.prepare("SELECT * FROM " + ROOM_TABLE
+                  + " WHERE " + NAME_KEY + " = ?;");
+    query.addBindValue(name);
+    runQuery(query);
+    query.first();
+    db.commit();
+    return std::move(buildFromQuery(query));
+}
+
 QList<ChatRoom> ChatRoomDatabase::getAll()
 {
     return std::move(DatabaseInterface::getAll(ROOM_TABLE));

@@ -1,12 +1,18 @@
 #include "abstractdialog.h"
+#include "socket.h"
 
-AbstractDialog::AbstractDialog(QWidget *parent)
-    : QDialog(parent)
+AbstractDialog::AbstractDialog(Socket& socket, QWidget *parent)
+    : QDialog(parent), socket(socket)
 {
     connect(&(this->socket), SIGNAL(response(QString)), this, SLOT(response(QString)));
 }
 
 AbstractDialog::~AbstractDialog()
 {
-    QObject::disconnect(&(this->socket), SIGNAL(response(QString)), this, SLOT(response(QString)));
+    disconnect(&(this->socket), SIGNAL(response(QString)), this, SLOT(response(QString)));
+}
+
+Socket &AbstractDialog::getSocket()
+{
+    return socket;
 }

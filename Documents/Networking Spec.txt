@@ -43,6 +43,8 @@ Chat room creation request:
         "ROOM CREATE <name> <owner>"
 Chat room deletion request
         "ROOM DELETE <name> <username> <password hash>"
+Get Account:
+        "ROOM GET <name>"
 Get chat history for a room
         "ROOM HISTORY REQUEST <room ID> <offset>"
 Send chat history for a room
@@ -59,3 +61,5 @@ Send a message
         "ROOM MESSAGE <message ID> <room ID> <date time> <sender> <message>"
 Chat room mode change
 	"ROOM MODE <public|private> <username>"
+Send room:
+        "ROOM SEND <room ID> <name> <owner> <users>"

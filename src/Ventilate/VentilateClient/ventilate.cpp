@@ -7,16 +7,18 @@
  */
 
 #include "ventilate.h"
-#include "ui_ventilate.h"
-#include "createchatui.h"
-#include "ventilate_login.h"
-#include "chatroom.h"
 #include <QDialog>
 #include <QString>
 #include <QMessageBox>
 #include <QDateTime>
 #include <QWidget>
 #include <vector>
+
+#include "chatroom.h"
+#include "createchatui.h"
+#include "joinchatui.h"
+#include "ui_ventilate.h"
+#include "ventilate_login.h"
 
 Ventilate::Ventilate(Socket& socket, QWidget *parent)
     : QMainWindow(parent), socket(socket), ui(new Ui::Ventilate)
@@ -31,12 +33,10 @@ Ventilate::~Ventilate()
 
 void Ventilate::on_actionCreate_Chat_room_triggered()
 {
-    CreateChatUI createchat;
-    createchat.setModal(true);
-    if (createchat.exec() == QDialog::Accepted) {
-        //chatroom cr = createchat.getinfo(UserID);
-    } else {
-
+    CreateChatUI createChat(account, socket);
+    createChat.setModal(true);
+    if (createChat.exec() == QDialog::Accepted) {
+        setChatRoom(createChat.getChat());
     }
 }
 
@@ -77,4 +77,28 @@ void Ventilate::on_actionAbout_Ventilate_triggered()
 
 void Ventilate::on_actionLeave_Chat_room_triggered()
 {
+}
+
+void Ventilate::onChatRoomChanged()
+{
+    ui->userListView->clear();
+    ui->userListView->addItem(chat.getOwner());
+    ui->userListView->addItems(chat.getUsers());
+    ui->chatNameLabel->setText(chat.getName());
+    ui->messageWindow->setPlainText(chat.getMessages());
+}
+
+void Ventilate::setChatRoom(ChatRoom chat)
+{
+    this->chat = chat;
+    onChatRoomChanged();
+}
+
+void Ventilate::on_actionJoin_Chat_room_triggered()
+{
+    JoinChatUI join(socket);
+    join.setModal(true);
+    if (join.exec() == QDialog::Accepted) {
+        setChatRoom(join.getChat());
+    }
 }
