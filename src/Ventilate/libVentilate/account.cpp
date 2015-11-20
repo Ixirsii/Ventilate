@@ -162,7 +162,7 @@ bool Account::authenticateUser(QString& username, QByteArray passwordHash)
 Account Account::fromString(QString& serialized)
 {
     qDebug() << "Buiding account from: " << serialized;
-    QStringList tokens = serialized.split(" ");
+    QStringList tokens = serialized.split(CommandParser::SEP);
     QUuid uuid(tokens.at(0));
     QString username = tokens.at(1);
     QDateTime dt = QDateTime::fromString(tokens.at(2));
@@ -244,7 +244,8 @@ QByteArray Account::hashPassword(QString& password, QString& username)
 
 void Account::requestAccount(Socket& socket, QString& username)
 {
-    QString cmd = CommandParser::ACCOUNT + " " + CommandParser::GET + " ";
+    QString cmd = CommandParser::ACCOUNT + CommandParser::SEP;
+    cmd += CommandParser::GET + CommandParser::SEP;
     cmd += username;
     socket.send(cmd);
 }
@@ -253,9 +254,10 @@ void Account::requestAccount(Socket& socket, QString& username)
 QString Account::toString() const
 {
     QString str;
-    str += uuid.toString() + " " + username + " ";
-    str += creationDate.toString(Qt::ISODate) + " ";
-    str += QString(passwordHash.data()) + " " + emailAddress;
+    str += uuid.toString() + CommandParser::SEP;
+    str += username + CommandParser::SEP;
+    str += creationDate.toString(Qt::ISODate) + CommandParser::SEP;
+    str += QString(passwordHash.data()) + CommandParser::SEP + emailAddress;
     return str;
 }
 

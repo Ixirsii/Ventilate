@@ -22,7 +22,7 @@ MiniDBInterface::~MiniDBInterface()
 
 bool MiniDBInterface::add(const QString& name, const QUuid& roomID)
 {
-    qDebug() << "Adding to room in database";
+    qDebug() << "Adding " << name << " to room " << roomID.toString() << " in database";
     db.transaction();
     QSqlQuery query(db);
     query.prepare("INSERT INTO " + table + "(" + NAME_KEY + ", "

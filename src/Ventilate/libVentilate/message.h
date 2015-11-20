@@ -26,13 +26,15 @@ public:
                      const QDateTime& timestamp, const QString& username,
                      const QString& message, QObject *parent = 0);
 
+    static Message fromString(QString serialized);
+
     QString getFormattedMessage() const;
-    QString getSanitizedMessage() const;
     const QString& getMessage() const;
     const QUuid& getRoomID() const;
     const QDateTime& getTimeStamp() const;
     const QString& getUsername() const;
     const QUuid& getUUID() const;
+    QString toString() const;
 
     Message& operator=(const Message& msg);
     Message& operator=(Message&& msg);

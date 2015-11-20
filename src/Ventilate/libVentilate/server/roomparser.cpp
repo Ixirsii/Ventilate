@@ -9,12 +9,13 @@
 #include <QString>
 #include <QStringList>
 #include <QUuid>
-#include "../account.h"
-#include "../chatroom.h"
-#include "../message.h"
+#include "account.h"
+#include "chatroom.h"
+#include "message.h"
 #include "connectionhandler.h"
-#include "../database/chatroomdatabase.h"
-#include "../database/messagedatabase.h"
+#include "database/chatroomdatabase.h"
+#include "database/messagedatabase.h"
+#include "database/userdatabase.h"
 
 RoomParser::RoomParser(QList<ConnectionHandler*>& clientList)
     : clientList(clientList)
@@ -50,9 +51,10 @@ void RoomParser::create(const ConnectionHandler& handler, QStringList& tokens)
 void RoomParser::get(const ConnectionHandler& handler, QStringList& tokens)
 {
     ChatRoomDatabase db;
+    //UserDatabase udb;
     QString name = tokens.at(2);
     ChatRoom chat = db.find(name);
-    QString cmd = ROOM + " " + SEND + " " + chat.toString();
+    QString cmd = ROOM + SEP + SEND + SEP + chat.toString();
     handler.write(cmd);
 }
 
@@ -66,19 +68,18 @@ void RoomParser::history(const ConnectionHandler& handler, QStringList& tokens)
     quint32 offset = tokens.at(4).toInt();
     MessageDatabase db;
     QList<Message> history = db.getMessages(roomID, offset);
-    QString hisstr = ROOM + " " + HISTORY + " ";
+    QString hisstr = ROOM + SEP + HISTORY + SEP;
     for (Message msg : history)
-        hisstr = hisstr.append(msg.getMessage()).append(LIST_SEPARATOR);
+        hisstr = hisstr.append(msg.getMessage()).append(SEP);
     handler.write(hisstr);
 }
 
 void RoomParser::join(const ConnectionHandler& handler, QStringList& tokens)
 {
+    UserDatabase db;
     QUuid roomID(tokens.at(2));
     QString username = tokens.at(3);
-    ChatRoomDatabase db;
-    ChatRoom room = db.find(roomID);
-    room.addUser(username);
+    db.add(username, roomID);
     handler.write(ACCEPT);
 }
 
@@ -100,9 +101,9 @@ void RoomParser::list(const ConnectionHandler& handler, QStringList& tokens)
         return;
     ChatRoomDatabase db;
     QList<ChatRoom> rooms = db.getAll();
-    QString roomstr = ROOM + " " + LIST + " ";
+    QString roomstr = ROOM + SEP + LIST + SEP;
     for (ChatRoom room : rooms)
-        roomstr = roomstr.append(room.getName()).append(LIST_SEPARATOR);
+        roomstr = roomstr.append(room.getName()).append(SEP);
     handler.write(roomstr);
 }
 
@@ -110,7 +111,7 @@ void RoomParser::message(QStringList& tokens)
 {
     QUuid messageID(tokens.at(2));
     QUuid roomID(tokens.at(3));
-    QDateTime time = QDateTime::fromString(tokens.at(4));
+    QDateTime time = QDateTime::fromString(tokens.at(4), Qt::ISODate);
     QString sender = tokens.at(5);
     QString message = tokens.at(6);
     Message msg(messageID, roomID, time, sender, message);
@@ -155,8 +156,8 @@ void RoomParser::propogateMessage(const Message& message)
 {
     for (ConnectionHandler* handler : clientList) {
         QString command(ROOM);
-        command.append(" ").append(MESSAGE).append(" ");
-        command.append(message.getSanitizedMessage());
+        command.append(SEP).append(MESSAGE).append(SEP);
+        command.append(message.toString());
         handler->write(command);
     }
 }
@@ -169,7 +170,7 @@ void RoomParser::remove(const ConnectionHandler& handler, QStringList& tokens)
     QByteArray phash;
     phash.append(tokens.at(4));
     if (!Account::authenticateUser(username, phash)) {
-        handler.write(REJECT + " " + INVALID_PASSWORD);
+        handler.write(REJECT + SEP + INVALID_PASSWORD);
         return;
     }
     ChatRoomDatabase db;
@@ -177,5 +178,5 @@ void RoomParser::remove(const ConnectionHandler& handler, QStringList& tokens)
     if (db.remove(room))
         handler.write(ACCEPT);
     else
-        handler.write(REJECT + " " + GENERIC_ERROR);
+        handler.write(REJECT + SEP + GENERIC_ERROR);
 }

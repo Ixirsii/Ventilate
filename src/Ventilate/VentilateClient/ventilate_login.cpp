@@ -43,12 +43,10 @@ void ventilate_login::response(QString response)
 {
     qDebug() << "ventilate_login::response(" << response << ")";
     /* This REALLY needs to be more state based */
-    if (response == CommandParser::ACCEPT) {
-        QString username = ui->usernameText->text();
-        Account::requestAccount(getSocket(), username);
-    } else if (response.startsWith(
-                   CommandParser::ACCOUNT + " " + CommandParser::SEND)) {
-        QString accountStr = response.section(' ', 2, -1);
+    if (response.startsWith(CommandParser::ACCOUNT
+                            + CommandParser::SEP
+                            + CommandParser::SEND)) {
+        QString accountStr = response.section(CommandParser::SEP, 2, -1);
         account = Account::fromString(accountStr);
         accept();
     } else {
@@ -62,8 +60,9 @@ void ventilate_login::on_loginButton_clicked()
     QString username = ui->usernameText->text();
     QString password = ui->passwordText->text();
     QByteArray phash = Account::hashPassword(password, username);
-    QString data = CommandParser::ACCOUNT + " " + CommandParser::LOGIN + " ";
-    data += username + " " + QString(phash.data());
+    QString data = CommandParser::ACCOUNT + CommandParser::SEP;
+    data += CommandParser::LOGIN + CommandParser::SEP;
+    data += username + CommandParser::SEP + QString(phash.data());
     getSocket().send(data);
 }
 

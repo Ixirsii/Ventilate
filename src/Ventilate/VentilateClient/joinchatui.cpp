@@ -1,12 +1,13 @@
 #include "joinchatui.h"
 #include <QString>
 #include "abstractdialog.h"
+#include "account.h"
 #include "socket.h"
 #include "ui_joinchatui.h"
 #include "server/commandparser.h"
 
-JoinChatUI::JoinChatUI(Socket& socket, QWidget *parent)
-    : AbstractDialog(socket, parent), ui(new Ui::JoinChatUI)
+JoinChatUI::JoinChatUI(Socket& socket, Account& account, QWidget *parent)
+    : AbstractDialog(socket, parent), account(account), ui(new Ui::JoinChatUI)
 {
     ui->setupUi(this);
 }
@@ -34,12 +35,23 @@ void JoinChatUI::on_joinButton_clicked()
 
 void JoinChatUI::response(QString response)
 {
-    qDebug() << "CreateChatUI::response(" << response << ")";
+    qDebug() << "JoinChatUI::response(" << response << ")";
     /* This REALLY needs to be more state based */
-    if (response.startsWith(CommandParser::ROOM + " "
+    if (response.startsWith(CommandParser::ROOM + CommandParser::SEP
                                    + CommandParser::SEND)) {
-        QString roomStr = response.section(' ', 2, -1);
+        QString roomStr = response.section(CommandParser::SEP, 2, -1);
         chat = ChatRoom::fromString(roomStr);
+        QString join = CommandParser::ROOM + CommandParser::SEP;
+        join += CommandParser::JOIN + CommandParser::SEP;
+        join += chat.getUUID().toString() + CommandParser::SEP;
+        join += account.getUsername();
+        getSocket().send(join);
+    } else if (response.startsWith(CommandParser::ROOM + CommandParser::SEP
+                                   + CommandParser::HISTORY)) {
+        //QString history = response.section(CommandParser::SEP, 2, -1);
+        //QStringList tokens = history.split(CommandParser::SEP);
+    } else if (response.startsWith(CommandParser::ACCEPT)) {
+        chat.addUser(account.getUsername());
         accept();
     } else {
         qDebug() << "Something went wrong";

@@ -17,8 +17,10 @@
 #include "chatroom.h"
 #include "createchatui.h"
 #include "joinchatui.h"
+#include "message.h"
 #include "ui_ventilate.h"
 #include "ventilate_login.h"
+#include "server/commandparser.h"
 
 Ventilate::Ventilate(Socket& socket, QWidget *parent)
     : QMainWindow(parent), socket(socket), ui(new Ui::Ventilate)
@@ -60,16 +62,6 @@ void Ventilate::on_actionLogout_triggered()
     UserID = NULL;
 }
 
-void Ventilate::on_btnSend_clicked()
-{
-}
-
-void Ventilate::on_btnClear_clicked()
-{
-    ui->composeText->clear();
-    ui->composeText->setFocus();
-}
-
 void Ventilate::on_actionAbout_Ventilate_triggered()
 {
     QMessageBox::about(this, "About Ventilate", "");
@@ -96,9 +88,43 @@ void Ventilate::setChatRoom(ChatRoom chat)
 
 void Ventilate::on_actionJoin_Chat_room_triggered()
 {
-    JoinChatUI join(socket);
+    JoinChatUI join(socket, account);
     join.setModal(true);
     if (join.exec() == QDialog::Accepted) {
         setChatRoom(join.getChat());
+    }
+}
+
+void Ventilate::on_sendButton_clicked()
+{
+    QString message = ui->composeText->text();
+    Message msg(chat.getUUID(), account.getUsername(), message);
+    publishMessage(msg);
+    QString cmd = CommandParser::ROOM + CommandParser::SEP;
+    cmd += CommandParser::MESSAGE + CommandParser::SEP;
+    cmd += msg.toString();
+    socket.send(cmd);
+}
+
+void Ventilate::publishMessage(Message& msg)
+{
+    if (received.contains(msg.getUUID()))
+        return;
+    received.insert(msg.getUUID());
+    ui->messageWindow->append(msg.getFormattedMessage());
+    ui->composeText->clear();
+}
+
+void Ventilate::response(QString response)
+{
+    qDebug() << "Ventilate::response(" << response << ")";
+    /* This REALLY needs to be more state based */
+    if (response.startsWith(CommandParser::ROOM + CommandParser::SEP
+                                   + CommandParser::MESSAGE)) {
+        QString message = response.section(CommandParser::SEP, 2, -1);
+        Message msg = Message::fromString(message);
+        publishMessage(msg);
+    } else {
+        qDebug() << "Something went wrong";
     }
 }

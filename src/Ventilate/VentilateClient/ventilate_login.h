@@ -26,7 +26,6 @@ public slots:
 private slots:
     void on_newUserButton_clicked();
     void on_loginButton_clicked();
-
     void on_cancelButton_clicked();
 
 private:

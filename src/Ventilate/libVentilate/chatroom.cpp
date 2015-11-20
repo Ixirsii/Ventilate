@@ -54,9 +54,7 @@ void ChatRoom::addMessages(const QList<Message>& messages)
 
 void ChatRoom::addModerator(const QString& mod)
 {
-    //ModDatabase db;
     moderators.append(mod);
-    //db.add(mod, uuid);
 }
 
 void ChatRoom::addModerators(const QList<QString>& mods)
@@ -67,9 +65,9 @@ void ChatRoom::addModerators(const QList<QString>& mods)
 
 void ChatRoom::addUser(const QString& user)
 {
-    //UserDatabase db;
-    users.append(user);
-    //db.add(user, uuid);
+    if ((user != owner) && (!moderators.contains(user))
+            && (!users.contains(user)))
+        users.append(user);
 }
 
 void ChatRoom::addUsers(const QList<QString>& users)
@@ -81,16 +79,18 @@ void ChatRoom::addUsers(const QList<QString>& users)
 ChatRoom ChatRoom::fromString(const QString &serialized)
 {
     qDebug() << "Buiding room from: " << serialized;
-    QStringList tokens = serialized.split(" ");
-    QUuid uuid(tokens.at(0));
-    QString name = tokens.at(1);
-    QString owner = tokens.at(2);
+    QStringList tokens = serialized.split(CommandParser::SEP);
+    QStringList::iterator iter = tokens.begin();
+    QUuid uuid(*iter++);
+    QString name = *iter++;
+    QString owner = *iter++;
     QList<QString> users;
 
-    tokens = serialized.split(CommandParser::LIST_SEPARATOR);
-    for (int i = 1; i < tokens.count(); ++i) {
-        users.append(tokens.at(i));
+    while (iter != tokens.end()) {
+        if (*iter++ == CommandParser::USERS)
+            users = usersFromString(tokens, iter);
     }
+
     ChatRoom room(uuid, owner, name);
     room.addUsers(users);
 
@@ -143,22 +143,19 @@ const QList<QString>& ChatRoom::getUsers() const
 
 void ChatRoom::requestChat(Socket &socket, QString &name)
 {
-    QString cmd = CommandParser::ROOM + " " + CommandParser::GET + " " + name;
+    QString cmd = CommandParser::ROOM + CommandParser::SEP;
+    cmd += CommandParser::GET + CommandParser::SEP + name;
     socket.send(cmd);
 }
 
 void ChatRoom::removeModerator(const QString& mod)
 {
-    //ModDatabase db;
     moderators.removeOne(mod);
-    //db.remove(mod, uuid);
 }
 
 void ChatRoom::removeUser(const QString& user)
 {
-    //UserDatabase db;
     users.removeOne(user);
-    //db.remove(user, uuid);
 }
 
 QString ChatRoom::serializeMessage(const Message& message)
@@ -172,11 +169,22 @@ QString ChatRoom::serializeMessage(const Message& message)
 
 QString ChatRoom::toString() const
 {
-    QString str = uuid.toString() + " " + name + " " + owner;
-    str += CommandParser::LIST_SEPARATOR;
+    QString str = uuid.toString() + CommandParser::SEP;
+    str += name + CommandParser::SEP;
+    str += owner + CommandParser::SEP;
+    str += CommandParser::USERS + CommandParser::SEP;
     for (QString user : users)
-        str += user + CommandParser::LIST_SEPARATOR;
+        str += user + CommandParser::SEP;
     return str;
+}
+
+QList<QString> ChatRoom::usersFromString(QStringList& list, QStringList::iterator& iter)
+{
+    QList<QString> users;
+    while ((iter != list.end()) && *iter != CommandParser::MESSAGE) {
+        users.append(*iter++);
+    }
+    return (std::move(users));
 }
 
 ChatRoom& ChatRoom::operator=(const ChatRoom& copy)

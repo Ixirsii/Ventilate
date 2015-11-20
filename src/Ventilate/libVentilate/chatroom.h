@@ -61,6 +61,7 @@ private:
     QList<Message> messages;
 
     QString serializeMessage(const Message& message);
+    static QList<QString> usersFromString(QStringList& list, QStringList::iterator& iter);
 };
 
 #endif // CHATROOM_H

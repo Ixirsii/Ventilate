@@ -25,7 +25,6 @@ public:
     static const QString JOIN;
     static const QString LEAVE;
     static const QString LIST;
-    static const QString LIST_SEPARATOR;
     static const QString LOGIN;
     static const QString MESSAGE;
     static const QString MODE;
@@ -36,6 +35,8 @@ public:
     static const QString RESET;
     static const QString ROOM;
     static const QString SEND;
+    static const QString SEP;
+    static const QString USERS;
 
     static const QString GENERIC_ERROR;
     static const QString INVALID_PASSWORD;

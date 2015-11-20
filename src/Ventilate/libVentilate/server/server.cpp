@@ -76,7 +76,7 @@ void Server::onClientRequest(const ConnectionHandler& handler, QDataStream& stre
     QString cmd;
     stream >> cmd;
     qDebug() << "Got string: " << cmd << " from stream";
-    QStringList tokens = cmd.split(" ");
+    QStringList tokens = cmd.split(CommandParser::SEP);
     cmd = tokens.at(0);
     if (cmd == CommandParser::ROOM)
         roomParser.parse(handler, tokens);

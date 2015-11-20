@@ -22,7 +22,7 @@ const QString CommandParser::HISTORY = "HISTORY";
 const QString CommandParser::JOIN = "JOIN";
 const QString CommandParser::LEAVE = "LEAVE";
 const QString CommandParser::LIST = "LIST";
-const QString CommandParser::LIST_SEPARATOR = " \\SEP\\ ";
+const QString CommandParser::SEP = " \\SEP\\ ";
 const QString CommandParser::LOGIN = "LOGIN";
 const QString CommandParser::MESSAGE = "MESSAGE";
 const QString CommandParser::MODE = "MODE";
@@ -33,6 +33,7 @@ const QString CommandParser::REQUEST = "REQUEST";
 const QString CommandParser::RESET = "RESET";
 const QString CommandParser::ROOM = "ROOM";
 const QString CommandParser::SEND = "SEND";
+const QString CommandParser::USERS = "USERS";
 
 const QString CommandParser::GENERIC_ERROR = "An unkown error occurred";
 const QString CommandParser::INVALID_PASSWORD = "Invalid password";

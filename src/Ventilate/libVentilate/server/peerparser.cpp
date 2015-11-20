@@ -34,7 +34,7 @@ void PeerParser::parse(const ConnectionHandler& handler, QStringList& tokens)
 
 void PeerParser::sendList(const ConnectionHandler& handler)
 {
-    QString list = PEER + " " + LIST + " ";
+    QString list = PEER + SEP + LIST + SEP;
     list.append(serializePeerList());
     handler.write(list);
 }
@@ -49,7 +49,7 @@ QString PeerParser::serializePeerList()
     QString list = "";
     for (const ConnectionHandler* handler: clientList) {
         list = list.append(handler->getHostAddress().toString());
-        list = list.append(LIST_SEPARATOR);
+        list = list.append(SEP);
     }
     return list;
 }

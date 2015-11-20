@@ -43,16 +43,15 @@ void AccountParser::create(const ConnectionHandler& handler, QStringList& tokens
     if (db.add(acc))
         handler.write(ACCEPT);
     else
-        handler.write(REJECT + " " + GENERIC_ERROR);
+        handler.write(REJECT + SEP + GENERIC_ERROR);
 }
 
 
-void AccountParser::get(const ConnectionHandler& handler, QStringList& tokens)
+void AccountParser::get(const ConnectionHandler& handler, QString& name)
 {
     AccountDatabase db;
-    QString username = tokens.at(2);
-    Account acc = db.find(username);
-    QString cmd = ACCOUNT + " " + SEND + " " + acc.toString();
+    Account acc = db.find(name);
+    QString cmd = ACCOUNT + SEP + SEND + SEP + acc.toString();
     handler.write(cmd);
 }
 
@@ -63,9 +62,9 @@ void AccountParser::login(const ConnectionHandler& handler, QStringList& tokens)
     QByteArray phash;
     phash.append(tokens.at(3));
     if (Account::authenticateUser(username, phash))
-        handler.write(ACCEPT);
+        get(handler, username);
     else
-        handler.write(REJECT + " " + INVALID_PASSWORD);
+        handler.write(REJECT + SEP + INVALID_PASSWORD);
 }
 
 void AccountParser::parse(const ConnectionHandler& handler, QStringList& tokens)
@@ -73,8 +72,6 @@ void AccountParser::parse(const ConnectionHandler& handler, QStringList& tokens)
     QString cmd = tokens.at(1);
     if (cmd == LOGIN)
         login(handler, tokens);
-    else if (cmd == GET)
-        get(handler, tokens);
     else if (cmd == CREATE)
         create(handler, tokens);
     else if (cmd == DELETE)
@@ -87,7 +84,7 @@ void AccountParser::remove(const ConnectionHandler& handler, QStringList& tokens
     QByteArray phash;
     phash.append(tokens.at(3));
     if (!Account::authenticateUser(username, phash)) {
-        handler.write(REJECT + " " + INVALID_PASSWORD);
+        handler.write(REJECT + SEP + INVALID_PASSWORD);
         return;
     }
     AccountDatabase db;
@@ -95,5 +92,5 @@ void AccountParser::remove(const ConnectionHandler& handler, QStringList& tokens
     if (db.remove(acc))
         handler.write(ACCEPT);
     else
-        handler.write(REJECT + " " + GENERIC_ERROR);
+        handler.write(REJECT + SEP + GENERIC_ERROR);
 }

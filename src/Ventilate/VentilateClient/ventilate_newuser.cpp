@@ -36,8 +36,8 @@ void ventilate_newuser::on_buttonBox_accepted()
     QString password = ui->passwordText->text();
     QString email = ui->emailText->text();
     Account acc(username, password, email);
-    QString cmd = CommandParser::ACCOUNT + " " + CommandParser::CREATE + " ";
+    QString cmd = CommandParser::ACCOUNT + CommandParser::SEP;
+    cmd += CommandParser::CREATE + CommandParser::SEP;
     cmd += acc.toString();
     socket.send(cmd);
-    //socket.waitForResponse();
 }

@@ -22,7 +22,7 @@ public:
 
 private:
     void create(const ConnectionHandler& handler, QStringList& tokens);
-    void get(const ConnectionHandler& handler, QStringList& tokens);
+    void get(const ConnectionHandler& handler, QString& name);
     void login(const ConnectionHandler& handler, QStringList& tokens);
     void remove(const ConnectionHandler& handler, QStringList& tokens);
 };

@@ -19,6 +19,9 @@ class UserDatabase : public MiniDBInterface
 public:
     explicit UserDatabase();
     virtual ~UserDatabase();
+
+    virtual bool add(const QString& name, const QUuid& roomID);
+    virtual bool remove(const QString& name, const QUuid& roomID);
 };
 
 #endif // USERDATABASE_H

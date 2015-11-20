@@ -39,8 +39,9 @@ void CreateChatUI::on_cancelButton_clicked()
 void CreateChatUI::on_createButton_clicked()
 {
     QString roomName = ui->chatNameText->text();
-    QString data = CommandParser::ROOM + " " + CommandParser::CREATE + " ";
-    data += roomName + " " + account.getUsername();
+    QString data = CommandParser::ROOM + CommandParser::SEP;
+    data += CommandParser::CREATE + CommandParser::SEP;
+    data += roomName + CommandParser::SEP + account.getUsername();
     getSocket().send(data);
 }
 
@@ -51,9 +52,9 @@ void CreateChatUI::response(QString response)
     if (response == CommandParser::ACCEPT) {
         QString name = ui->chatNameText->text();
         ChatRoom::requestChat(getSocket(), name);
-    } else if (response.startsWith(CommandParser::ROOM + " "
+    } else if (response.startsWith(CommandParser::ROOM + CommandParser::SEP
                                    + CommandParser::SEND)) {
-        QString roomStr = response.section(' ', 2, -1);
+        QString roomStr = response.section(CommandParser::SEP, 2, -1);
         chat = ChatRoom::fromString(roomStr);
         accept();
     } else {

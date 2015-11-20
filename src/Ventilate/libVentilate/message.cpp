@@ -8,7 +8,9 @@
 #include "message.h"
 #include <memory>
 #include <QDateTime>
+#include <QDebug>
 #include <QUuid>
+#include "server/commandparser.h"
 
 Message::Message(const Message &copy)
     : QObject(copy.parent()), uuid(copy.message), roomID(copy.roomID),
@@ -40,6 +42,20 @@ Message::Message(const QUuid& uuid, const QUuid& roomID,
 {
 }
 
+Message Message::fromString(QString serialized)
+{
+    qDebug() << "Buiding Message from: " << serialized;
+    QStringList tokens = serialized.split(CommandParser::SEP);
+    QUuid uuid(tokens.at(0));
+    QUuid roomID(tokens.at(1));
+    QDateTime dt = QDateTime::fromString(tokens.at(2), Qt::ISODate);
+    QString sender = tokens.at(3);
+    QString message = tokens.at(4);
+    Message msg(uuid, roomID, dt, sender, message);
+
+    return std::move(msg);
+}
+
 QString Message::getFormattedMessage() const
 {
     QString msgstr = getHeader();
@@ -52,15 +68,6 @@ QString Message::getHeader() const
     QString msgstr("[");
     msgstr.append(timestamp.time().toString()).append("] ").append(username);
     return msgstr.append(": ");
-}
-
-
-QString Message::getSanitizedMessage() const
-{
-    QString msgstr = getHeader();
-    QString clone(message);
-    clone.replace(QChar('\\'), QString("\\\\"));
-    return msgstr.append(clone);
 }
 
 
@@ -87,6 +94,16 @@ const QString& Message::getUsername() const
 const QUuid& Message::getUUID() const
 {
     return uuid;
+}
+
+QString Message::toString() const
+{
+    QString msg = uuid.toString() + CommandParser::SEP;
+    msg += roomID.toString() + CommandParser::SEP;
+    msg += timestamp.toString(Qt::ISODate) + CommandParser::SEP;
+    msg += username + CommandParser::SEP;
+    msg += message;
+    return msg;
 }
 
 Message& Message::operator=(const Message& msg)

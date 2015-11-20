@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QString>
 #include "abstractdialog.h"
+#include "account.h"
 #include "chatroom.h"
 #include "socket.h"
 
@@ -16,7 +17,7 @@ class JoinChatUI : public AbstractDialog
     Q_OBJECT
 
 public:
-    explicit JoinChatUI(Socket& socket, QWidget *parent = 0);
+    explicit JoinChatUI(Socket& socket, Account& account, QWidget *parent = 0);
     ~JoinChatUI();
 
     ChatRoom getChat();
@@ -29,6 +30,7 @@ private slots:
     void on_joinButton_clicked();
 
 private:
+    Account& account;
     ChatRoom chat;
     Ui::JoinChatUI *ui;
 };
