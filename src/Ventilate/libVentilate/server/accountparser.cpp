@@ -16,11 +16,11 @@
 #include "account.h"
 #include "database/accountdatabase.h"
 #include "commandparser.h"
-#include "connectionhandler.h"
 #include "server.h"
 
 
-AccountParser::AccountParser()
+AccountParser::AccountParser(QObject *parent)
+    : CommandParser(parent)
 {
 }
 
@@ -29,68 +29,72 @@ AccountParser::~AccountParser()
 {
 }
 
-void AccountParser::create(const ConnectionHandler& handler, QStringList& tokens)
+Account AccountParser::buildAccount(QStringList &tokens)
 {
-    QUuid uuid = tokens.at(2);
-    QString username = tokens.at(3);
-    qDebug() << "QDateTime::fromString(" << tokens.at(4) << QString(")");
-    QDateTime time = QDateTime::fromString(tokens.at(4), Qt::ISODate);
+    QStringList::iterator iter = tokens.begin();
     QByteArray phash;
-    phash.append(tokens.at(5));
-    QString email = tokens.at(3);
-    Account acc(uuid, username, time, phash, email);
+    QUuid uuid = *iter++;
+    QString username = *iter++;
+    QDateTime time = QDateTime::fromString(*iter++, Qt::ISODate);
+    phash.append(*iter++);
+    QString email = *iter++;
+    return std::move(Account(uuid, username, time, phash, email));
+}
+
+QString AccountParser::create(QStringList& tokens)
+{
+    Account acc = buildAccount(tokens);
     AccountDatabase db;
     if (db.add(acc))
-        handler.write(ACCEPT);
+        return ACCEPT;
     else
-        handler.write(REJECT + SEP + GENERIC_ERROR);
+        return REJECT + SEP + GENERIC_ERROR;
 }
 
 
-void AccountParser::get(const ConnectionHandler& handler, QString& name)
+QString AccountParser::get(QString& name)
 {
     AccountDatabase db;
     Account acc = db.find(name);
-    QString cmd = ACCOUNT + SEP + SEND + SEP + acc.toString();
-    handler.write(cmd);
+    return ACCOUNT + SEP + SEND + SEP + acc.toString();
 }
 
-
-void AccountParser::login(const ConnectionHandler& handler, QStringList& tokens)
+QString AccountParser::login(QStringList& tokens)
 {
-    QString username = tokens.at(2);
+    QStringList::iterator iter = tokens.begin();
+    QString username = *iter++;
     QByteArray phash;
-    phash.append(tokens.at(3));
+    phash.append(*iter++);
     if (Account::authenticateUser(username, phash))
-        get(handler, username);
+        return get(username);
     else
-        handler.write(REJECT + SEP + INVALID_PASSWORD);
+        return REJECT + SEP + INVALID_PASSWORD;
 }
 
-void AccountParser::parse(const ConnectionHandler& handler, QStringList& tokens)
+QString AccountParser::parse(QString& subcmd, QStringList& tokens)
 {
-    QString cmd = tokens.at(1);
-    if (cmd == LOGIN)
-        login(handler, tokens);
-    else if (cmd == CREATE)
-        create(handler, tokens);
-    else if (cmd == DELETE)
-        remove(handler, tokens);
+    if (subcmd == LOGIN)
+        return login(tokens);
+    else if (subcmd == CREATE)
+        return create(tokens);
+    else if (subcmd == DELETE)
+        return remove(tokens);
+    return REJECT + " " + GENERIC_ERROR;
 }
 
-void AccountParser::remove(const ConnectionHandler& handler, QStringList& tokens)
+QString AccountParser::remove(QStringList& tokens)
 {
-    QString username = tokens.at(2);
+    QStringList::iterator iter = tokens.begin();
+    QString username = *iter++;
     QByteArray phash;
-    phash.append(tokens.at(3));
+    phash.append(*iter++);
     if (!Account::authenticateUser(username, phash)) {
-        handler.write(REJECT + SEP + INVALID_PASSWORD);
-        return;
+        return REJECT + SEP + INVALID_PASSWORD;
     }
     AccountDatabase db;
     Account acc = db.find(username);
     if (db.remove(acc))
-        handler.write(ACCEPT);
+        return ACCEPT;
     else
-        handler.write(REJECT + SEP + GENERIC_ERROR);
+        return REJECT + SEP + GENERIC_ERROR;
 }

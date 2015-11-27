@@ -8,23 +8,31 @@
 #ifndef ACCOUNTPARSER_H
 #define ACCOUNTPARSER_H
 
+#include <QObject>
+#include <QString>
 #include <QStringList>
+#include "account.h"
 #include "commandparser.h"
 #include "connectionhandler.h"
 
 class AccountParser : public CommandParser
 {
+    Q_OBJECT
 public:
-    explicit AccountParser();
+    explicit AccountParser(QObject *parent = 0);
     virtual ~AccountParser();
 
-    virtual void parse(const ConnectionHandler& handler, QStringList& tokens);
+    virtual QString parse(QString& subcmd, QStringList& tokens);
 
 private:
-    void create(const ConnectionHandler& handler, QStringList& tokens);
-    void get(const ConnectionHandler& handler, QString& name);
-    void login(const ConnectionHandler& handler, QStringList& tokens);
-    void remove(const ConnectionHandler& handler, QStringList& tokens);
+    // Command functions
+    QString create(QStringList& tokens);
+    QString get(QString& name);
+    QString login(QStringList& tokens);
+    QString remove(QStringList& tokens);
+
+    // Helper functinos
+    Account buildAccount(QStringList& tokens);
 };
 
 #endif // ACCOUNTPARSER_H

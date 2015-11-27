@@ -8,42 +8,50 @@
 #ifndef CONNECTIONHANDLER_H
 #define CONNECTIONHANDLER_H
 
+#include <vector>
 #include <QObject>
 #include <QByteArray>
 #include <QDebug>
 #include <QHostAddress>
 #include <QString>
 #include <QTcpSocket>
-#include <QThread>
 #include "libventilate_global.h"
 
-class LIBVENTILATESHARED_EXPORT ConnectionHandler : public QThread
+class LIBVENTILATESHARED_EXPORT ConnectionHandler : public QObject
 {
     Q_OBJECT
 public:
-    explicit ConnectionHandler(qintptr ID, QObject *parent = 0);
+    ConnectionHandler(ConnectionHandler &&move);
+    explicit ConnectionHandler(qintptr ID,
+                               std::vector<ConnectionHandler>& clients,
+                               QObject *parent = 0);
+    virtual ~ConnectionHandler();
 
     const QHostAddress& getHostAddress() const;
     void run();
-    void write(const QString& data) const;
+    QString serializePeerList();
 
-    friend bool operator==(const ConnectionHandler& ch0,
-                           const ConnectionHandler& ch1);
-    friend bool operator!=(const ConnectionHandler& ch0,
-                           const ConnectionHandler& ch1);
+    ConnectionHandler& operator=(ConnectionHandler &&move);
+    friend bool operator==(const ConnectionHandler &ch0,
+                           const ConnectionHandler &ch1);
+    friend bool operator!=(const ConnectionHandler &ch0,
+                           const ConnectionHandler &ch1);
 
 signals:
-    void error(QTcpSocket::SocketError socketError);
+    void disconnected(ConnectionHandler &handler);
 
 public slots:
-    void readyRead();
     void disconnected();
+    void propogate(QString message);
+    void readyRead();
+    void taskResult(QString result);
 
 private:
     QTcpSocket *socket;
     qintptr socketDescriptor;
+    std::vector<ConnectionHandler> &clients;
 
-    void sendToClient(QByteArray data) const;
+    void send(const QString& data) const;
 };
 
 #endif // CONNECTIONHANDLER_H

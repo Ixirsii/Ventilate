@@ -8,20 +8,22 @@
 #ifndef PASSWORDPARSER_H
 #define PASSWORDPARSER_H
 
+#include <QObject>
+#include <QString>
 #include <QStringList>
 #include "commandparser.h"
-#include "connectionhandler.h"
 
 class PasswordParser : public CommandParser
 {
+    Q_OBJECT
 public:
-    explicit PasswordParser();
+    explicit PasswordParser(QObject *parent = 0);
     virtual ~PasswordParser();
 
-    virtual void parse(const ConnectionHandler& handler, QStringList& tokens);
+    virtual QString parse(QString& subcmd, QStringList& tokens);
 
 private:
-    void change(const ConnectionHandler& handler, QStringList& tokens);
+    QString change(QStringList& tokens);
 };
 
 #endif // PASSWORDPARSER_H

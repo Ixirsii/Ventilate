@@ -34,6 +34,25 @@ bool MiniDBInterface::add(const QString& name, const QUuid& roomID)
     return flag;
 }
 
+bool MiniDBInterface::contains(const QString &name, const QUuid &roomID)
+{
+    qDebug() << "Checking if room " << roomID << " contains user " << name;
+    db.transaction();
+    QSqlQuery query(db);
+    query.prepare("SELECT * FROM " + table + " WHERE " + NAME_KEY +
+                  " = ? AND " + ID_KEY
+                  + " = ? ORDER BY " + NAME_KEY + " ASC;");
+    query.addBindValue(name);
+    query.addBindValue(roomID);
+    runQuery(query);
+    db.commit();
+    int count = 0;
+    while (query.next())
+        ++count;
+    qDebug() << "size: " << count;
+    return count > 0;
+}
+
 QList<QString> MiniDBInterface::get(const QUuid &roomID)
 {
     qDebug() << "Getting from room in database";

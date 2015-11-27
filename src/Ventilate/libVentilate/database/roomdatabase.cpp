@@ -5,19 +5,18 @@
  * \copyright BSD 3 Clause
  */
 
-#include "chatroomdatabase.h"
+#include "database/roomdatabase.h"
 #include <memory>
 #include "message.h"
 #include "messagedatabase.h"
 #include "moddatabase.h"
 #include "userdatabase.h"
 
-ChatRoomDatabase::ChatRoomDatabase()
+RoomDatabase::RoomDatabase()
 {
-
 }
 
-bool ChatRoomDatabase::add(const ChatRoom &elem)
+bool RoomDatabase::add(const ChatRoom &elem)
 {
     qDebug() << "Adding row to table" << elem.getName();
     db.transaction();
@@ -32,7 +31,7 @@ bool ChatRoomDatabase::add(const ChatRoom &elem)
     return flag;
 }
 
-ChatRoom ChatRoomDatabase::buildFromQuery(const QSqlQuery &query) const
+ChatRoom RoomDatabase::buildFromQuery(const QSqlQuery &query) const
 {
     QUuid id = query.value(ID_KEY).toByteArray();
     QString owner = query.value(OWNER_KEY).toString();
@@ -40,7 +39,7 @@ ChatRoom ChatRoomDatabase::buildFromQuery(const QSqlQuery &query) const
     return std::move(ChatRoom(id, owner, name));
 }
 
-ChatRoom ChatRoomDatabase::find(const QUuid &roomID)
+ChatRoom RoomDatabase::find(const QUuid &roomID)
 {
     ChatRoom room = DatabaseInterface::find(roomID, ROOM_TABLE);
     MessageDatabase mdb;
@@ -55,8 +54,9 @@ ChatRoom ChatRoomDatabase::find(const QUuid &roomID)
     return std::move(room);
 }
 
-ChatRoom ChatRoomDatabase::find(const QString &name)
+ChatRoom RoomDatabase::find(const QString &name)
 {
+    UserDatabase udb;
     qDebug() << "Finding row in table: " << name;
     db.transaction();
     QSqlQuery query(db);
@@ -66,15 +66,18 @@ ChatRoom ChatRoomDatabase::find(const QString &name)
     runQuery(query);
     query.first();
     db.commit();
-    return std::move(buildFromQuery(query));
+    ChatRoom room = std::move(buildFromQuery(query));
+    QList<QString> users = udb.get(room.getUUID());
+    room.addUsers(users);
+    return std::move(room);
 }
 
-QList<ChatRoom> ChatRoomDatabase::getAll()
+QList<ChatRoom> RoomDatabase::getAll()
 {
     return std::move(DatabaseInterface::getAll(ROOM_TABLE));
 }
 
-bool ChatRoomDatabase::remove(const ChatRoom &elem)
+bool RoomDatabase::remove(const ChatRoom &elem)
 {
     return DatabaseInterface::remove(elem.getUUID(), ROOM_TABLE);
 }

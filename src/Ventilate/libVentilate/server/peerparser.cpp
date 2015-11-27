@@ -6,13 +6,13 @@
  */
 
 #include "peerparser.h"
+#include <vector>
 #include <QString>
 #include <QStringList>
 #include "commandparser.h"
-#include "connectionhandler.h"
 
-PeerParser::PeerParser(QList<ConnectionHandler*>& clientList)
-    : clientList(clientList)
+PeerParser::PeerParser(ConnectionHandler &handler, QObject *parent)
+    : CommandParser(parent), handler(handler)
 {
 }
 
@@ -21,36 +21,20 @@ PeerParser::~PeerParser()
 {
 }
 
-void PeerParser::parse(const ConnectionHandler& handler, QStringList& tokens)
+QString PeerParser::parse(QString& subcmd, QStringList& tokens)
 {
-    QString cmd = tokens.at(2);
-    if (cmd != LIST)
-        return;
-    cmd = tokens.at(3);
-    if (cmd == REQUEST)
-        sendList(handler);
+    if (subcmd != LIST)
+        return "";
+    subcmd = tokens.at(0);
+    if (subcmd == REQUEST)
+        return sendList();
     // else save the peer list
+    return REJECT + " " + GENERIC_ERROR;
 }
 
-void PeerParser::sendList(const ConnectionHandler& handler)
+QString PeerParser::sendList()
 {
     QString list = PEER + SEP + LIST + SEP;
-    list.append(serializePeerList());
-    handler.write(list);
-}
-
-
-/*!
- * \brief Server::serializePeerList
- * \return
- */
-QString PeerParser::serializePeerList()
-{
-    QString list = "";
-    for (const ConnectionHandler* handler: clientList) {
-        list = list.append(handler->getHostAddress().toString());
-        list = list.append(SEP);
-    }
+    list.append(handler.serializePeerList());
     return list;
 }
-

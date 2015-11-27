@@ -8,23 +8,25 @@
 #ifndef PEERPARSER_H
 #define PEERPARSER_H
 
+#include <QObject>
+#include <QString>
 #include <QStringList>
-#include "commandparser.h"
 #include "connectionhandler.h"
+#include "server/commandparser.h"
 
 class PeerParser : public CommandParser
 {
+    Q_OBJECT
 public:
-    explicit PeerParser(QList<ConnectionHandler*>& clientList);
+    explicit PeerParser(ConnectionHandler &handler, QObject *parent = 0);
     virtual ~PeerParser();
 
-    virtual void parse(const ConnectionHandler& handler, QStringList& tokens);
+    virtual QString parse(QString &subcmd, QStringList& tokens);
 
 private:
-    const QList<ConnectionHandler*>& clientList;
+    ConnectionHandler &handler;
 
-    void sendList(const ConnectionHandler& handler);
-    QString serializePeerList();
+    QString sendList();
 };
 
 #endif // PEERPARSER_H

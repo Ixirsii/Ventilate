@@ -9,7 +9,7 @@
 #include "account.h"
 #include "accountdatabase.h"
 #include "chatroom.h"
-#include "chatroomdatabase.h"
+#include "roomdatabase.h"
 
 UserDatabase::UserDatabase()
     : MiniDBInterface(USER_TABLE)
@@ -24,7 +24,7 @@ bool UserDatabase::add(const QString &name, const QUuid &roomID)
 {
     AccountDatabase adb;
     Account acc = adb.find(name);
-    ChatRoomDatabase cdb;
+    RoomDatabase cdb;
     ChatRoom chat = cdb.find(roomID);
     chat.addUser(acc.getUsername());
     return MiniDBInterface::add(name, roomID);
@@ -34,7 +34,7 @@ bool UserDatabase::remove(const QString &name, const QUuid &roomID)
 {
     AccountDatabase adb;
     Account acc = adb.find(name);
-    ChatRoomDatabase cdb;
+    RoomDatabase cdb;
     ChatRoom chat = cdb.find(roomID);
     chat.removeUser(acc.getUsername());
     return MiniDBInterface::remove(name, roomID);

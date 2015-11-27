@@ -22,7 +22,6 @@ SOURCES += \
     socket.cpp \
     database/accountdatabase.cpp \
     database/messagedatabase.cpp \
-    database/chatroomdatabase.cpp \
     database/database.cpp \
     database/userdatabase.cpp \
     database/minidbinterface.cpp \
@@ -32,7 +31,9 @@ SOURCES += \
     server/roomparser.cpp \
     server/accountparser.cpp \
     server/passwordparser.cpp \
-    server/peerparser.cpp
+    server/peerparser.cpp \
+    database/roomdatabase.cpp \
+    networktask.cpp
 
 HEADERS +=\
         libventilate_global.h \
@@ -45,7 +46,6 @@ HEADERS +=\
     database/databaseinterface.h \
     database/accountdatabase.h \
     database/messagedatabase.h \
-    database/chatroomdatabase.h \
     database/database.h \
     database/userdatabase.h \
     database/minidbinterface.h \
@@ -55,7 +55,9 @@ HEADERS +=\
     server/roomparser.h \
     server/accountparser.h \
     server/passwordparser.h \
-    server/peerparser.h
+    server/peerparser.h \
+    database/roomdatabase.h \
+    networktask.h
 
 unix {
     target.path = /usr/lib

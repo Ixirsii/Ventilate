@@ -8,33 +8,41 @@
 #ifndef ROOMPARSER_H
 #define ROOMPARSER_H
 
-#include <QDataStream>
+#include <QObject>
+#include <QString>
+#include <QStringList>
 #include "message.h"
 #include "commandparser.h"
-#include "connectionhandler.h"
 
 class RoomParser : public CommandParser
 {
+    Q_OBJECT
 public:
-    explicit RoomParser(QList<ConnectionHandler*>& clientList);
+    explicit RoomParser(QObject *parent = 0);
     virtual ~RoomParser();
 
-    virtual void parse(const ConnectionHandler& handler, QStringList& tokens);
+    virtual QString parse(QString &subcmd, QStringList &tokens);
+
+signals:
+    void propogate(QString message);
 
 private:
-    const QList<ConnectionHandler*>& clientList;
+    // Command functions
+    QString add(QStringList &tokens);
+    QString create(QStringList &tokens);
+    QString get(QStringList &tokens);
+    QString history(QStringList &tokens);
+    QString join(QStringList &tokens);
+    QString leave(QStringList &tokens);
+    QString list(QStringList &tokens);
+    QString message(QStringList &tokens);
+    QString mode(QStringList &tokens);
+    QString remove(QStringList &tokens);
 
-    void add(const ConnectionHandler& handler, QStringList& tokens);
-    void create(const ConnectionHandler& handler, QStringList& tokens);
-    void get(const ConnectionHandler& handler, QStringList& tokens);
-    void history(const ConnectionHandler& handler, QStringList& tokens);
-    void join(const ConnectionHandler& handler, QStringList& tokens);
-    void leave(const ConnectionHandler& handler, QStringList& tokens);
-    void list(const ConnectionHandler& handler, QStringList& tokens);
-    void message(QStringList& tokens);
-    void mode(const ConnectionHandler& handler, QStringList& tokens);
-    void propogateMessage(const Message& message);
-    void remove(const ConnectionHandler& handler, QStringList& tokens);
+
+    // Helper functions
+    Message buildMessage(QStringList &tokens);
+    bool inRoom(QString &username, QUuid &room);
 };
 
 #endif // ROOMPARSER_H

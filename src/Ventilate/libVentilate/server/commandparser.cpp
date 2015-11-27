@@ -5,6 +5,7 @@
  * \copyright 2015-11-10
  */
 
+#include <QObject>
 #include "commandparser.h"
 
 /* ************************************************************************* *
@@ -38,7 +39,8 @@ const QString CommandParser::USERS = "USERS";
 const QString CommandParser::GENERIC_ERROR = "An unkown error occurred";
 const QString CommandParser::INVALID_PASSWORD = "Invalid password";
 
-CommandParser::CommandParser()
+CommandParser::CommandParser(QObject *parent)
+    : QObject(parent)
 {
 }
 

@@ -6,24 +6,22 @@
  */
 
 #include "server.h"
+#include <algorithm>
+#include <vector>
 #include <QDataStream>
 #include <QIODevice>
 #include <QList>
 #include <QString>
 #include <QStringList>
-#include "accountparser.h"
-#include "commandparser.h"
-#include "passwordparser.h"
-#include "peerparser.h"
-#include "roomparser.h"
 #include "database/database.h"
+#include "server/commandparser.h"
 
 /*!
  * \brief Create a new Server.
  * \param parent The object creating the parent.
  */
 Server::Server(QObject *parent)
-    : QTcpServer(parent), peerParser(clientList), roomParser(clientList)
+    : QTcpServer(parent)
 {
 }
 
@@ -34,12 +32,14 @@ Server::~Server()
 {
 }
 
-
-void Server::disconnectClient(ConnectionHandler* handler)
+void Server::disconnected(ConnectionHandler& handler)
 {
-    clientList.removeOne(handler);
+    std::vector<ConnectionHandler>::iterator iter;
+    iter = std::find(clients.begin(), clients.end(), handler);
+    disconnect(&(*iter), SIGNAL(disconnected(ConnectionHandler&)),
+            this, SLOT(disconnected(ConnectionHandler&)));
+    clients.erase(iter);
 }
-
 
 /*!
  * \brief Server::incomingConnection
@@ -47,48 +47,11 @@ void Server::disconnectClient(ConnectionHandler* handler)
  */
 void Server::incomingConnection(qintptr socketDescriptor) {
     qDebug() << "Connecting to " << socketDescriptor;
-    ConnectionHandler *handler = new ConnectionHandler(socketDescriptor, this);
-    clientList.append(handler);
-    connect(handler, SIGNAL(finished()), handler, SLOT(deleteLater()));
-    handler->start();
+    ConnectionHandler handler(socketDescriptor, clients);
+    connect(&handler, SIGNAL(disconnected(ConnectionHandler&)),
+            this, SLOT(disconnected(ConnectionHandler&)));
+    clients.push_back(std::move(handler));
 }
-
-
-const QList<ConnectionHandler*>& Server::getClientList() const
-{
-    return clientList;
-}
-
-
-/*!
- * \brief Handle requests from the clients.
- *
- * This function gets called any time a ConnectionHandler recieves a request
- * from a client over the network. Some preliminary command parsing is done,
- * then the handler and command stream are passed off to an appropriate
- * CommandParser sub-class to handle the command.
- *
- * \param handler Reference to the ConnectionHandler that recieved the request.
- * \param request QDataStream that the handler read in from the network.
- */
-void Server::onClientRequest(const ConnectionHandler& handler, QDataStream& stream)
-{
-    QString cmd;
-    stream >> cmd;
-    qDebug() << "Got string: " << cmd << " from stream";
-    QStringList tokens = cmd.split(CommandParser::SEP);
-    cmd = tokens.at(0);
-    if (cmd == CommandParser::ROOM)
-        roomParser.parse(handler, tokens);
-    else if (cmd == CommandParser::ACCOUNT || cmd == CommandParser::LOGIN)
-        accountParser.parse(handler, tokens);
-    else if (cmd == CommandParser::PEER)
-        peerParser.parse(handler, tokens);
-    else if (cmd == CommandParser::PASSWORD)
-        passwordParser.parse(handler, tokens);
-    // Drop incorrectly formatted requests
-}
-
 
 /*!
  * \brief Server::startServer

@@ -26,11 +26,13 @@ Ventilate::Ventilate(Socket& socket, QWidget *parent)
     : QMainWindow(parent), socket(socket), ui(new Ui::Ventilate)
 {
     ui->setupUi(this);
+    connect(&(this->socket), SIGNAL(response(QString)), this, SLOT(response(QString)));
 }
 
 Ventilate::~Ventilate()
 {
     delete ui;
+    disconnect(&(this->socket), SIGNAL(response(QString)), this, SLOT(response(QString)));
 }
 
 void Ventilate::on_actionCreate_Chat_room_triggered()

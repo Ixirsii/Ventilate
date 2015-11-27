@@ -172,9 +172,9 @@ QString ChatRoom::toString() const
     QString str = uuid.toString() + CommandParser::SEP;
     str += name + CommandParser::SEP;
     str += owner + CommandParser::SEP;
-    str += CommandParser::USERS + CommandParser::SEP;
+    str += CommandParser::USERS;
     for (QString user : users)
-        str += user + CommandParser::SEP;
+        str += CommandParser::SEP + user;
     return str;
 }
 

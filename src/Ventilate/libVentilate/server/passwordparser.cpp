@@ -1,7 +1,8 @@
 #include "passwordparser.h"
 #include <QStringList>
 
-PasswordParser::PasswordParser()
+PasswordParser::PasswordParser(QObject *parent)
+    : CommandParser(parent)
 {
 }
 
@@ -10,12 +11,12 @@ PasswordParser::~PasswordParser()
 {
 }
 
-void PasswordParser::change(const ConnectionHandler& handler, QStringList& tokens)
+QString PasswordParser::change(QStringList& tokens)
 {
-
+    return REJECT;
 }
 
-void PasswordParser::parse(const ConnectionHandler& handler, QStringList& tokens)
+QString PasswordParser::parse(QString& subcmd, QStringList& tokens)
 {
-
+    return REJECT;
 }

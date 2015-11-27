@@ -8,11 +8,14 @@
 #ifndef COMMANDPARSER_H
 #define COMMANDPARSER_H
 
+#include <QObject>
+#include <QString>
 #include <QStringList>
-#include "connectionhandler.h"
+#include "libventilate_global.h"
 
-class LIBVENTILATESHARED_EXPORT CommandParser
+class LIBVENTILATESHARED_EXPORT CommandParser : public QObject
 {
+    Q_OBJECT
 public:
     static const QString ACCEPT;
     static const QString ACCOUNT;
@@ -41,7 +44,7 @@ public:
     static const QString GENERIC_ERROR;
     static const QString INVALID_PASSWORD;
 
-    explicit CommandParser();
+    explicit CommandParser(QObject *parent = 0);
     virtual ~CommandParser();
 
     /*!
@@ -54,9 +57,7 @@ public:
      * request.
      * \param request QDataStream that the handler read in from the network.
      */
-    virtual void parse(const ConnectionHandler& handler, QStringList& tokens) = 0;
-
-protected:
+    virtual QString parse(QString& subcmd, QStringList& tokens) = 0;
 };
 
 #endif // COMMANDPARSER_H

@@ -19,14 +19,15 @@ public:
     explicit MiniDBInterface(const QString& table);
     virtual ~MiniDBInterface();
 
-    virtual bool add(const QString& name, const QUuid& roomID);
+    virtual bool add(const QString &name, const QUuid &roomID);
+    virtual bool contains(const QString &name, const QUuid& roomID);
     virtual QList<QString> get(const QUuid &roomID);
-    virtual bool remove(const QString& name, const QUuid& roomID);
+    virtual bool remove(const QString &name, const QUuid &roomID);
 
 private:
     const QString table;
 
-    QList<QString> getListFromQuery(QSqlQuery& query);
+    QList<QString> getListFromQuery(QSqlQuery &query);
 };
 
 #endif // MINIDBINTERFACE_H

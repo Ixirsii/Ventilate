@@ -13,10 +13,10 @@
 #include "databaseinterface.h"
 #include "libventilate_global.h"
 
-class ChatRoomDatabase : public DatabaseInterface<ChatRoom>
+class RoomDatabase : public DatabaseInterface<ChatRoom>
 {
 public:
-    explicit ChatRoomDatabase();
+    explicit RoomDatabase();
 
     virtual bool add(const ChatRoom& elem);
     virtual ChatRoom find(const QString& name);
