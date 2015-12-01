@@ -1,0 +1,57 @@
+Networking Spec
+
+Note: parameters in angle brackets <> are required, parameters in square brackets [] are optional.
+
+
+GENERAL COMMANDS:
+-----------------
+Accept
+	"ACCEPT"
+Reject
+	"REJECT [reason]"
+
+
+SERVER COMMANDS:
+----------------
+Send peer list:
+	"PEER LIST <whitespace separated list of IP addresses>"
+
+
+CLIENT COMMANDS:
+----------------
+Request peer list:
+	"PEER LIST REQUEST"
+
+Login request:
+        "ACCOUNT LOGIN <username> <password hash>"
+Account creation request:
+        "ACCOUNT CREATE <uuid> <username> <creation date> <password hash> <email address>"
+Account deletion request:
+	"ACCOUNT DELETE <username> <password hash>"
+Password change request:
+        "PASSWORD CHANGE <username> <old password hash> <new password hash>"
+Password reset request:
+	"PASSWORD RESET <username>"
+	
+Add a user to a private chat room
+        "ROOM ADD <username> <room ID>"
+Chat room creation request:
+        "ROOM CREATE <public|private> <name> <owner>"
+Chat room deletion request
+        "ROOM DELETE <name> <username> <password hash>"
+Get chat history for a room
+        "ROOM HISTORY REQUEST <room ID> <offset>"
+Send chat history for a room
+        "ROOM HISTORY <room ID> <offset> <history>"
+Join a chat room
+        "ROOM JOIN <room ID> <username>"
+Leave a chat room
+        "ROOM LEAVE <room ID> <username>"
+Get room list
+	"ROOM LIST REQUEST"
+Return room list
+	"ROOM LIST <comma separated list of public room names>"
+Send a message
+        "ROOM MESSAGE <message ID> <room ID> <date time> <sender> <message>"
+Chat room mode change
+	"ROOM MODE <public|private> <username>"
