@@ -15,30 +15,13 @@ CONFIG += c++11
 
 SOURCES += main.cpp\
     chatroomlistener.cpp \
-    client.cpp \
-    ventilate.cpp \
-    ventilate_login.cpp \
-    ventilate_newuser.cpp \
-    abstractdialog.cpp \
-    createchatui.cpp \
-    joinchatui.cpp
+    client.cpp
 
 HEADERS  += \
     chatroomlistener.h \
-    client.h \
-    ventilate.h \
-    ventilate_login.h \
-    ventilate_newuser.h \
-    abstractdialog.h \
-    createchatui.h \
-    joinchatui.h
+    client.h
 
-FORMS    += \
-    ventilate.ui \
-    ventilate_createchat.ui \
-    ventilate_login.ui \
-    ventilate_newuser.ui \
-    joinchatui.ui
+FORMS    +=
 
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../libVentilate/release/ -llibVentilate
