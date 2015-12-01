@@ -6,7 +6,7 @@
  */
 
 #include <QApplication>
-#include "ventilate.h"
+#include "mainwindow.h"
 #include "socket.h"
 #include "server/server.h"
 
@@ -23,8 +23,8 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     Socket s("127.0.0.1", 37377);
-    Ventilate v(s);
-    v.show();
+    MainWindow mw;
+    mw.show();
 
     // Connect to the central server
     // Test for now, gets the peer list
