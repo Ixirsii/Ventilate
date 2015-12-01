@@ -1,3 +1,13 @@
+/*! \file
+ * \brief Main window UI behavior.
+ *
+ * Defines the behavior of the main chat UI window through the MainWindow class.
+ *
+ * \author Ryan Porterfield
+ * \since 2015-12-01
+ * \copyright BSD 3 Clause
+ */
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 

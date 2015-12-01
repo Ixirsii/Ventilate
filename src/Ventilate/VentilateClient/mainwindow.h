@@ -1,3 +1,14 @@
+/*! \file
+ * \brief Main window UI behavior.
+ *
+ * Declares the MainWindow class which defines behavior for the main chat
+ * window.
+ *
+ * \author Ryan Porterfield
+ * \since 2015-12-01
+ * \copyright BSD 3 Clause
+ */
+
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 

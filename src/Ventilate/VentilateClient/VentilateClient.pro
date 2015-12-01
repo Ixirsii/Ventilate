@@ -15,12 +15,10 @@ CONFIG += c++11
 
 SOURCES += main.cpp\
     chatroomlistener.cpp \
-    client.cpp \
     mainwindow.cpp
 
 HEADERS  += \
     chatroomlistener.h \
-    client.h \
     mainwindow.h
 
 FORMS    += \
