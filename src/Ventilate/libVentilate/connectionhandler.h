@@ -16,8 +16,9 @@
 #include <QString>
 #include <QTcpSocket>
 #include "libventilate_global.h"
+#include "socketlistener.h"
 
-class LIBVENTILATESHARED_EXPORT ConnectionHandler : public QObject
+class LIBVENTILATESHARED_EXPORT ConnectionHandler : public SocketListener
 {
     Q_OBJECT
 public:
@@ -28,7 +29,6 @@ public:
     virtual ~ConnectionHandler();
 
     const QHostAddress& getHostAddress() const;
-    void run();
     QString serializePeerList();
 
     ConnectionHandler& operator=(ConnectionHandler &&move);
@@ -43,15 +43,11 @@ signals:
 public slots:
     void disconnected();
     void propogate(QString message);
-    void readyRead();
     void taskResult(QString result);
 
 private:
-    QTcpSocket *socket;
-    qintptr socketDescriptor;
     std::vector<ConnectionHandler> &clients;
 
-    void send(const QString& data) const;
 };
 
 #endif // CONNECTIONHANDLER_H

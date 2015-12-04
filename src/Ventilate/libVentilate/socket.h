@@ -41,7 +41,8 @@
 #include <QDataStream>
 #include <QObject>
 #include <QTcpSocket>
-#include "message.h"
+#include "libventilate_global.h"
+#include "socketlistener.h"
 
 class LIBVENTILATESHARED_EXPORT Socket : public QObject
 {
@@ -50,24 +51,9 @@ public:
     explicit Socket(QString host, qint16 port, QObject *parent = 0);
     virtual ~Socket();
 
-    template <typename T> T get()
-    {
-        T obj;
-        stream >> obj;
-        return std::move(obj);
-    }
-
     void send(QString& data);
 
-signals:
-    void response(QString response);
-
-public slots:
-    void listen();
-
 private:
-    QByteArray buffer;
-    QDataStream stream;
     QTcpSocket *socket;
 };
 

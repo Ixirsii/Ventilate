@@ -30,16 +30,14 @@ ConnectionHandler::ConnectionHandler(ConnectionHandler &&move)
  * \param ID Identification number of the connecting socket.
  * \param parent The calling TcpServer.
  */
-ConnectionHandler::ConnectionHandler(qintptr ID,
+ConnectionHandler::ConnectionHandler(qintptr descriptor,
                                      std::vector<ConnectionHandler>& clients,
                                      QObject *parent)
-    : QObject(parent), socket(new QTcpSocket()), socketDescriptor(ID),
-      clients(clients)
+    : QObject(parent), clients(clients)
 {
     qDebug() << "Opened a new ConnectionHandler";
-    socket->setSocketDescriptor(socketDescriptor);
+    socket->setSocketDescriptor(descriptor);
     qDebug() << "Client address: " << socket->peerAddress();
-    connect(socket, SIGNAL(readyRead()), this, SLOT(readyRead()), Qt::DirectConnection);
     connect(socket, SIGNAL(disconnected()), this, SLOT(disconnected()));
     qDebug() << "Connected to " << socketDescriptor;
 }
@@ -89,25 +87,6 @@ void ConnectionHandler::readyRead()
     NetworkTask *task = new NetworkTask(*this, fullcmd, clients);
     connect(task, SIGNAL(result(QString)), this, SLOT(taskResult(QString)));
     QThreadPool::globalInstance()->start(task);
-}
-
-/**
- * @brief Sends a message to the client.
- * @param data A preformatted message ready to be written directly to the client.
- */
-void ConnectionHandler::send(const QString& data) const
-{
-    qDebug() << "Sending data: " << data;
-    QByteArray block;
-    QDataStream out(&block, QIODevice::WriteOnly);
-    out.setVersion(QDataStream::Qt_5_0);
-
-    out << (quint16) 0;
-    out << data;
-    out.device()->seek(0);
-    out << (quint16) (block.size() - sizeof(quint16));
-
-    socket->write(block);
 }
 
 QString ConnectionHandler::serializePeerList()

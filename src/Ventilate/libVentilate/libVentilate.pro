@@ -33,7 +33,8 @@ SOURCES += \
     server/passwordparser.cpp \
     server/peerparser.cpp \
     database/roomdatabase.cpp \
-    networktask.cpp
+    networktask.cpp \
+    socketlistener.cpp
 
 HEADERS +=\
         libventilate_global.h \
@@ -57,7 +58,8 @@ HEADERS +=\
     server/passwordparser.h \
     server/peerparser.h \
     database/roomdatabase.h \
-    networktask.h
+    networktask.h \
+    socketlistener.h
 
 unix {
     target.path = /usr/lib
