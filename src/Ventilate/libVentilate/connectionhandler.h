@@ -15,6 +15,7 @@
 #include <QHostAddress>
 #include <QString>
 #include <QTcpSocket>
+
 #include "libventilate_global.h"
 #include "socketlistener.h"
 
@@ -23,19 +24,14 @@ class LIBVENTILATESHARED_EXPORT ConnectionHandler : public SocketListener
     Q_OBJECT
 public:
     ConnectionHandler(ConnectionHandler &&move);
-    explicit ConnectionHandler(qintptr ID,
+    explicit ConnectionHandler(qintptr socketDescriptor,
                                std::vector<ConnectionHandler>& clients,
                                QObject *parent = 0);
     virtual ~ConnectionHandler();
 
-    const QHostAddress& getHostAddress() const;
     QString serializePeerList();
 
     ConnectionHandler& operator=(ConnectionHandler &&move);
-    friend bool operator==(const ConnectionHandler &ch0,
-                           const ConnectionHandler &ch1);
-    friend bool operator!=(const ConnectionHandler &ch0,
-                           const ConnectionHandler &ch1);
 
 signals:
     void disconnected(ConnectionHandler &handler);
@@ -44,6 +40,9 @@ public slots:
     void disconnected();
     void propogate(QString message);
     void taskResult(QString result);
+
+private slots:
+    void processResponse(QString cmd);
 
 private:
     std::vector<ConnectionHandler> &clients;

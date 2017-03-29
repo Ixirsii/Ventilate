@@ -41,10 +41,11 @@
 #include <QDataStream>
 #include <QObject>
 #include <QTcpSocket>
+
 #include "libventilate_global.h"
 #include "socketlistener.h"
 
-class LIBVENTILATESHARED_EXPORT Socket : public QObject
+class LIBVENTILATESHARED_EXPORT Socket : public SocketListener
 {
     Q_OBJECT
 public:
@@ -52,9 +53,6 @@ public:
     virtual ~Socket();
 
     void send(QString& data);
-
-private:
-    QTcpSocket *socket;
 };
 
 #endif // SOCKET_H

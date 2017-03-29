@@ -1,8 +1,40 @@
 #include "socketlistener.h"
 
-SocketListener::SocketListener(QObject *parent) : QObject(parent)
+/*!
+ * \brief SocketListener::SocketListener
+ * \param move
+ */
+SocketListener::SocketListener(SocketListener &&move)
+    : QObject(move.parent()), socket_(move.socket_)
 {
-    connect(socket, SIGNAL(readyRead()), this, SLOT(listen()), Qt::DirectConnection);
+    move.setParent(nullptr);
+}
+
+/*!
+ * \brief SocketListener::SocketListener
+ * \param socketDescriptor
+ * \param parent
+ */
+SocketListener::SocketListener(qintprt socketDescriptor, QObject *parent)
+    : QObject(parent)
+{
+    socket_->setSocketDescriptor(socketDescriptor);
+    connect(socket_, SIGNAL(readyRead()), this, SLOT(listen()), Qt::DirectConnection);
+    qDebug() << "Client address: " << socket_->peerAddress();
+    qDebug() << "Connected to " << socketDescriptor;
+}
+
+/*!
+ * \brief SocketListener::~SocketListener
+ */
+SocketListener::~SocketListener()
+{
+
+}
+
+const QHostAddress& SocketListener::getHostAddress() const
+{
+    return socket_->peerAddress();
 }
 
 /*!
@@ -43,4 +75,14 @@ void SocketListener::send(const QString& data) const {
     out << (quint16) (block.size() - sizeof(quint16));
 
     socket->write(block);
+}
+
+QTcpSocket *&SocketListener::socket()
+{
+    return socket_;
+}
+
+const QTcpSocket *&SocketListener::socket() const
+{
+    return socket_;
 }
